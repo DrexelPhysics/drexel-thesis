@@ -937,7 +937,7 @@
       \pdfbookmark[-1]{Frontmatter}{frontmatter}
       \pdfbookmark[0]{Title Page}{title}
     \fi
-    \null\vfil
+    \vspace*{\fill}
     \begin{center}%
     \begin{spacing}{\@tsp}
       {\bf \@title \par}%
@@ -956,7 +956,7 @@
       \def@month\ \def@year
     \end{spacing}
     \end{center}\par
-    \vfil\null
+    \vspace*{\fill}
   \end{titlepage}%
   \setcounter{footnote}{0}%
   \global\let\maketitle\relax
@@ -978,12 +978,12 @@
 \newcommand\m@kecopyright[1]{%
   \clearpage
   \ifpdf \pdfbookmark[0]{Copyright Page}{copyright} \fi
-  \null\vfil
+  \vspace*{\fill}
   \begin{center}
     \copyright~Copyright \def@year\\
     \@author.  #1
   \end{center}
-  \vfil\null
+  \vspace*{\fill}
 %    \end{macrocode}
 % |\thispagestyle{empty}| turns off page numbering for the current
 % page.  See
@@ -1154,7 +1154,7 @@
   \@afterindentfalse
   \@afterheading
 }{%
-  \end{spacing}\vfill\null
+  \end{spacing}
 }
 %    \end{macrocode}
 % \end{environment}
