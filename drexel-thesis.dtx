@@ -535,6 +535,7 @@
 \newif\if@boldchapter
 \newif\if@boldpart
 \newif\if@dottedpart
+\newif\if@draftwatermark
 \newif\if@appendix
 \newif\if@final \@finalfalse
 %    \end{macrocode}
@@ -608,6 +609,13 @@
 %    \end{macrocode}
 % \end{option}
 %
+% \begin{option}{draftwatermark}
+% Set draft watermark flag
+%    \begin{macrocode}
+\DeclareOptionX{draftwatermark}{\@draftwatermarktrue}
+%    \end{macrocode}
+% \end{option}
+%
 % Define the book options that |final| and |draft| need to access.
 % \begin{option}{oneside}
 %    \begin{macrocode}
@@ -637,6 +645,7 @@
   \setkeys{drexel-thesis.cls}{twoside}
   \setkeys{drexel-thesis.cls}{draftspace}
   \setkeys{drexel-thesis.cls}{dottedtoc}
+  \setkeys{drexel-thesis.cls}{draftwatermark}
 }
 %    \end{macrocode}
 % \end{option}
@@ -672,12 +681,34 @@
 \RequirePackage{setspace}
 %    \end{macrocode}
 %
-% \href{http://www.ctan.org/tex-archive/macros/latex/required/graphics/}{\pkg{graphicx}}
-
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/tools/}{\pkg{calc}}
 % for |\blanklines| macro.
 %    \begin{macrocode}
 \RequirePackage{calc}
+%    \end{macrocode}
+%
+% The Comp.~Sci.\ class used
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/draftcopy/}{\pkg{draftcopy}}
+% to add their watermarks, but as of the current 2002/02/25 v2.16, it
+% uses postscript specials, and so doesn't work with pdf\LaTeX.
+% Instead we use the recent (catalogued 2009/11/03)
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/draftmark/}{\pkg{draftmark}}
+% which unfortunately has a number of apparently non-standard dependencies
+% (\href{http://www.ctan.org/tex-archive/macros/latex/contrib/etextools/}{\pkg{etextools}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/etoolbox/}{\pkg{etoolbox}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/xifthen/}{\pkg{xifthen}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/ltxnew/}{\pkg{ltxnew}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/pagerange/}{\pkg{pagerange}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/lastpage/}{\pkg{lastpage}},
+%  if only I had the space to install |texlive-latexextra| |:p|).
+% The output is, however, very flexible, and it \emph{does} work with
+% both \LaTeX and pdf\LaTeX.  If you don't like the default watermark,
+% you can also adjust the particulars with |\draftmarksetup|.
+%    \begin{macrocode}
+\if@draftwatermark
+  \RequirePackage[draft,allpages,mark={DRAFT \today},
+                  fontsize=2cm,grayness=0.9]{draftmark}
+\fi
 %    \end{macrocode}
 %
 % Setup page margins with the
@@ -692,7 +723,6 @@
 % ``The paper size must be 8 1/2'' x 11''{}''.
 %    \begin{macrocode}
 \RequirePackage[letterpaper,margin=1in,bindingoffset=0.5in]{geometry}
-% [2008/12/21 v4.2 Page Geometry]
 %    \end{macrocode}
 % Note that we include the \pkg{geometry} package after loading \cls{book} to
 % override the margin manipulation that takes place in \cls{book}.
@@ -743,6 +773,13 @@
       \thesection \ %
     \fi
     #1}}}
+%    \end{macrocode}
+%
+% \href{http://www.ctan.org/tex-archive/macros/latex/required/graphics/}{\pkg{graphicx}}
+% for |\includegraphics|.  Not strictly necessary, but I can't imagine
+% a thesis without figures.
+%    \begin{macrocode}
+\RequirePackage{graphicx}
 %    \end{macrocode}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/}{\pkg{ifpdf}}
