@@ -290,7 +290,7 @@
 %   `\cs{makecopyright}'
 %   `\cs{makecopyrightCC}'
 % \end{command}
-% \DescribeMacro{\makecopyright}
+% \DescribeMacros{\makecopyright,\makecopyrightCC}
 % Write the copyright page (Manual 3.2 p9).
 % Use |\makecopyright| to reserve all rights or |\makecopyrightCC| for
 % a Creative Commons copyright.
@@ -1005,11 +1005,13 @@
 % \begin{macro}{\makecopyrightCC}
 %    \begin{macrocode}
 \newcommand\makecopyrightCC{
-  \begin{quote}
-    This work is licensed under the terms of the Creative Commons
-    Attribution-ShareAlike license.  The license is available at
-    \url{http://creativecommons.org/licenses/by-sa/2.0/}.
-  \end{quote} 
+  \m@kecopyright{
+    \begin{quote}
+      This work is licensed under the terms of the Creative Commons
+      Attribution-ShareAlike license.  The license is available at \\
+      \url{http://creativecommons.org/licenses/by-sa/2.0/}.
+    \end{quote}
+  }
 }
 %    \end{macrocode}
 % \end{macro}
