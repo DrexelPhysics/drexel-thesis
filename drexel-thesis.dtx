@@ -284,7 +284,8 @@
 %   `\cs{makecopyright}'
 %   `\cs{makecopyrightCC}'
 % \end{command}
-% \DescribeMacros{\makecopyright,\makecopyrightCC}
+% \DescribeMacro{\makecopyright}
+% \DescribeMacro{\makecopyrightCC}
 % Write the copyright page (Manual 3.2 p9).
 % Use |\makecopyright| to reserve all rights or |\makecopyrightCC| for
 % a Creative Commons copyright.
@@ -552,6 +553,7 @@
 \DeclareOptionX{finalspace}{
   \setlength\overfullrule{0pt}
   \def\@csp{2} % content page spacing
+  \def\@dsp{1} % display (math) spacing
   \def\@ssp{1} % single space
   \def\@dsp{2} % double space
   \def\@tsp{3} % triple space
@@ -564,6 +566,7 @@
 \DeclareOptionX{draftspace}{
   \setlength\overfullrule{5pt}
   \def\@csp{1} % content page spacing
+  \def\@dsp{0.2} % display (math) spacing
   \def\@ssp{1} % single space
   \def\@dsp{1} % double space
   \def\@tsp{2} % triple space
@@ -1248,14 +1251,6 @@
 % \subsection{Adjust from the \LaTeX/\cls{book} defaults}
 %
 %
-% |\intextsep| sets the space left on top and bottom of an in-text
-% float (see
-% \href{http://www.eng.cam.ac.uk/help/tpl/textprocessing/squeeze.html}{here}).
-%    \begin{macrocode}
-\setlength\intextsep{30pt}
-%    \end{macrocode}
-%
-%
 % \subsubsection{Part and chapter headings}
 %
 % Override \cls{book}'s |\makechapterhead|.
@@ -1514,7 +1509,50 @@
 %    \end{macrocode}
 %
 %
-% \subsubsection{Captioning}
+% \subsubsection{Float and display spacing}
+%
+% From the Manual 2.3 p6, ``Tables and Figures''
+% \begin{quote}
+%   Insert at least 3 single-spaced lines of space above table
+%   captions and figures and below figure captions, tables, and other
+%   graphics.
+% \end{quote}
+% From
+% \href{http://www.eng.cam.ac.uk/help/tpl/textprocessing/squeeze.html}%
+%      {Tim Love's spacing introduction}: \\
+% \begin{tabular}{r p{.8\textwidth}}
+%   |\floatsep| & space left between floats. \\
+%   |\textfloatsep| & space between last top float or first bottom
+%     float and the text. \\
+%   |\intextsep| & space left on top and bottom of an in-text float. \\
+%   |\dbltextfloatsep| & is |\textfloatsep| for 2 column output. \\
+%   |\dblfloatsep| & is |\floatsep| for 2 column output. \\
+%   |\abovecaptionskip| & space above caption \\
+%   |\belowcaptionskip| & space below caption \\
+%   |\abovedisplayskip| & space before maths \\
+%   |\belowdisplayskip| & space after maths \\
+%   |\arraycolsep| & gap between columns of an array \\
+% \end{tabular}
+% However, because of our work in Section \ref{sec:captions},
+% |\belowcaptionskip| \emph{always} gives the distance between the
+% caption and the text, and |\abovecaptionskip| \emph{always} gives
+% the distance between the caption and the float.
+%    \begin{macrocode}
+\set@lines@length{\floatsep}{\@ssp}
+\set@lines@length{\textfloatsep}{\@tsp}
+\set@lines@length{\intextsep}{\@tsp}
+\set@lines@length{\abovecaptionskip}{\@ssp}
+\set@lines@length{\belowcaptionskip}{\@tsp}
+%    \end{macrocode}
+% While we're at it, setup the display spacing.
+%    \begin{macrocode}
+\set@lines@length{\abovedisplayskip}{\@dsp}
+\set@lines@length{\belowdisplayskip}{\@dsp}
+%    \end{macrocode}
+%
+%
+% \subsubsection{Captions}
+% label{sec:captions}
 %
 % These are to get spacing right after table captions and make the
 % spacing around floats symmetrical.  First, set |\if@table| in the
@@ -1799,6 +1837,20 @@
 
 \usepackage{graphicx}   % to include images
 
+%% \blabla related code for producing example output
+\usepackage{forloop}
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/forloop/
+\newcounter{blabla_i}
+\newcounter{blabla_j}
+\newcommand{\blabla}[2]{
+  \forloop{blabla_i}{0}{\value{blabla_i} < #1}{
+    Bla
+    \forloop{blabla_j}{0}{\value{blabla_j} < #2}{ bla }
+    bla.\par
+  }
+}
+%% end \blabla related code
+
 \begin{document}
 \begin{preamble}
 
@@ -1889,38 +1941,14 @@ The following sectioning commands are available:
   \end{tabular}
   \end{center}
 \end{table}
-Bla bla bla (text to test table/figure spacing)
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
+\blabla{5}{20}
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.4\textwidth]{drexel-logo}
   \end{center}
   \caption{A figure float}
 \end{figure}
-Bla bla bla (text to test table/figure spacing)
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
-
-Bla bla bla
+\blabla{10}{20}
 % \end{verbatim} \hrule \end{quote}
 % \iffalse meta-comment
 %</template-part>
@@ -1941,9 +1969,9 @@ Bla bla bla
 % \fi
 % \begin{quote} \hrule \begin{verbatim}
 \chapter{Some Appendix Heading}
-Bla Bla Bla
+\blabla{10}{20}
 \chapter{Another Appendix Heading}
-Bla Bla Bla
+\blabla{10}{20}
 % \end{verbatim} \hrule \end{quote}
 % \iffalse meta-comment
 %</template-appendix>
@@ -1960,7 +1988,7 @@ Bla Bla Bla
 % \fi
 % \begin{quote} \hrule \begin{verbatim}
 %% See drexel-thesis.pdf for details.
-\documentclass{drexel-thesis}
+\documentclass[draft]{drexel-thesis}
 
 %% Enter the appropriate information here
 \author{Johny Henry} % Fullname
@@ -1975,6 +2003,20 @@ Bla Bla Bla
 %% sort&compress automatically sorts and compresses compound citations:
 %%   \pcite{a,b,...}
 \bibliographystyle{plainnat}
+
+%% \blabla related code for producing example output
+\usepackage{forloop}
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/forloop/
+\newcounter{blabla_i}
+\newcounter{blabla_j}
+\newcommand{\blabla}[2]{
+  \forloop{blabla_i}{0}{\value{blabla_i} < #1}{
+    Bla
+    \forloop{blabla_j}{0}{\value{blabla_j} < #2}{ bla }
+    bla.\par
+  }
+}
+%% end \blabla related code
 
 \begin{document}
 \begin{preamble}
@@ -2036,6 +2078,7 @@ Vita text.
 \section{A Section Heading}
 Here we have a text citation \citet{rief97} followed by a
 parenthetical citation\citep{rief97}.
+\blabla{10}{20}
 % \end{verbatim} \hrule \end{quote}
 % \iffalse meta-comment
 %</template-bibtex-part>
