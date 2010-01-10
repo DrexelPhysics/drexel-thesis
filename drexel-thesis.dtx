@@ -934,15 +934,24 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\blanklines}
-% Insert number of blank lines, protecting against external |spacing|
-% environments.  Requires \pkg{calc} for the multiplication.
+% \begin{macro}{\set@lines@length}
+% Protecting against external |spacing| environments.  Requires
+% \pkg{calc} for the multiplication.
 %    \begin{macrocode}
-\newlength\blanklines@length
+\let\DUT@baselineskip\baselineskip
+\newcommand{\set@lines@length}[2]{%
+  \setlength{#1}{\DUT@baselineskip * {#2}}
+}
+%    \end{macrocode}
+% \end{macro}
+% \begin{macro}{\blanklines}
+% Insert number of blank lines.
+%    \begin{macrocode}
+\newlength\DUT@blanklines@length
 \newcommand{\blanklines}[1]{%
   \begin{spacing}{1}
-    \setlength{\blanklines@length}{\baselineskip * {#1}}
-    \vspace{\blanklines@length}
+    \set@lines@length{\DUT@blanklines@length}{#1}%
+    \vspace{\DUT@blanklines@length}
   \end{spacing}
 }
 %    \end{macrocode}
