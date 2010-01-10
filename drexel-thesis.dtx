@@ -1,7 +1,7 @@
-% \def\fileversion{0.2}
+% \def\fileversion{0.3}
 % \def\filedate{2010/01/09}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.2}
+%<class>\def\fileversion{0.3}
 %<class>\def\filedate{2010/01/09}
 %
 % Copyright (C) 2010 W. Trevor King, Daniel J. Cross, T. Tsankov, and
@@ -109,6 +109,11 @@
 % \changes{0.1}{2006/01/18}{Rewrite by Daniel J.~Cross}
 % \changes{0.2}{2010/01/09}{W.~Trevor King transitioned from thesis.cls
 %   to drexel-thesis.dtx and did a good deal of reorganizing.}
+% \changes{0.2}{2010/01/09}{W.~Trevor King merged drexelthesis.cls
+%   developed in the Comp.~Sci.~Department by Jeff Abrahamson,
+%   Evan Sultanik, C.Y.~Ip, Christopher S.~Dahn, Christopher D.~Cera,
+%   Mitchell Peabody, David T.~McWherter, and Vincent A.~Cicirello.
+%   Based on the University of Toronto Thesis LaTeX2e Class.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -162,7 +167,9 @@
 % \begin{tabular}{r p{0.8\textwidth}}
 %   |twoside| & Save space. \\
 %   |draftspace| & Save space. \\
-%   |dottedtoc| & Might as well be consistent with |final|.
+%   |dottedtoc| & Might as well be consistent with |final|. \\
+%   |draftwatermark| & It's good to have a timestamp. \\
+%   |annotate| & For human-accessible, consistent referencing.
 % \end{tabular}
 %
 % \DescribeOption{finalspace}
@@ -178,6 +185,17 @@
 % \LaTeX\ defaults to bold but not dots.  The |*toc| options set all
 % of the types.  For example, |boldtoc| is equivalent to
 % |boldchapter,boldpart|.
+%
+% \DescribeOption{draftwatermark}
+% |draftwatermark| adds ``DRAFT \meta{date}'' watermarks to each page.
+% A useful way to remember that the version you're looking at is not final.
+% Also helps reviewers tell you what version they're correcting.
+%
+% \DescribeOption{annotate}
+% |annotate| include various notes that should not be seen by a
+% general audience.  A boxed note is placed on the cover page
+% identifying the copy as annotated.
+%
 %
 % \subsubsection{Interesting \cls{book} options}
 % 
@@ -269,6 +287,15 @@
 % \end{example}
 %
 % \begin{command}
+%   `\cs{makecopyright}'
+%   `\cs{makecopyrightCC}'
+% \end{command}
+% \DescribeMacro{\makecopyright}
+% Write the copyright page (Manual 3.2 p9).
+% Use |\makecopyright| to reserve all rights or |\makecopyrightCC| for
+% a Creative Commons copyright.
+%
+% \begin{command}
 %   `\cs{tableofcontents}'
 % \end{command}
 % \DescribeMacro{\tableofcontents}
@@ -296,6 +323,20 @@
 % Note that the Manual 3.5 p9 requires ``List chapter titles and at
 % least the first and second order subdivisions.'', which corresponds
 % to a |\tocdepth| of at least 2.
+%
+% \begin{command}
+%   `\cs{listoftables}'
+% \end{command}
+% \DescribeMacro{\listoftables}
+% Write the List of Tables page (Manual 3.7 p10).
+% Skip if you have no tables in your thesis.
+%
+% \begin{command}
+%   `\cs{listoffigures}'
+% \end{command}
+% \DescribeMacro{\listoffigures}
+% Write the List of Figures page (Manual 3.7 p10).
+% Skip if you have no figures in your thesis.
 %
 % \begin{command}
 %   `\cs{blanklines}\marg{num}'
@@ -924,7 +965,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\makecopyright}
+% \begin{macro}{\m@kecopyright}
 % Automate the creation of the copyright page.
 % From Manual 3.2 p9, ``Copyright Page''.
 % \begin{itemize}
@@ -934,21 +975,41 @@
 %   \item This page is neither counted nor numbered.
 % \end{itemize}
 %    \begin{macrocode}
-\newcommand\makecopyright{%
+\newcommand\m@kecopyright[1]{%
   \clearpage
   \ifpdf \pdfbookmark[0]{Copyright Page}{copyright} \fi
   \null\vfil
   \begin{center}
-    \copyright \def@year\\
-    \@author.  All Rights Reserved.
+    \copyright~Copyright \def@year\\
+    \@author.  #1
   \end{center}
-\vfil\null
+  \vfil\null
 %    \end{macrocode}
 % |\thispagestyle{empty}| turns off page numbering for the current
 % page.  See
 % \href{http://www.personal.ceu.hu/tex/pagestyl.htm#pgstyle}{here}.
 %    \begin{macrocode}
-\thispagestyle{empty}
+  \thispagestyle{empty}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makecopyright}
+%    \begin{macrocode}
+\newcommand\makecopyright{%
+  \m@kecopyright{All Rights Reserved.}
+}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\makecopyrightCC}
+%    \begin{macrocode}
+\newcommand\makecopyrightCC{
+  \begin{quote}
+    This work is licensed under the terms of the Creative Commons
+    Attribution-ShareAlike license.  The license is available at
+    \url{http://creativecommons.org/licenses/by-sa/2.0/}.
+  \end{quote} 
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1331,25 +1392,22 @@
 %
 % \subsubsection{Adding TOC entries and blank pages}
 %
-% Override \cls{book}'s |\listoffigures|, selecting the false branch
-% of the |\if@twocolumn| conditionals, adding a line to the table of
-% contents, and clearing the page.
-%    \begin{macrocode}
-%the figure list command
-\renewcommand\listoffigures{%
-  \clearpage
-  \phantomsection
-  \addcontentsline{toc}{chapter}{\listfigurename}
-  \chapter*{\listfigurename}%
-  \@mkboth{\MakeUppercase\listfigurename}%
-          {\MakeUppercase\listfigurename}%
-  \@starttoc{lof}%
-}
-%    \end{macrocode}
-%
 % Override \cls{book}'s |\listoftables|, selecting the false branch
 % of the |\if@twocolumn| conditionals, adding a line to the table of
 % contents, and clearing the page.
+% From the Manual 3.6 p10
+% \begin{quote}
+%   The heading |List of Tables| must appear at the top of the first
+%   page.
+%   The heading must be bold, centered, and without punctuation.
+%   List table captions exactly as they appear above the tables in
+%   the text.
+%   Single space each entry, but double-space between entries.
+%   Separate table captions from page numbers with right-justified
+%   tabs and dot leaders.
+%   Do not use periods to separate captions and page numbers.
+%   These pages are counted and numbered in lowercase Roman numerals.
+% \end{quote}
 %    \begin{macrocode}
 \renewcommand\listoftables{%
   \clearpage
@@ -1359,6 +1417,34 @@
   \@mkboth{\MakeUppercase\listtablename}%
           {\MakeUppercase\listtablename}%
   \@starttoc{lot}%
+}
+%    \end{macrocode}
+%
+% Override \cls{book}'s |\listoffigures|, selecting the false branch
+% of the |\if@twocolumn| conditionals, adding a line to the table of
+% contents, and clearing the page.
+% From the Manual 3.7 p10
+% \begin{quote}
+%   The heading |List of Figures| must appear at the top of the first
+%   page.
+%   The heading must be bold, centered, and without punctuation.
+%   List figure captions exactly as they appear below the figures in
+%   the text.
+%   Single space each entry, but double-space between entries.
+%   Separate figure captions from page numbers with right-justified
+%   tabs and dot leaders.
+%   Do not use periods to separate captions and page numbers.
+%   These pages are counted and numbered in lowercase Roman numerals.
+% \end{quote}
+%    \begin{macrocode}
+\renewcommand\listoffigures{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\listfigurename}
+  \chapter*{\listfigurename}%
+  \@mkboth{\MakeUppercase\listfigurename}%
+          {\MakeUppercase\listfigurename}%
+  \@starttoc{lof}%
 }
 %    \end{macrocode}
 %
