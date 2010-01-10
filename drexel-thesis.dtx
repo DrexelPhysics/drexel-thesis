@@ -853,10 +853,10 @@
 %    \begin{macrocode}
 \newcommand\blankpage{%
   \if@final
-    \newpage
+    \clearpage
     \thispagestyle{empty}
     \hphantom{0}
-    \newpage
+    \clearpage
   \else\fi
 }
 %    \end{macrocode}
@@ -935,7 +935,7 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newcommand\makecopyright{%
-  \newpage
+  \clearpage
   \ifpdf \pdfbookmark[0]{Copyright Page}{copyright} \fi
   \null\vfil
   \begin{center}
@@ -965,7 +965,7 @@
 % Override \cls{book}'s definition.
 %    \begin{macrocode}
 \renewcommand\tableofcontents{%
-  \newpage
+  \clearpage
   \ifpdf
     \phantomsection
     \pdfbookmark[0]{\contentsname}{tableofcontents}
@@ -1018,7 +1018,7 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{dedications}{%
-  \newpage
+  \clearpage
   \ifpdf
     \phantomsection
     \pdfbookmark[0]{\dedicationsname}{dedications}
@@ -1041,7 +1041,7 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{acknowledgments}{%
-  \newpage
+  \clearpage
   \ifpdf
     \phantomsection
     \pdfbookmark[0]{\acknowledgmentsname}{acknowledgments}
@@ -1057,7 +1057,7 @@
 % \begin{environment}{abstract}
 %    \begin{macrocode}
 \newenvironment{abstract}{%
-  \newpage
+  \clearpage
   \thispagestyle{plain}%
   \global\@topnum\z@
   \phantomsection
@@ -1109,7 +1109,7 @@
   \begin{spacing}{\@dsp}
 }{%
   \end{spacing}
-  \newpage
+  \clearpage
   \ifpdf
     \phantomsection
     \pdfbookmark[-1]{Backmatter}{backmatter}
@@ -1129,7 +1129,7 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{vita}{%
-  \newpage
+  \clearpage
   \phantomsection
   \addcontentsline{toc}{chapter}{\vitaname}
   \chapter*{\vitaname}
@@ -1337,7 +1337,7 @@
 %    \begin{macrocode}
 %the figure list command
 \renewcommand\listoffigures{%
-  \newpage
+  \clearpage
   \phantomsection
   \addcontentsline{toc}{chapter}{\listfigurename}
   \chapter*{\listfigurename}%
@@ -1352,7 +1352,7 @@
 % contents, and clearing the page.
 %    \begin{macrocode}
 \renewcommand\listoftables{%
-  \newpage
+  \clearpage
   \phantomsection
   \addcontentsline{toc}{chapter}{\listtablename}
   \chapter*{\listtablename}%
