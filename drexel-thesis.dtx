@@ -790,6 +790,11 @@
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/}{\pkg{fancyhdr}}
 % for correct page numbering and fancy headers.
+% From the Manual 2.3 p5, ``Pagination''
+% \begin{quote}
+%   Place page numbers in the upper right-hand corner of the page,
+%   3/4'' from the top.
+% \end{quote}
 %    \begin{macrocode}
 \RequirePackage{fancyhdr}
 %    \end{macrocode}
@@ -800,8 +805,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[LE,RO]{\slshape\rightmark}
-\fancyhead[LO,RE]{\slshape\leftmark}
-\fancyfoot[LE,RO]{\thepage}
+\fancyhead[LO,RE]{\thepage}
 %    \end{macrocode}
 % Override the |plain| format (for chapter pages, etc.).
 %    \begin{macrocode}
