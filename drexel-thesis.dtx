@@ -467,13 +467,15 @@
 %
 % \subsubsection{Tables and Figures}
 %
-% From the Manual 2.3 p6, ``Tables and Figures'', 
-% \begin{quote}
-%   Place figure captions below figures.
-%   Place table captions above tables.
-% \end{quote}
-% so make sure the |\caption| command is in the appropriate location.
-% For example
+% \pkg{drexel-thesis} loads
+% \href{http://www.ctan.org/tex-archive/macros/latex/required/graphics/}{\pkg{graphicx}}
+% to define the |\includegraphics| macro,
+% \href{http://www.ctan.org/tex-archive/macros/latex/required/caption/}{\pkg{caption}}
+% for pretty caption formatting, and
+% \href{http://www.ctan.org/tex-archive/macros/latex/required/floatrow/}{\pkg{floatrow}}
+% for placing captions.
+%
+% Simple float definitions will look like
 % \begin{example}
 %   \begin{table}
 %      \caption{Some caption text}
@@ -489,10 +491,7 @@
 %      \caption{Some caption text}
 %   \end{float}
 % \end{example}
-% \pkg{drexel-thesis} loads
-% \href{http://www.ctan.org/tex-archive/macros/latex/required/graphics/}{\pkg{graphicx}}
-% to define the |\includegraphics| macro.  For more useful
-% float information, see the
+% For more useful float information, see the
 % \href{http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
 %   {\LaTeX\ wikibook page}.
 % 
@@ -792,9 +791,9 @@
 %
 % \subsubsection{\pkg{geometry}}
 %
-% Setup page margins with the
-% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/geometry/}{\pkg{geometry}}
-% package.  From the Manual p5:
+% Setup page margins with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/geometry/}{\pkg{geometry}}.
+% From the Manual p5:
 % \begin{itemize}
 %   \item The left margin must be at least 1 1/2'' (1.5 inches)
 %   throughout the document.
@@ -809,6 +808,47 @@
 %    \end{macrocode}
 % Note that we include the \pkg{geometry} package after loading \cls{book} to
 % override the margin manipulation that takes place in \cls{book}.
+%
+%
+% \subsubsection{\pkg{caption}}
+%
+% Get nice caption formatting with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/caption/}{\pkg{caption}}.
+% From the Manual p5:
+% \begin{itemize}
+%   \item The left margin must be at least 1 1/2'' (1.5 inches)
+%   throughout the document.
+%   \item All other margins (top, bottom, and right) must be at least 1''.
+% \end{itemize}
+%    \begin{macrocode}
+\RequirePackage[margin=10pt,labelfont=bf,labelsep=colon]{caption}
+%    \end{macrocode}
+% You can change these settings if you like using |\captionsetup|.
+%
+%
+% \subsubsection{\pkg{floatrow}}
+% \label{sec:floatrow}
+%
+% Enforce caption placement with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/floatrow/}{\pkg{floatrow}}.
+% From the Manual 2.3 p6, ``Tables and Figures'', 
+% \begin{quote}
+%   \begin{itemize}
+%     \item Place figure captions below figures.
+%     \item Place table captions above tables.
+%   \end{itemize}
+% \end{quote}
+%    \begin{macrocode}
+\RequirePackage{floatrow}
+\floatsetup[table]{style=plaintop}
+\floatsetup{captionskip=10pt}
+\floatsetup[table]{captionskip=10pt}
+%    \end{macrocode}
+% We set up the three-line surrounding spaces in Section
+% \ref{sec:implement-floats}.
+%
+% You can change these settings using |\floatsetup|, but you probably
+% won't need to.
 %
 %
 % \subsubsection{\pkg{fancyhdr}}
@@ -1313,6 +1353,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
+%
 % \begin{command}
 %   `\cs{set@lines@length}\marg{length}\marg{N}'
 % \end{command}
@@ -1328,6 +1369,7 @@
 }
 %    \end{macrocode}
 % \end{macro}
+%
 %
 % \begin{command}
 %   `\cs{blanklines}\marg{N}'
@@ -1356,10 +1398,10 @@
 %
 %
 % \subsubsection{Floats on a text page}
+% \label{sec:implement-floats}
 %
 % \begin{macro}{\floatsep}
 % \begin{macro}{\textfloatsep}
-% \begin{macro}{\intextsep}
 % When a floating object is placed on a page with text, these
 % parameters control the separation between the float and the other
 % objects on the page.
@@ -1370,7 +1412,9 @@
 % |\textfloatsep| is the space between the main text and floats
 % at the top or bottom of the page.
 %
-% |\intextsep| is the space between in-text floats and the text.
+% |\intextsep| is the space between in-text floats and the text.  We
+% don't bother overriding this one, because we've handled it with
+% \pkg{floatrow} in Section \ref{sec:floatrow}.
 %
 % From the Manual 2.3 p6, ``Tables and Figures''
 % \begin{quote}
@@ -1382,9 +1426,7 @@
 %    \begin{macrocode}
 \set@lines@length{\floatsep}{\@ssp}
 \set@lines@length{\textfloatsep}{\@tsp}
-\set@lines@length{\intextsep}{\@tsp}
 %    \end{macrocode}
-% \end{macro}
 % \end{macro}
 % \end{macro}
 %
@@ -2134,121 +2176,6 @@
 % \end{macro}
 %
 %
-% \subsubsection{Table}
-% \label{sec:implement-tables}
-%
-% \begin{environment}{table}
-% \begin{environment}{table*}
-% To help symmetrize the spacing around tables and figures, we set
-% |\if@table| in the |table| environments.  The remainder of the
-% code comes in Section \ref{sec:implement-captions}.
-% (\file{classes.dtx}, L3491)
-%    \begin{macrocode}
-\newif\if@table \@tablefalse
-\renewenvironment{table}
-                 {\@tabletrue\@float{table}}
-                 {\end@float\@tablefalse}
-\renewenvironment{table*}
-                 {\@tabletrue\@dblfloat{table}}
-                 {\end@dblfloat\@tablefalse}
-%    \end{macrocode}
-% \end{environment}
-% \end{environment}
-%
-%
-% \subsubsection{Captions}
-% \label{sec:implement-captions}
-%
-% \begin{macro}{\@makecaption}
-% The |\caption| command calls |\@makecaption| to format the
-% caption of floating objects. It gets two arguments,
-% \meta{number}, the number of the floating object and \meta{text},
-% the text of the caption. Usually \meta{number} contains a string
-% such as ``Figure 3.2''. The macro can assume it is called inside a
-% |\parbox| of right width, with |\normalsize|.
-%
-% We override \cls{book}'s |\@makecaption|, adding two |\if@table|
-% conditionals, which swap |\abovecaptionskip| and |\belowcaptionskip|
-% for tables (where the caption is above the float body).  With our
-% implementation, |\belowcaptionskip| \emph{always} gives the distance
-% between the caption and the text, and |\abovecaptionskip|
-% \emph{always} gives the distance between the caption and the float
-% body.  See Section \ref{sec:implement-tables} for our |\if@table|
-% control.
-%
-% We also replace the caption lead-in |#1: #2| with
-% |\small{\bfseries#1:} #2|.
-% (\file{classes.dtx}, L3508)
-%    \begin{macrocode}
-%    \end{macrocode}
-% Define a temporary length for swapping.
-%    \begin{macrocode}
-\newlength\@tempcapskip
-%    \end{macrocode}
-% The definition of this macro is |\long| in order to allow more
-% then one paragraph in a caption.
-%    \begin{macrocode}
-\long\def\@makecaption#1#2{%
-  \if@table
-%    \end{macrocode}
-% Swap |\abovecaptionskip| and |\belowcaptionskip|.
-%    \begin{macrocode}
-    \@tempcapskip\abovecaptionskip
-    \abovecaptionskip\belowcaptionskip
-    \belowcaptionskip\@tempcapskip
-  \fi
-  \vskip\abovecaptionskip
-%    \end{macrocode}
-% We want to see if the caption fits on one line on the page,
-% therefore we first typeset it in a temporary box.
-%    \begin{macrocode}
-  \sbox\@tempboxa{\small{\bfseries#1:} #2}%
-%    \end{macrocode}
-% We can the measure its width. It that is larger than the current
-% |\hsize| we typeset the caption as an ordinary paragraph.
-%    \begin{macrocode}
-  \ifdim \wd\@tempboxa >\hsize
-    {\small{\bfseries#1:} #2\par}
-  \else
-%    \end{macrocode}
-% If the caption fits, we center it. Because this uses an |\hbox|
-% directly in vertical mode, it does not execute the |\everypar|
-% tokens; the only thing that could be needed here is resetting the
-% `minipage flag' so we do this explicitly.
-%    \begin{macrocode}
-    \global \@minipagefalse
-    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
-  \fi
-  \vskip\belowcaptionskip
-%    \end{macrocode}
-% Restore |\abovecaptionskip| and |\belowcaptionskip|.
-%    \begin{macrocode}
-  \if@table
-    \@tempcapskip\belowcaptionskip
-    \belowcaptionskip\abovecaptionskip
-    \abovecaptionskip\@tempcapskip
-  \fi
-}
-%    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\abovecaptionskip}
-% \begin{macro}{\belowcaptionskip}
-% For \cls{book}, these lengths contain the amount of white space to
-% leave above and below the caption.  However, because of our work
-% with |\@makecaption| (above), |\belowcaptionskip| \emph{always}
-% gives the distance between the caption and the text, and
-% |\abovecaptionskip| \emph{always} gives the distance between the
-% caption and the float.
-% (\file{classes.dtx}, L3516)
-%    \begin{macrocode}
-\set@lines@length{\abovecaptionskip}{\@ssp}
-\set@lines@length{\belowcaptionskip}{\@tsp}
-%    \end{macrocode}
-% \end{macro}
-% \end{macro}
-%
-%
 % \subsubsection{Table of Contents}
 %
 % \begin{macro}{\tableofcontents}
@@ -2869,7 +2796,6 @@ parenthetical citation\citep{rief97}.
 \subsubsection{Tables and Figures}
 \blabla{2}{20}
 \begin{table}
-  \caption{A table float}
   \begin{center}
   \begin{tabular}{r@{.}l r@{.}l r@{.}l}
     \multicolumn{2}{c}{Time (s)} &
@@ -2880,6 +2806,7 @@ parenthetical citation\citep{rief97}.
     30&0 & 11&9 & 10&1 \\
     \ldots
   \end{tabular}
+  \caption{A table float. \bla{20}}  % low caption allowed with floatrow
 %% Note the strange |r@{.}l| notation in the |\tabular| column
 %% definition.  This allows for numbers aligned at the decimal point
 %% (see \href{http://www.stat.unipg.it/tex-man/ltx-68.html}{here}).
@@ -2890,10 +2817,10 @@ parenthetical citation\citep{rief97}.
 \end{table}
 \blabla{5}{20}
 \begin{figure}
+  \caption{A figure float. \bla{20}} % high caption allowed with floatrow
   \begin{center}
     \includegraphics[width=0.4\textwidth]{drexel-logo}
   \end{center}
-  \caption{A figure float}
 \end{figure}
 \blabla{10}{20}
 
@@ -2996,12 +2923,13 @@ parenthetical citation\citep{rief97}.
 
 \newcounter{blabla@i}
 \newcounter{blabla@j}
+\newcommand{\bla}[1]{
+   Bla
+  \forloop{blabla@i}{0}{\value{blabla@i} < #1}{ bla }
+  bla.
+}
 \newcommand{\blabla}[2]{
-  \forloop{blabla@i}{0}{\value{blabla@i} < #1}{
-    Bla
-    \forloop{blabla@j}{0}{\value{blabla@j} < #2}{ bla }
-    bla.\par
-  }
+  \forloop{blabla@j}{0}{\value{blabla@j} < #1}{ \bla{#2}\par }
 }
 %</blabla>
 %    \end{macrocode}
