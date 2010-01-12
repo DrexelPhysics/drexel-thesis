@@ -246,6 +246,12 @@
 % \begin{example}
 %   \advisor{John A. Wheeler, Ph.D.}
 % \end{example}
+% You can set multiple advisors, if appropriate, by calling |\advisor|
+% multiple times.
+% \begin{example}
+%   \advisor{John A. Wheeler, Ph.D.}
+%   \advisor{Advisor 2}
+% \end{example}
 % See the Manual 3.1 p8.
 %
 % \begin{command}
@@ -875,17 +881,6 @@
 %
 % In a similar vein, we some additional meta-info macros.
 %
-%  \begin{macro}{\advisor}
-%  \begin{macro}{\@advisor}
-% |\advisor| for use in |\maketitle|.  If not given |\maketitle| will
-% produce an error message.
-%    \begin{macrocode}
-\def\advisor#1{\gdef\@advisor{#1}}
-\def\@advisor{\@latex@error{No \noexpand\advisor given}\@ehc}
-%    \end{macrocode}
-%  \end{macro}
-%  \end{macro}
-%
 %  \begin{macro}{\defmonth}
 %  \begin{macro}{\@defmonth}
 % |\defmonth| (defense month) for use in |\maketitle|.  If not given
@@ -915,7 +910,7 @@
 %    \begin{macrocode}
 \def\degree#1{\gdef\@degree{#1}
   \ifpdf \hypersetup{pdfsubject={\@degree}} \fi}
-\def\@advisor{\@latex@error{No \noexpand\degree given}\@ehc}
+\def\@degree{\@latex@error{No \noexpand\degree given}\@ehc}
 %    \end{macrocode}
 %  \end{macro}
 %  \end{macro}
@@ -927,6 +922,82 @@
 %    \begin{macrocode}
 \def\copyrighttext#1{\gdef\@copyrighttext{#1}}
 \def\@copyrighttext{All Rights Reserved.}
+%    \end{macrocode}
+%  \end{macro}
+%  \end{macro}
+%
+%  \begin{macro}{\advisor}
+%  \begin{macro}{\@advisor}
+% |\advisor| for use in |\maketitle|.  If not given |\maketitle| will
+% produce an error message.  We get a bit fancier here to support
+% multiple advisors.
+%    \begin{macrocode}
+\newcounter{advisors}
+\setcounter{advisors}{0}
+\newcommand\advisor[1]{%
+  \ifx
+%    \end{macrocode}
+% If |#1| is |\empty|, this call is a no-op.
+%    \begin{macrocode}
+    \empty{#1}
+  \else
+%    \end{macrocode}
+% Save the advisors to |\@advisor@a|, |\@advisor@b|, \ldots.
+% |\alph{|\Lcount{COUNTER}|}| (\file{ltcounts.dtx}, L319) prints the
+%   value of \Lcount{COUNTER} as a lowercase letter: $1 =$~a, $2 =$~
+%   b, etc.
+%    \begin{macrocode}
+    \stepcounter{advisors}
+    \expandafter\gdef\csname @advisor@\alph{advisors}\endcsname{#1}
+  \fi}
+\newcommand\@advisor{%
+  \ifnum\c@advisors=0%
+    \@latex@error{No \noexpand\advisor given}\@ehc%
+  \else%
+%    \end{macrocode}
+% Start a group so \Lcount{advisor@loop} is released afterwards to
+% save memory.
+%    \begin{macrocode}
+    \begingroup%
+      \newcounter{advisor@loop}%
+      \setcounter{advisor@loop}{1}%
+%    \end{macrocode}
+% Print the first advisor.
+%    \begin{macrocode}
+      \csname @advisor@\alph{advisor@loop}\endcsname\relax%
+%    \end{macrocode}
+% For any remaining advisors\ldots
+%    \begin{macrocode}
+      \loop\ifnum\c@advisor@loop<\c@advisors%
+        \stepcounter{advisor@loop}%
+%    \end{macrocode}
+% Print the connecting text.
+%    \begin{macrocode}
+        \ifnum\c@advisor@loop=\c@advisors%
+          \ifnum\c@advisors=2%
+%    \end{macrocode}
+% The next advisor if the last of two.
+%    \begin{macrocode}
+            {\ and\ }%
+          \else%
+%    \end{macrocode}
+% The next advisor if the last of many.
+%    \begin{macrocode}
+            {, and\ }%
+          \fi%
+        \else%
+%    \end{macrocode}
+% The next advisor is not the last.
+%    \begin{macrocode}
+          {,\ }%
+        \fi%
+%    \end{macrocode}
+% Print the advisor's name.
+%    \begin{macrocode}
+        \csname @advisor@\alph{advisor@loop}\endcsname\relax%
+      \repeat%
+    \endgroup%
+  \fi}
 %    \end{macrocode}
 %  \end{macro}
 %  \end{macro}
@@ -1012,7 +1083,7 @@
 %
 % \begin{macro}{\@sect}
 % Pseudocode for the |\@sect| command
-%     \begin{macrocode}
+% \begin{example}
 % \@sect{NAME}{LEVEL}{INDENT}{BEFORESKIP}{AFTERSKIP}{STYLE}[ARG1]{ARG2}
 %           ==
 %   BEGIN
@@ -1046,7 +1117,7 @@
 %    FI
 %    \@xsect{AFTERSKIP}
 % END
-%    \end{macrocode}
+% \end{example}
 % (\file{ltsect.dtx}, L295).
 %    \begin{macrocode}
 \def\@sect#1#2#3#4#5#6[#7]#8{%
@@ -1092,7 +1163,7 @@
 %
 % \begin{macro}{\@ssect}
 % Pseudocode for the |\@ssect| command
-%     \begin{macrocode}
+% \begin{example}
 % \@ssect{INDENT}{BEFORESKIP}{AFTERSKIP}{STYLE}{ARG} ==
 %   BEGIN
 %    IF AFTERSKIP > 0
@@ -1107,7 +1178,7 @@
 %    FI
 %    \@xsect{AFTERSKIP}
 %   END
-%     \end{macrocode}
+% \end{example}
 % (\file{ltsect.dtx}, L521).
 %    \begin{macrocode}
 \def\@ssect#1#2#3#4#5{%
@@ -2662,10 +2733,12 @@
 \defyear{1872}
 \degree{Doctor of Philosophy}
 \advisor{Collis Potter Huntington, R.R.D.}
+\advisor{Advisor 2, Ph.D.}
+\advisor{Advisor 3, Ph.D.}
 \copyrighttext{\copyrighttextCC}
 
 \usepackage[super,sort&compress]{natbib} % fancy citation extensions
-\bibliographystyle{plainnat}
+\bibliographystyle{unsrtnat}
 
 \usepackage{fancyvrb} % nicer verbatim handling
 \DefineShortVerb{\|}  % \verb+TEXT+  ->  |TEXT|
