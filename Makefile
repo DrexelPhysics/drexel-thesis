@@ -35,7 +35,7 @@ semi-clean : temp-clean
 
 clean : semi-clean
 	rm -f drexel-thesis.pdf example.pdf example-draft.pdf \
-		drexel-thesis.cls drexel-thesis.tar.gz
+		drexel-thesis.cls blabla.sty drexel-thesis.tar.gz
 
 dist : drexel-thesis.tar.gz
 
