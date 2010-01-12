@@ -4,3 +4,16 @@
 *.bib
 *.pdf
 *.tar.gz
+
+# LaTeX temp files
+*.aux
+*.bbl
+*.blg
+*.glo
+*.gls
+*.ilg
+*.lof
+*.log
+*.lot
+*.out
+*.toc

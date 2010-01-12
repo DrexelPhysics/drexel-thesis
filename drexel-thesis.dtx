@@ -751,10 +751,10 @@
 % which unfortunately has a number of apparently non-standard dependencies
 % (\href{http://www.ctan.org/tex-archive/macros/latex/contrib/etextools/}{\pkg{etextools}},
 %  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/etoolbox/}{\pkg{etoolbox}},
-%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/xifthen/}{\pkg{xifthen}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/lastpage/}{\pkg{lastpage}},
 %  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/ltxnew/}{\pkg{ltxnew}},
 %  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/pagerange/}{\pkg{pagerange}},
-%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/lastpage/}{\pkg{lastpage}},
+%  \href{http://www.ctan.org/tex-archive/macros/latex/contrib/xifthen/}{\pkg{xifthen}},
 %  if only I had the space to install |texlive-latexextra| |:p|).
 % The output is, however, very flexible, and it \emph{does} work with
 % both \LaTeX\ and pdf\LaTeX.  If you don't like the default watermark,
@@ -2928,8 +2928,15 @@ parenthetical citation\citep{rief97}.
 %    \begin{macrocode}
 %<*blabla>
 \ProvidesPackage{blabla} [2010/01/11 1.0 Dummy text generation]
+%    \end{macrocode}
+% Use
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/forloop/}{\pkg{foorloop}}
+% for
+% \begin{command}
+%   `\cs{forloop}\oarg{step}\marg{counter}\marg{initial value}\marg{condition}\marg{code}'
+% \end{command}
+%    \begin{macrocode}
 \RequirePackage{forloop}[2006/09/18]
-%% http://www.ctan.org/tex-archive/macros/latex/contrib/forloop/
 
 \newcounter{blabla@i}
 \newcounter{blabla@j}
