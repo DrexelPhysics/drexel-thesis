@@ -196,6 +196,9 @@
 % is not final.  Also helps reviewers tell you what version they're
 % correcting.
 %
+% \DescribeOption{indentfirst}
+% \Lopt{indentfirst} indents the first paragraph after sections etc.
+%
 %
 % \subsubsection{Interesting \cls{book} options}
 % 
@@ -559,6 +562,7 @@
 \newif\if@boldpart
 \newif\if@dottedpart
 \newif\if@draftwatermark
+\newif\if@indentfirst
 \newif\if@appendix
 \newif\if@final \@finalfalse
 %    \end{macrocode}
@@ -630,9 +634,16 @@
 % \end{option}
 %
 % \begin{option}{draftwatermark}
-% Set draft watermark flag
+% Set \Lopt{draftwatermark} flag
 %    \begin{macrocode}
 \DeclareOptionX{draftwatermark}{\@draftwatermarktrue}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{indentfirst}
+% Set \Lopt{indentfirst} flag
+%    \begin{macrocode}
+\DeclareOptionX{indentfirst}{\@indentfirsttrue}
 %    \end{macrocode}
 % \end{option}
 %
@@ -692,7 +703,7 @@
 %
 % \subsection{Internal package includes}
 %
-
+%
 % Include some other packages we'll need.  If the package is not
 % installed on your system, see Section \ref{sec:dependencies} for
 % installation instructions.
@@ -711,6 +722,7 @@
 \RequirePackage{setspace}
 %    \end{macrocode}
 %
+%
 % \subsubsection{\pkg{calc}}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/tools/}{\pkg{calc}}
@@ -718,6 +730,7 @@
 %    \begin{macrocode}
 \RequirePackage{calc}
 %    \end{macrocode}
+%
 %
 % \subsubsection{\pkg{graphicx}}
 %
@@ -739,6 +752,7 @@
 %   There has now been an attempt to load it with options
 %     [final]
 % \end{example}
+%
 %
 % \subsubsection{\pkg{draftmark}}
 %
@@ -766,6 +780,16 @@
 \fi
 %    \end{macrocode}
 %
+%
+% \subsubsection{\pkg{indentfirst}}
+%
+%    \begin{macrocode}
+\if@indentfirst
+  \RequirePackage{indentfirst}
+\fi
+%    \end{macrocode}
+%
+%
 % \subsubsection{\pkg{geometry}}
 %
 % Setup page margins with the
@@ -785,6 +809,7 @@
 %    \end{macrocode}
 % Note that we include the \pkg{geometry} package after loading \cls{book} to
 % override the margin manipulation that takes place in \cls{book}.
+%
 %
 % \subsubsection{\pkg{fancyhdr}}
 %
