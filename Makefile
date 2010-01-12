@@ -1,21 +1,27 @@
-all : drexel-thesis.pdf drexel-thesis.cls main.pdf bibmain.pdf
+all : drexel-thesis.pdf drexel-thesis.cls example.pdf example-draft.pdf
 
 drexel-thesis.pdf : drexel-thesis.dtx
 	pdflatex $<
 	makeindex drexel-thesis.glo -s gglo.ist -o drexel-thesis.gls
 	pdflatex $<
 
-drexel-thesis.cls main.tex part1.tex bibmain.tex bibpart1 references.bib : \
+drexel-thesis.cls template.tex example.tex example-draft.tex \
+		example-1.tex example-a.tex example-ref.bib \
+		blabla.sty : \
 		drexel-thesis.ins drexel-thesis.dtx
 	pdflatex $<
 
-main.pdf : main.tex part1.tex
+example.pdf : example.tex example-1.tex example-a.tex example-ref.bib \
+		drexel-thesis.cls blabla.sty
+	pdflatex $<
+	bibtex example
 	pdflatex $<
 	pdflatex $<
 
-bibmain.pdf : bibmain.tex bibpart1.tex references.bib
+example-draft.pdf : example-draft.tex example-1.tex example-a.tex \
+		example-ref.bib drexel-thesis.cls blabla.sty
 	pdflatex $<
-	bibtex bibmain
+	bibtex example-draft
 	pdflatex $<
 	pdflatex $<
 
@@ -28,24 +34,25 @@ semi-clean : temp-clean
 	rm -f *.bib *.tex
 
 clean : semi-clean
-	rm -f *.cls drexel-thesis.pdf main.pdf bibmain.pdf \
-		drexel-thesis.tar.gz
+	rm -f drexel-thesis.pdf example.pdf example-draft.pdf \
+		drexel-thesis.cls drexel-thesis.tar.gz
 
 dist : drexel-thesis.tar.gz
 
 CLASS_FILES = Makefile README drexel-thesis.dtx drexel-thesis.ins \
 	drexel-thesis.cls drexel-thesis.pdf
-MAIN_FILES = main.tex part1.tex appendixA.tex drexel-logo.pdf main.pdf
-BIBMAIN_FILES = bibmain.tex bibpart1.tex references.bib appendixA.tex \
-	bibmain.pdf
+EXAMPLE_FILES = template.tex example.tex example-draft.tex \
+	example-1.tex example-a.tex example-ref.bib blabla.sty
+USEFUL_PACKAGES = draftmark.sty etextools.sty etoolbox.sty forloop.sty \
+	lastpage.sty ltxnew.sty pagerange.sty textcase.sty xifthen.sty
 
-drexel-thesis.tar.gz : $(CLASS_FILES) $(MAIN_FILES) $(BIBMAIN_FILES)
+drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(USEFUL_PACKAGES)
 	rm -f $@
 	mkdir drexel-thesis
 	cp -p $(CLASS_FILES) drexel-thesis/
-	mkdir drexel-thesis/main
-	cp -p $(MAIN_FILES) drexel-thesis/main/
-	mkdir drexel-thesis/bibmain
-	cp -p $(BIBMAIN_FILES) drexel-thesis/bibmain/
+	mkdir drexel-thesis/examples
+	cp -p $(EXAMPLE_FILES) drexel-thesis/examples/
+	mkdir drexel-thesis/packages
+	cp -p $(USEFUL_PACKAGES) drexel-thesis/packages/
 	tar -chozf $@ drexel-thesis
 	rm -rf drexel-thesis
