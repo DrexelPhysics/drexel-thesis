@@ -893,8 +893,8 @@
 % We put the lower level mark to the outside because it changes more
 % often.  Page numbers also go on the outside.
 %    \begin{macrocode}
-\fancyfoot[RE,LO]{\slshape\leftmark}
-\fancyfoot[LE,RO]{\slshape\rightmark}
+\fancyfoot[RE,LO]{\scshape\leftmark}
+\fancyfoot[LE,RO]{\scshape\rightmark}
 \fancyhead[LE,RO]{\thepage}
 %    \end{macrocode}
 % Override the |plain| format (for part pages, etc.).
@@ -1513,20 +1513,20 @@
 % (\file{classes.dtx}, L2053)
 %    \begin{macrocode}
 \renewcommand\chaptermark[1]{%
-  \markboth {\MakeUppercase{%
+  \markboth {%
     \ifnum \c@secnumdepth >\m@ne
       \if@mainmatter
         \@chapapp\ \thechapter: \ %
       \fi
     \fi
-    #1}}{}}
+    #1}{}}
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\schaptermark}
 % Setup unnumbered chapter marks for \pkg{fancyhdr}.
 %    \begin{macrocode}
-\newcommand\schaptermark[1]{\markboth{\MakeUppercase{#1}}{}}
+\newcommand\schaptermark[1]{\markboth{#1}{}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1535,11 +1535,11 @@
 % (\file{classes.dtx}, L2054)
 %    \begin{macrocode}
 \renewcommand{\sectionmark}[1]{%
-  \markright {\MakeUppercase{%
+  \markright {%
     \ifnum \c@secnumdepth >\z@
       \thesection \ %
     \fi
-    #1}}}
+    #1}}
 %    \end{macrocode}
 % \end{macro}
 %
