@@ -1891,7 +1891,7 @@
 % Adding even a \vspace*{0\p@} here seems to increase the vertical
 % space above the chapter heading by two lines.  I'm not sure why.
 % Workaround is to pass the ``value of blanklines you want minus two''
-% to |\blanklines*|.
+% to |\blanklines*|.  HACK!
 %    \begin{macro}
   \blanklines*{-1}%
   {\parindent \z@ \raggedright \normalfont
@@ -1956,7 +1956,7 @@
 % (\file{classes.dtx}, L2595).
 %    \begin{macrocode}
 \def\@makeschapterhead#1{%
-  \blanklines*{-1}%
+  \blanklines*{-1}% HACK!
   {\parindent \z@ \raggedright \normalfont
     \setstretch{\@ssp}%
     \interlinepenalty\@M
@@ -2403,7 +2403,7 @@
 % \begin{macro}{\afterloftitleskip}
 % Don't add any extra space after the title (the chapter will take
 % care of that).  Actually we make a one-line correction so the first
-% line matches the first line in the TOC.
+% line matches the first line in the TOC.  HACK!
 %    \begin{macrocode}
 \setlength\cftafterloftitleskip{-12pt}
 %    \end{macrocode}
@@ -2455,7 +2455,7 @@
 % \begin{macro}{\afterlottitleskip}
 % Don't add any extra space after the title (the chapter will take
 % care of that).  Actually we make a one-line correction so the first
-% line matches the first line in the TOC.
+% line matches the first line in the TOC.  HACK!
 %    \begin{macrocode}
 \setlength\cftafterlottitleskip{-12pt}
 %    \end{macrocode}
@@ -2946,6 +2946,29 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 }
 %</blabla>
 %    \end{macrocode}
+%
+%
+% \section{Known bugs and issues}
+%
+%
+% \subsection{Hacks}
+%
+% \begin{itemize}
+%   \item |\vspace*{0\p@}| space between page top and chapter
+%     headings (|\@makechapterhead| and |\@makeschapterhead|,
+%     Sec.~\ref{sec:implement-chapters}).
+%   \item Extra space under LOT and LOF titles compared to TOC.
+%     (Secs.~\ref{sec:implement-lof} and \ref{sec:implement-lot}).
+% \end{itemize}
+%
+%
+% \subsection{Bugs}
+%
+% \begin{itemize}
+%   \item Different space between chapter heading and section heading,
+%     vs.\ chapter heading and text.  Compare \emph{A Chapter Heading}
+%     and \emph{Another Chapter} in \file{example.pdf}.
+% \end{itemize}
 %
 %
 % \Finale
