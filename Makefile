@@ -13,6 +13,7 @@ drexel-thesis.cls template.tex example.tex example-draft.tex \
 
 example.pdf : example.tex example-1.tex example-a.tex example-ref.bib \
 		drexel-thesis.cls blabla.sty
+	#pdflatex -interaction=batchmode $<
 	pdflatex $<
 	bibtex example
 	pdflatex $<

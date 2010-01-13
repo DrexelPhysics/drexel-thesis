@@ -1109,8 +1109,13 @@
 % \begin{macro}{\DUT@baselineskip}
 % Since we'll be messing with the spacing, save the single-spaced
 % baseline.
+%   \changes{0.3}{2010/01/13}{Use |\setlength| to store the value at
+%     the default font.  The previous version used |\let|, which made
+%     |\DUT@baselineskip| a synonym for |\baselineskip| that changed
+%     with font size.}
 %    \begin{macrocode}
-\let\DUT@baselineskip\baselineskip
+\newlength\DUT@baselineskip
+\setlength\DUT@baselineskip\baselineskip
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1124,8 +1129,7 @@
 % requires \pkg{calc} for the multiplication.
 %    \begin{macrocode}
 \newcommand{\set@lines@length}[2]{%
-  \setlength{#1}{\DUT@baselineskip * {#2}}
-}
+  \setlength{#1}{\DUT@baselineskip * {#2}}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1186,11 +1190,10 @@
 % Here we deviate from \file{ltsect.dtx} to ensure single spacing for
 % the section title.
 %    \begin{macrocode}
-    \begin{spacing}{\@ssp}
+      \setstretch{\@ssp}%
       #6{%
         \@hangfrom{\hskip #3\relax\@svsec}%
           \interlinepenalty \@M #8\@@par}%
-    \end{spacing}
     \endgroup
     \csname #1mark\endcsname{#7}%
     \addcontentsline{toc}{#1}{%
@@ -1241,12 +1244,11 @@
 % Here we deviate from \file{ltsect.dtx} to ensure single spacing for
 % the section title.
 %    \begin{macrocode}
-    \begin{spacing}{\@ssp}
+      \setstretch{\@ssp}%
       #4{%
         \@hangfrom{\hskip #1}%
           \interlinepenalty \@M #5\@@par}%
     \endgroup
-    \end{spacing}
   \else
     \def\@svsechd{#4{\hskip #1\relax #5}}%
   \fi
@@ -1321,17 +1323,34 @@
 %
 % \begin{command}
 %   `\cs{blanklines}\marg{N}'
+%   `\cs{blanklines*}\marg{N}'
 % \end{command}
 % \begin{macro}{\blanklines}
-% Insert \meta{N} blank lines.
+% Insert \meta{N} blank lines.  The starred forms use |\vspace|, which
+% inserts space even at the start and end of pages.  The |p| forms
+% add a trailing |\par|.  \emph{I'm still trying to get this part working
+% cleanly\ldots}
 %    \begin{macrocode}
 \newlength\DUT@blanklines@length
-\newcommand{\blanklines}[1]{%
-  \begin{spacing}{1}
-    \set@lines@length{\DUT@blanklines@length}{#1}%
-    \vspace{\DUT@blanklines@length}
-  \end{spacing}
+\newcommand{\@blanklines@setup}[1]{%
+  \set@lines@length{\DUT@blanklines@length}{#1}%
+  %\typeout{BLANKLINES -- #1}%
+  %\showthe\DUT@blanklines@length
 }
+\newcommand{\blanklines}{\@ifstar\@sblanklines\@blanklines}
+\newcommand{\@blanklines}[1]{%
+  \@blanklines@setup{#1}%
+  \vspace{\DUT@blanklines@length}}
+\newcommand{\@sblanklines}[1]{%
+  \@blanklines@setup{#1}%
+  \vspace*{\DUT@blanklines@length}}
+\newcommand{\blanklinesp}{\@ifstar\@sblanklines\@blanklines}
+\newcommand{\@blanklinesp}[1]{%
+  \@blanklines@setup{#1}%
+  \vspace{\DUT@blanklines@length}\par}
+\newcommand{\@sblanklinesp}[1]{%
+  \@blanklines@setup{#1}%
+  \vspace*{\DUT@blanklines@length}\par}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1412,22 +1431,24 @@
 % Here is the title text itself.
 %    \begin{macrocode}
     \begin{center}%
-    \begin{spacing}{\@tsp}
-      {\bfseries \@title \par}%
-    \end{spacing}
-    \begin{spacing}{\@dsp}
+      {\setstretch{\@tsp} \bfseries \@title \par}%
+%    \end{macrocode}
+% We want two blank lines (triple spacing) between the title and the
+% remaining material, so add three but don't end the paragraph.
+%    \begin{macrocode}
+      \blanklines{3}%
+      \setstretch{\@dsp}%
       A Thesis\\
       Submitted to the Faculty\\
       of\\
       Drexel University\\
       by\\
-      \@author \\
+      \@author\\
       in partial fulfillment of the\\
       requirements for the degree\\
       of\\
       \@degree\\
       \def@month\ \def@year
-    \end{spacing}
     \end{center}\par
 %    \end{macrocode}
 % Some more stretchy space for the bottom if we're not in draft mode.
@@ -1480,7 +1501,7 @@
     \copyright~Copyright \def@year\\
     \@author.  \@copyrighttext
   \end{center}
-  \if@final \vspace*{\fill} \else \blanklines{2} \fi
+  \if@final \vspace*{\fill} \else \blanklinesp{2} \fi
 %    \end{macrocode}
 % Turn off page numbering for this page.
 %    \begin{macrocode}
@@ -1797,12 +1818,12 @@
 % (\file{classes.dtx}, L2540).
 %    \begin{macrocode}
 \def\@makechapterhead#1{%
-  \blanklines{2}%
+  \blanklines*{1}%
   {\parindent \z@ \raggedright \normalfont
 %    \end{macrocode}
 % Ensure single spacing.
 %    \begin{macrocode}
-    \begin{spacing}{\@ssp}
+    \setstretch{\@ssp}%
 %    \end{macrocode}
 % Prevent a pagebreak from occuring in the middle of or after the title.
 %    \begin{macrocode}
@@ -1828,11 +1849,14 @@
     \else
       \center \large \bfseries #1\par\nobreak
     \fi
-    \end{spacing}
 %    \end{macrocode}
-% Put a little space before the chapter body.
+% Put a little space before the chapter body.  We use four blank lines
+% to comply with the Manual 3.13 p12
+% \begin{quote}
+%   Begin the list of sources four spaces below the heading.
+% \end{quote}
 %    \begin{macrocode}
-    \blanklines{2}
+    \blanklines{4}
   }
 }
 %    \end{macrocode}
@@ -1857,14 +1881,14 @@
 % (\file{classes.dtx}, L2595).
 %    \begin{macrocode}
 \def\@makeschapterhead#1{%
-  \blanklines{2}%
-  {\parindent \z@ \raggedright
-    \normalfont
+  \blanklines*{1}%
+  {\parindent \z@ \raggedright \normalfont
+    \setstretch{\@ssp}%
     \interlinepenalty\@M
-    \begin{spacing}{\@ssp}
     \center \large \bfseries  #1\par\nobreak
-    \end{spacing}
-    \blanklines{2}
+    \typeout{makeschapterhead}
+    \blanklines{4}%
+    \typeout{end makeschapterhead}
   }
 }
 %    \end{macrocode}
@@ -1936,9 +1960,9 @@
     \pdfbookmark[0]{\dedicationsname}{\dedicationsname}
   \fi
   \chapter*{\dedicationsname}
-  \begin{spacing}{\@dsp}
+  \setstretch{\@dsp}%
 }{%
-  \end{spacing}
+  \setstretch{\@ssp}%
 }
 %    \end{macrocode}
 % \end{environment}
@@ -1959,9 +1983,9 @@
     \pdfbookmark[0]{\acknowledgmentsname}{\acknowledgmentsname}
   \fi
   \chapter*{\acknowledgmentsname}
-  \begin{spacing}{\@dsp}
+  \setstretch{\@dsp}%
 }{%
-  \end{spacing}
+  \setstretch{\@ssp}%
 }
 %    \end{macrocode}
 % \end{environment}
@@ -1969,37 +1993,49 @@
 % \begin{environment}{abstract}
 %    \begin{macrocode}
 \newenvironment{abstract}{%
-  \listed@schapter{\abstractname}
+  \listed@schapter{\abstractname}%
 %    \end{macrocode}
-% From the Manual 3.9 p10 ``The following heading must be centered at
-% the top of the page'':
-% \begin{center}
-%   Abstract \\
-%   Full Title of Dissertation or Thesis \\
-%   Author's Name as it appears on the Dissertation or Thesis
-% \end{center}
-% In the example on p20, they list the advisor's name after the
-% author, but that is not specified in the text on p10.
-%
-% On p20, ``These pages are numbered using lowercase Roman numerals.
-% Note that the heading is single spaced, but the abstract is double
-% spaced.''
+% Suck up some blank space to position the rest of the header right
+% under the chapter title.
 %    \begin{macrocode}
-  \blanklines{-3}
-  \begin{spacing}{\@ssp}
+  \blanklines{-4}%
+%    \end{macrocode}
+% From the Manual 3.9 p10
+% \begin{quote}
+%   \begin{itemize}
+%     \item The following heading must be centered at the top of the page
+%       \begin{center}
+%         Abstract \\
+%         Full Title of Dissertation or Thesis \\
+%         Author's Name as it appears on the Dissertation or Thesis
+%       \end{center}
+%       In the example on p20, they list the advisor's name after the
+%       author, but that is not specified in the text on p10.
+%     \item The text begins four lines below this heading.
+%   \end{itemize}
+% \end{quote}
+% On p20
+% \begin{quote}
+%   \begin{itemize}
+%     \item These pages are numbered using lowercase Roman numerals.
+%     \item Note that the heading is single spaced, but the abstract
+%       is double spaced.
+%   \end{itemize}
+% \end{quote}
+%    \begin{macrocode}
     \begin{center}
+      \setstretch{\@ssp}%
       \@title\\
       \@author\\
       \@advisor\\
     \end{center}
-  \end{spacing}
-  \blanklines{2}
-  \begin{spacing}{\@dsp}
+  \blanklines{4}%
+  \setstretch{\@dsp}%
   \@nobreaktrue
   \@afterindentfalse
   \@afterheading
 }{%
-  \end{spacing}
+  \setstretch{\@ssp}%
 }
 %    \end{macrocode}
 % \end{environment}
@@ -2012,9 +2048,9 @@
 %    \begin{macrocode}
 \newenvironment{thesis}{%
   \mainmatter
-  \begin{spacing}{\@dsp}
+  \setstretch{\@dsp}%
 }{%
-  \end{spacing}
+  \setstretch{\@ssp}%
   \DUT@clearpage
   \ifpdf
     \phantomsection
@@ -2039,10 +2075,9 @@
 %    \begin{macrocode}
 \newenvironment{vita}{%
   \listed@schapter{\vitaname}
-  \blanklines{1}
-  \begin{spacing}{\@dsp}
+  \setstretch{\@dsp}%
 }{%
-  \end{spacing}
+  \setstretch{\@ssp}%
 }
 %    \end{macrocode}
 % \end{environment}
@@ -2059,7 +2094,7 @@
 %    \begin{macrocode}
 \renewenvironment{titlepage}{\thispagestyle{empty}%
                              \setcounter{page}\z@}%
-                            {\if@final \newpage \else \blanklines{2} \fi}
+                            {\if@final \newpage \else \blanklinesp{2} \par \fi}
 %    \end{macrocode}
 % \end{environment}
 %
@@ -2113,7 +2148,7 @@
 % We also turn on double spacing by default, since we're no longer
 % wrapped in the |thesis| environment.
 %    \begin{macrocode}
-  \setstretch{\@dsp}
+  \setstretch{\@dsp}%
 }
 %    \end{macrocode}
 % \end{macro}
