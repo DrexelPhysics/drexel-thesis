@@ -2335,9 +2335,10 @@
 %
 % \begin{macro}{\afterloftitleskip}
 % Don't add any extra space after the title (the chapter will take
-% care of that).
+% care of that).  Actually we make a one-line correction so the first
+% line matches the first line in the TOC.
 %    \begin{macrocode}
-\setlength\cftafterloftitleskip{0pt}
+\setlength\cftafterloftitleskip{-12pt}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2386,9 +2387,10 @@
 %
 % \begin{macro}{\afterlottitleskip}
 % Don't add any extra space after the title (the chapter will take
-% care of that).
+% care of that).  Actually we make a one-line correction so the first
+% line matches the first line in the TOC.
 %    \begin{macrocode}
-\setlength\cftafterlottitleskip{0pt}
+\setlength\cftafterlottitleskip{-12pt}
 %    \end{macrocode}
 % \end{macro}
 %
