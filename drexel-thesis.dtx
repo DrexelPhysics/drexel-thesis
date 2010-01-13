@@ -121,7 +121,7 @@
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
 % \newcommand{\cls}[1]{\textsf{#1}}
-% ^^A\newcommand{\BibTeX}{{\sc Bib}\TeX}
+% ^^A\newcommand{\BibTeX}{{\scshape Bib}\TeX}
 % 
 % \title{The \textsf{drexel-thesis} class\thanks{This document
 %   corresponds to \textsf{drexel-thesis}~\fileversion, dated \filedate.}}
@@ -185,10 +185,10 @@
 % \DescribeOptions{dottedtoc,boldtoc,
 %                  dottedpart,boldpart,
 %                  dottedchapter,boldchapter}
-% These options change how the relevant TOC lines are printed
-% \LaTeX\ defaults to bold but not dots.  The \Lopt{*toc} options set
-% all of the types.  For example, \Lopt{boldtoc} is equivalent to
-% \Lopt{boldchapter,boldpart}.
+% These options change how the relevant table of contents lines are
+% printed.  \LaTeX\ defaults to bold but not dots.  The \Lopt{*toc}
+% options set all of the types.  For example, \Lopt{boldtoc} is
+% equivalent to \Lopt{boldchapter,boldpart}.
 %
 % \DescribeOption{draftwatermark}
 % \Lopt{draftwatermark} adds ``DRAFT \meta{date}'' watermarks to each
@@ -347,7 +347,7 @@
 %   `\cs{listoftables}'
 % \end{command}
 % \DescribeMacro{\listoftables}
-% Write the List of Tables page (Manual 3.7 p10).
+% Write the List of Tables page (Manual 3.6 p10).
 % Skip if you have no tables in your thesis.
 %
 % \begin{command}
@@ -562,7 +562,6 @@
 \newif\if@dottedpart
 \newif\if@draftwatermark
 \newif\if@indentfirst
-\newif\if@appendix
 \newif\if@final \@finalfalse
 %    \end{macrocode}
 %
@@ -725,7 +724,8 @@
 % \subsubsection{\pkg{calc}}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/tools/}{\pkg{calc}}
-% for |\blanklines| macro.
+% for |\set@lines@length| macro (page
+%   \pageref{sec:implement-line-spacing}).
 %    \begin{macrocode}
 \RequirePackage{calc}
 %    \end{macrocode}
@@ -782,6 +782,8 @@
 %
 % \subsubsection{\pkg{indentfirst}}
 %
+% Indent the first paragraph after sections etc.\ with
+% \href{http://www.ctan.org/tex-archive/macros/latex/required/tools/}{\pkg{indentfirst}}.
 %    \begin{macrocode}
 \if@indentfirst
   \RequirePackage{indentfirst}
@@ -808,6 +810,18 @@
 %    \end{macrocode}
 % Note that we include the \pkg{geometry} package after loading \cls{book} to
 % override the margin manipulation that takes place in \cls{book}.
+%
+%
+% \subsubsection{\pkg{tocloft}}
+%
+% Typeset the table of contents, etc., with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/}{\pkg{tocloft}}.
+%    \begin{macrocode}
+\RequirePackage{tocloft}
+%    \end{macrocode}
+% The configuration of \pkg{tocloft} takes place in Sections
+% \ref{sec:implement-toc}, \ref{sec:implement-lof}, and
+% \ref{sec:implement-lot}.
 %
 %
 % \subsubsection{\pkg{caption}}
@@ -1089,77 +1103,28 @@
 %  \end{macro}
 %  \end{macro}
 %
+% \paragraph{baselineskip}
+% \label{sec:implement-line-spacing}
 %
-% \begin{command}
-%   `\cs{AddContentsLine}\marg{table}\marg{type}\marg{notcap}\marg{entry}'
-% \end{command}
-% \begin{macro}{\AddContentsLine}
-% Define a version of |\addcontentsline| that capitalizes \meta{entry}.
-% \meta{notcap} allows for |\numberline| bits, etc.
+% \begin{macro}{\DUT@baselineskip}
+% Since we'll be messing with the spacing, save the single-spaced
+% baseline.
 %    \begin{macrocode}
-\newcommand{\AddContentsLine}{\@ifstar
-  \@AddContentsLine\@sAddContentsLine}
-\newcommand{\@AddContentsLine}[4]{%
-%  \addcontentsline{#1}{#2}{#3#4}}
-  \addcontentsline{#1}{#2}{#3\uppercase{#4}}}
-\newcommand{\@sAddContentsLine}[4]{%
-%  \addcontentsline{#1}{#2}{#3#4}}
-  \addcontentsline{#1}{#2}{#3\uppercase{#4}}}
-%  \addcontentsline{#1}{#2}{#3\MakeUppercase{#4}}}
+\let\DUT@baselineskip\baselineskip
 %    \end{macrocode}
 % \end{macro}
 %
-%
-% \begin{macro}{\@dottedtocline}
-% |\@dottedtocline{|\meta{level}|}{|\meta{indent}|}{|\meta{numwidth}%
-%        |}{|\meta{title}|}{|\meta{page}|}|:
-%   Macro to produce a table of contents line with the following
-%   parameters:
-%   \begin{description}
-%   \item[level] If \meta{level} $>$ |\c@tocdepth|, then no line 
-%                produced.
-%   \item[indent] Total indentation from the left margin.
-%   \item[numwidth] Width of box for number if the \meta{title} has a
-%                |\numberline| command.  This is also the amount of extra
-%                indentation added to second and later lines of a
-%                multiple line entry.
-%   \item[title] Contents of entry.
-%   \item[page] Page number.
-%  \end{description}
-%
-%  Uses the following parameters, which must be set by the document
-%  style. They should be defined with |\def|'s.
-%  \begin{description}
-%  \item[|\@pnumwidth|]  Width of box in which page number is set.
-%  \item[|\@tocrmarg|] Right margin indentation for all but last line
-%        of multiple-line entries.
-%  \item[|\@dotsep|] Separation between dots, in mu units.
-%                  Should be |\def|'d to a number like 2 or 1.7
-%  \end{description}
-%
-% We just add |spacing| environments to \cls{book}'s version.
-% (\file{ltsect.dtx}, L804).
+% \begin{command}
+%   `\cs{set@lines@length}\marg{length}\marg{N}'
+% \end{command}
+% \begin{macro}{\set@lines@length}
+% Many specifications in the Manual refer to ``\meta{N} blank lines''.
+% |\set@lines@length| allows you to set a length to a given number of
+% lines, protecting against external |spacing| environments.  It
+% requires \pkg{calc} for the multiplication.
 %    \begin{macrocode}
-\def\@dottedtocline#1#2#3#4#5{%
-  \begin{spacing}{\@ssp}
-  \ifnum #1>\c@tocdepth \else
-    \vskip \z@ \@plus.2\p@
-    {\leftskip #2\relax \rightskip \@tocrmarg \parfillskip -\rightskip
-     \parindent #2\relax\@afterindenttrue
-     \interlinepenalty\@M
-     \leavevmode
-     \@tempdima #3\relax
-     \advance\leftskip \@tempdima \null\nobreak\hskip -\leftskip
-     {#4}\nobreak
-     \leaders\hbox{$\m@th
-        \mkern \@dotsep mu\hbox{.}\mkern \@dotsep
-        mu$}\hfill
-     \nobreak
-     \hb@xt@\@pnumwidth{\hfil\normalfont \normalcolor #5}%
-     \par}%
-     \blanklines{\@cont@sep}
-  \fi
-  \end{spacing}
+\newcommand{\set@lines@length}[2]{%
+  \setlength{#1}{\DUT@baselineskip * {#2}}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -1355,23 +1320,6 @@
 %
 %
 % \begin{command}
-%   `\cs{set@lines@length}\marg{length}\marg{N}'
-% \end{command}
-% \begin{macro}{\set@lines@length}
-% Many specifications in the Manual refer to ``\meta{N} blank lines''.
-% |\set@lines@length| allows you to set a length to a given number of
-% lines, protecting against external |spacing| environments.  It
-% requires \pkg{calc} for the multiplication.
-%    \begin{macrocode}
-\let\DUT@baselineskip\baselineskip
-\newcommand{\set@lines@length}[2]{%
-  \setlength{#1}{\DUT@baselineskip * {#2}}
-}
-%    \end{macrocode}
-% \end{macro}
-%
-%
-% \begin{command}
 %   `\cs{blanklines}\marg{N}'
 % \end{command}
 % \begin{macro}{\blanklines}
@@ -1452,8 +1400,8 @@
 % chapters.
 %    \begin{macrocode}
     \ifpdf
-      \pdfbookmark[-1]{Frontmatter}{frontmatter}
-      \pdfbookmark[0]{Title Page}{title}
+      \pdfbookmark[-1]{Frontmatter}{Frontmatter}
+      \pdfbookmark[0]{Title Page}{Title Page}
     \fi
 %    \end{macrocode}
 % Add some stretchy space to center the title vertically if we're not
@@ -1465,7 +1413,7 @@
 %    \begin{macrocode}
     \begin{center}%
     \begin{spacing}{\@tsp}
-      {\bf \@title \par}%
+      {\bfseries \@title \par}%
     \end{spacing}
     \begin{spacing}{\@dsp}
       A Thesis\\
@@ -1526,7 +1474,7 @@
 %    \end{macrocode}
 % If we're using pdf\LaTeX, add a bookmark.
 %    \begin{macrocode}
-  \ifpdf \pdfbookmark[0]{Copyright Page}{copyright} \fi
+  \ifpdf \pdfbookmark[0]{Copyright Page}{Copyright Page} \fi
   \if@final \vspace*{\fill} \fi
   \begin{center}
     \copyright~Copyright \def@year\\
@@ -1557,7 +1505,7 @@
 %
 % \subsubsection{Mark commands}
 %
-% Default initializations of |\...mark| commands.  These commands
+% Default initializations of |\*mark| commands.  These commands
 % are used in the definition of the page styles.
 %
 % \begin{macro}{\chaptermark}
@@ -1662,10 +1610,10 @@
 \def\@part[#1]#2{%
     \ifnum \c@secnumdepth >-2\relax
       \refstepcounter{part}%
-      \AddContentsLine{toc}{part}%
-        {\protect\numberline{\thepart}}{#1}%
+      \addcontentsline{toc}{part}%
+        {\protect\numberline{\thepart}#1}%
     \else
-      \AddContentsLine{toc}{part}{}{#1}%
+      \addcontentsline{toc}{part}{#1}%
     \fi
 %    \end{macrocode}
 % We empty the mark registers and center the title on the page.
@@ -1761,6 +1709,25 @@
 %    \end{macrocode}
 % \end{macro}
 %
+% \begin{macro}{\listed@schapter}
+% |\chapter| declares numbered chapters, which are listed in the table
+% of contents.
+% |\chapter*| declares unnumbered chapters, which are \emph{not}
+% listed in the TOC.
+% |\listed@schapter| declares an unnumbered chapter that \emph{is}
+% listed in the TOC.
+%    \begin{macrocode}
+\newcommand\listed@schapter[1]{%
+  \if@openright\DUT@cleardoublepage\else\DUT@clearpage\fi
+  \thispagestyle{plain}%
+  \global\@topnum\z@
+  \phantomsection
+  \addcontentsline{toc}{chapter}{#1}
+  \@afterindentfalse
+  \@schapter{#1}}
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@chapter}
 % This macro is called when we have a numbered chapter. When
 % \Lcount{secnumdepth} is larger than $-1$ and |\@mainmatter| is true,
@@ -1769,58 +1736,33 @@
 % (\file{classes.dtx}, L2496).
 % \begin{macrocode}
 \def\@chapter[#1]#2{
-  \ifnum \c@secnumdepth >\m@ne
-    \if@mainmatter
-      \refstepcounter{chapter}%
 % \end{macrocode}
 % Inform the user that a new chapter is about to be typeset by writing
 % a message to the terminal.
 % \begin{macrocode}
-      \typeout{\@chapapp\space\thechapter.}%
-      \if@appendix
-% \end{macrocode}
-% We're in the appendix (when |\if@mainmatter| and
-% |\if@appendix| are both true), add a TOC line like
-% \begin{center}
-%   Appendix A: Chapter Title
-% \end{center}
-% |\thechapter| (defined in \cls{book}) is the text representation of 
-% the chapter number (e.g.\ |1| or, for an appendix, |A|).
-% |\@chapapp{}| (also defined in \cls{book}) was redefined in
-% |\appendix| (Sec. \ref{sec:implement-appendix}) as |\appendixname|.
-% \begin{macrocode}
-        \AddContentsLine{toc}{appendix}%
-          {\protect\numberline{\@chapapp{} \thechapter:}}{#1}%
-      \else
-% \end{macrocode}
-% We're in the pre-appendix mainmatter, so add a TOC line like
-% \begin{center}
-%   1 Chapter Title
-% \end{center}
-% \begin{macrocode}
-        \AddContentsLine{toc}{chapter}%
-          {\protect\numberline{\thechapter}}{#1}%
-      \fi
+  \typeout{\@chapapp\space\thechapter. #1}%
+  \ifnum \c@secnumdepth >\m@ne
+    \if@mainmatter
+      \refstepcounter{chapter}%
+      \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1}%
     \else
-% \end{macrocode}
-% We're in the pre-mainmatter, so add a TOC line like
-% \begin{center}
-%   Chapter Title
-% \end{center}
-% \begin{macrocode}
-      \AddContentsLine{toc}{chapter}{}{#1}%
+      \addcontentsline{toc}{chapter}{#1}%
     \fi
   \else
-    \AddContentsLine{toc}{chapter}{}{#1}%
+    \addcontentsline{toc}{chapter}{#1}%
   \fi
 %    \end{macrocode}
 % After having written an entry to the table of contents we store
-% the (alternative) title of this chapter with |\chaptermark| and
-% add some white space to the lists of figures and tables.
+% the (alternative) title of this chapter with |\chaptermark|.
 %    \begin{macrocode}
   \chaptermark{#1}%
-  \addtocontents{lof}{\protect\addvspace{10\p@}}%
-  \addtocontents{lot}{\protect\addvspace{10\p@}}%
+%    \end{macrocode}
+% For nicer lists of figures and tables, we could add some white space
+% to separate the chapters.  However, nice lists $\neq$~Manual
+% specifications.
+%    \begin{macrocode}
+%  \addtocontents{lof}{\protect\addvspace{10\p@}}%
+%  \addtocontents{lot}{\protect\addvspace{10\p@}}%
 %    \end{macrocode}
 % Then we call upon |\@makechapterhead| to format the actual chapter
 % title.  |\@afterheading| which takes care of suppressing the
@@ -1929,19 +1871,6 @@
 % \end{macro}
 %
 %
-% \begin{macro}{\toclevel@appendix}
-% We've added a new TOC entry type with the
-% \begin{example} 
-%   \AddContentsLine{toc}{appendix}{...}{...}
-% \end{example}
-% calls above, and \pkg{hyperref} needs to know what level they belong
-% to.  Obviously they belong to the chapter level ($0$).
-%    \begin{macrocode}
-\providecommand*{\toclevel@appendix}{0}
-%    \end{macrocode}
-% \end{macro}
-%
-%
 % \subsubsection{Lower level headings}
 %
 % \begin{macro}{\section}
@@ -2004,7 +1933,7 @@
   \DUT@clearpage
   \ifpdf
     \phantomsection
-    \pdfbookmark[0]{\dedicationsname}{dedications}
+    \pdfbookmark[0]{\dedicationsname}{\dedicationsname}
   \fi
   \chapter*{\dedicationsname}
   \begin{spacing}{\@dsp}
@@ -2027,7 +1956,7 @@
   \DUT@clearpage
   \ifpdf
     \phantomsection
-    \pdfbookmark[0]{\acknowledgmentsname}{acknowledgments}
+    \pdfbookmark[0]{\acknowledgmentsname}{\acknowledgmentsname}
   \fi
   \chapter*{\acknowledgmentsname}
   \begin{spacing}{\@dsp}
@@ -2040,12 +1969,7 @@
 % \begin{environment}{abstract}
 %    \begin{macrocode}
 \newenvironment{abstract}{%
-  \DUT@clearpage
-  \thispagestyle{plain}%
-  \global\@topnum\z@
-  \phantomsection
-  \AddContentsLine*{toc}{chapter}{}{\abstractname}
-  \vspace*{50\p@}%
+  \listed@schapter{\abstractname}
 %    \end{macrocode}
 % From the Manual 3.9 p10 ``The following heading must be centered at
 % the top of the page'':
@@ -2061,10 +1985,9 @@
 % Note that the heading is single spaced, but the abstract is double
 % spaced.''
 %    \begin{macrocode}
+  \blanklines{-3}
   \begin{spacing}{\@ssp}
     \begin{center}
-      {\large \bfseries \abstractname \par}
-%%      \@endparpenalty\@M
       \@title\\
       \@author\\
       \@advisor\\
@@ -2095,12 +2018,15 @@
   \DUT@clearpage
   \ifpdf
     \phantomsection
-    \pdfbookmark[-1]{Backmatter}{backmatter}
+    \pdfbookmark[-1]{Backmatter}{Backmatter}
   \fi
 }
 %    \end{macrocode}
 % \end{environment}
 %
+% \paragraph{Vita}
+% \label{sec:implement-vita}
+% 
 % \begin{environment}{vita}
 % From the Manual 3.15 p13
 % \begin{itemize}
@@ -2112,10 +2038,7 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{vita}{%
-  \DUT@clearpage
-  \phantomsection
-  \AddContentsLine*{toc}{chapter}{}{\vitaname}
-  \chapter*{\vitaname}
+  \listed@schapter{\vitaname}
   \blanklines{1}
   \begin{spacing}{\@dsp}
 }{%
@@ -2142,6 +2065,7 @@
 %
 %
 % \subsubsection{Appendix}
+% \label{sec:implement-appendix}
 %
 % \begin{macro}{\appendix}
 % The |\appendix| command is not really an environment, it is a
@@ -2157,15 +2081,34 @@
 %         as \texttt{multicols}.
 % \end{itemize}
 %
-% In addition to \cls{book}'s (or \pkg{hyperref}'s) activity, we add
-% |\@appendixtrue|.  This gets |\if@appendix| working in our
-% |\chapter| definition (Sec.~\ref{sec:implement-chapters}).
+% In addition to \cls{book}'s (or \pkg{hyperref}'s) activity, we
+% fiddle with the \pkg{tocloft} chapter settings add switch to global
+% double-spacing.
 % (\file{classes.dtx}, L3177)
 %    \begin{macrocode}
 \let\DUT@appendix\appendix
 \renewcommand\appendix{%
-  \@appendixtrue%
   \DUT@appendix%
+%    \end{macrocode}
+% Setup TOC entries like
+% \begin{center}
+%   Appendix A: Chapter Title
+% \end{center}
+% We don't need to worry about the |vita| environment (page
+% \pageref{sec:implement-vita}), because it is a |\listed@schapter|,
+% and therefore lacks a |\numberline| section in its \file{*.toc}
+% entry.
+%
+% We increase |numwidth| to 6.5em to make room for |Appendix~| before
+% the chapter number/letter, and add a colon after it.
+%
+% The |\protect| calls get the macros into \file{*.toc} unexpanded, so
+% they function correctly when \LaTeX\ parses \file{*.toc}.
+%    \begin{macrocode}
+  \addtocontents{toc}{%
+    \protect\cftsetindents{chapter}{0pt}{6.5em}
+    \protect\renewcommand{\protect\cftchappresnum}{\protect\appendixname~}
+    \protect\renewcommand{\protect\cftchapaftersnum}{:}}
 %    \end{macrocode}
 % We also turn on double spacing by default, since we're no longer
 % wrapped in the |thesis| environment.
@@ -2177,265 +2120,248 @@
 %
 %
 % \subsubsection{Table of Contents}
+% \label{sec:implement-toc}
 %
-% \begin{macro}{\tableofcontents}
-% Automate the creation of the table of contents.
 % From Manual 3.5 p9, ``Table of Contents'', and the example on p17.
-% \begin{itemize}
-%   \item Do not list any sections that precede the
-%   |Table of Contents| (e.g.\ |Dedications|, |Acknowledgments|).  Do
-%   not list the |Table of Contents| itself.
-%   \item These pages are counted and numbered in lowercase Roman numerals.
-% \end{itemize}
-% We inhibit the paging in draft mode and drop the \Lopt{twocolumn} code.
-% (\file{classes.dtx}, L3728)
+% \begin{quote}
+%   \begin{itemize}
+%     \item Do not list any sections that precede the
+%     |Table of Contents| (e.g.\ |Dedications|, |Acknowledgments|).  Do
+%     not list the |Table of Contents| itself.
+%     \item These pages are counted and numbered in lowercase Roman numerals.
+%   \end{itemize}
+% \end{quote}
+%
+% \begin{macro}{\cfttoctitlefont}
+% Take advantange of \pkg{tocloft}'s TOC title code.
+% (\file{tocloft.dtx}, L1501)
+% \begin{example}
+%   \cfttoctitlefont\contentsname}{\cftaftertoctitle}
+% \end{example}
+% by setting it equal to something ending in |\chapter*|.  That way
+% \LaTeX parses the whole thing as
+% \begin{example}
+%   ...\chapter*\contentsname}{\cftaftertoctitle}
+% \end{example}
+% which will set up the TOC page correctly.
 %    \begin{macrocode}
-\renewcommand\tableofcontents{%
+\renewcommand\cfttoctitlefont{%
+%    \end{macrocode}
+% Start a new page in \Lopt{final} mode
+%    \begin{macrocode}
   \DUT@clearpage
 %    \end{macrocode}
-% If we're using pdf\LaTeX, add a bookmark.
+% Add a bookmark if we're using pdf\LaTeX.
 %    \begin{macrocode}
   \ifpdf
     \phantomsection
-    \pdfbookmark[0]{\contentsname}{tableofcontents}
+    \pdfbookmark[0]{\contentsname}{\contentsname}
   \fi
-  \chapter*{\contentsname}
 %    \end{macrocode}
-% Set the marks for \cls{fancyhdr}'s fancy header.
+% |\chapter*| to gobble and format the next token (|\contentsname|).
 %    \begin{macrocode}
-  \@mkboth{\MakeUppercase\contentsname}%
-          {\MakeUppercase\contentsname}%
-  \@starttoc{toc}%
-}
+  \chapter*}
 %    \end{macrocode}
 % \end{macro}
 %
-% The command |\contentsline{|\meta{name}|}| expands to
-% |\l@|\meta{name}.  So, to specify the table of contents, we must
-% define |\l@chapter|, |\l@section|, |\l@subsection|, ... ; to
-% specify the list of figures, we must define |\l@figure|; and so
-% on.
-%
-% \begin{command}
-%   `\cs{l@DUT@major}\marg{title}\marg{page}\marg{inset}'
-% \end{command}
-% \begin{macro}{\l@DUT@major}
-% Define a wrapper class for printing TOC entries for parts, chapters,
-% and appendicies, since they should all have the same formatting.
-% \meta{title} and \meta{page} are the first two arguments passed to
-% the outer |\l@*| macro.  \meta{inset} gives the distance that the
-% title text is offset from the left margin (|\@tempdima|), with any
-% |\numberline| text (e.g.\ part or chapter numbers) being printed
-% flush on the left margin.
+% \begin{macro}{\aftertoctitleskip}
+% Don't add any extra space after the title (the chapter will take
+% care of that).
 %    \begin{macrocode}
-\newif\if@bold@DUT@major
-\newif\if@dotted@DUT@major
-\newcommand\l@DUT@major[3]{%
-  \begin{spacing}{\@ssp}
-    \ifnum \c@tocdepth >\m@ne
-%    \end{macrocode}
-% Make sure that if a pagebreak should occur, it occurs \emph{before}
-% this entry.
-%    \begin{macrocode}
-      \addpenalty{-\@highpenalty}%
-%    \end{macrocode}
-% The macro |\numberline| requires that the width of the box that
-% holds the part number is stored in \LaTeX's scratch register
-% |\@tempdima|. Therefore we initialize it there even though we may
-% not use |\numberline| internally.
-%    \begin{macrocode}
-      \setlength\@tempdima{#3}%
-      \begingroup
-%    \end{macrocode}
-% We set |\parindent| to 0pt and use |\rightskip| to leave
-% enough room for the pagenumbers.\footnote{^^A
-%   We use \file{classes.dtx} suggested \cs{@tocrmarg} for
-%   \cs{rightskip}, which they're delaying until \LaTeX3.}
-% To prevent overfull box messages the |\parfillskip| is set to a 
-% negative value.
-%    \begin{macrocode}
-        \parindent \z@ \rightskip \@tocrmarg \parfillskip -\rightskip
-%    \end{macrocode}
-% Leave vertical mode.
-%    \begin{macrocode}
-        \leavevmode
-%    \end{macrocode}
-% Switch to bold font if appropriate.
-%    \begin{macrocode}
-        \if@bold@DUT@major
-          \bfseries
-        \fi
-%    \end{macrocode}
-% Manuever to place the part number flush left, with the part title
-% inset by |\@tempdima|.
-%    \begin{macrocode}
-        \advance\leftskip\@tempdima
-        \hskip -\leftskip
-%    \end{macrocode}
-% Set the part title.
-%    \begin{macrocode}
-        #1\nobreak
-%    \end{macrocode}
-% Draw a dotted line if appropriate.
-%    \begin{macrocode}
-        \if@dotted@DUT@major
-          \leaders\hbox{$\m@th
-            \mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$}
-        \fi
-%    \end{macrocode}
-% Wrap up with the page entry, set flush right.
-%    \begin{macrocode}
-        \hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
-%    \end{macrocode}
-% Prevent a pagebreak immediately after this entry.
-%    \begin{macrocode}
-        \nobreak
-%    \end{macrocode}
-% Add a content-page-spacing blank after this entry.
-%    \begin{macrocode}
-        \blanklines{\@cont@sep}
-%    \end{macrocode}
-% Discourage page breaking.
-%    \begin{macrocode}
-        \penalty\@highpenalty
-      \endgroup
-    \fi
-  \end{spacing}
-}
+\setlength\cftaftertoctitleskip{0pt}
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l@part}
-% Override \cls{book}'s |\l@part|.
-% (\file{classes.dtx}, L3775)
+% \begin{macro}{\l@cont@sep}
+% Define a length for TOC/LOF/LOT spacing.
 %    \begin{macrocode}
-\renewcommand*\l@part[2]{%
-  \if@boldpart
-    \@bold@DUT@majortrue
-  \else
-    \@bold@DUT@majorfalse
-  \fi
-  \if@dottedpart
-    \@dotted@DUT@majortrue
-  \else
-    \@dotted@DUT@majorfalse
-  \fi
-  \l@DUT@major{#1}{#2}{3em}}
+\newlength\l@cont@sep
+\set@lines@length{\l@cont@sep}{\@cont@sep}
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l@chapter}
-% Override \cls{book}'s |\l@chapter|.
-% (\file{classes.dtx}, L3847)
+% \begin{macro}{\@cont@font}
+% Define a font for high level (part, chapter) entries.
 %    \begin{macrocode}
-\renewcommand*\l@chapter[2]{%
-  \if@boldchapter
-    \@bold@DUT@majortrue
-  \else
-    \@bold@DUT@majorfalse
-  \fi
-  \if@dottedchapter
-    \@dotted@DUT@majortrue
-  \else
-    \@dotted@DUT@majorfalse
-  \fi
-  \l@DUT@major{#1}{#2}{1.5em}}
+\newcommand{\@cont@font}{\normalsize\scshape}
 %    \end{macrocode}
 % \end{macro}
 %
-%
-% \begin{macro}{\l@appendix}
-% Add |\l@appendix|, which is identical to our |\l@chapter| except
-% for setting |\@tempdima| to 8em rather than 1.5em, because the word
-% |Appendix| takes up a bunch of space.
+% \begin{macro}{\cftbeforepartskip}
+% \begin{macro}{\cftpartfont}
+% \begin{macro}{\cftpartleader}
+% \begin{macro}{\cftpartdotsep}
+% \begin{macro}{\cftpartpagefont}
+% Setup parts.  See the \pkg{tocloft} manual for a description of the
+% commands.
 %    \begin{macrocode}
-\newcommand*\l@appendix[2]{%
-  \if@boldchapter
-    \@bold@DUT@majortrue
-  \else
-    \@bold@DUT@majorfalse
-  \fi
-  \if@dottedchapter
-    \@dotted@DUT@majortrue
-  \else
-    \@dotted@DUT@majorfalse
-  \fi
-  \l@DUT@major{#1}{#2}{8em}}
+\setlength\cftbeforepartskip{\l@cont@sep}
+\cftsetindents{part}{0pt}{3em}
+\if@boldpart   \renewcommand{\cftpartfont}{\bfseries\@cont@font}
+\else          \renewcommand{\cftpartfont}{\@cont@font}
+\renewcommand{\cftpartleader}{\cftdotfill{\cftpartdotsep}}
+\if@dottedpart \renewcommand{\cftpartdotsep}{\cftdotsep}
+\else          \renewcommand{\cftpartdotsep}{\cftnodots} \fi
+\renewcommand{\cftpartpagefont}{\normalfont}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\cftbeforechapskip}
+% \begin{macro}{\cftchapaftersnum}
+% \begin{macro}{\cftchapfont}
+% \begin{macro}{\cftchapleader}
+% \begin{macro}{\cftchapdotsep}
+% \begin{macro}{\cftchappagefont}
+% Setup chapters and appendicies.  Some of these settings are adjusted
+% for appendicies in particular by |\appendix|
+% (Sec.~\ref{sec:implement-appendix}).
+%    \begin{macrocode}
+\setlength\cftbeforechapskip{\l@cont@sep}
+\cftsetindents{chapter}{0pt}{1.5em}
+\renewcommand{\cftchapaftersnum}{.}
+\if@boldchapter   \renewcommand{\cftchapfont}{\bfseries\@cont@font}
+\else             \renewcommand{\cftchapfont}{\@cont@font} \fi
+\renewcommand{\cftchapleader}{\cftdotfill{\cftchapdotsep}}
+\if@dottedchapter \renewcommand{\cftchapdotsep}{\cftdotsep}
+\else             \renewcommand{\cftchapdotsep}{\cftnodots} \fi
+\renewcommand{\cftchappagefont}{\normalfont}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\cftbeforesecskip}
+% \begin{macro}{\cftsecfont}
+% \begin{macro}{\cftbeforesubsecskip}
+% \begin{macro}{\cftsubsecfont}
+% \begin{macro}{\cftbeforesubsubsecskip}
+% \begin{macro}{\cftsubsubsecfont}
+% Setup sections, subsections, etc.
+%    \begin{macrocode}
+%\cftsetindents{chap}{0pt}{1.5em}
+\setlength\cftbeforesecskip{\l@cont@sep}
+\cftsetindents{section}{0pt}{3em}
+\renewcommand{\cftsecfont}{\normalsize}
+\setlength\cftbeforesubsecskip{\l@cont@sep}
+\cftsetindents{subsection}{0pt}{4.5em}
+\renewcommand{\cftsubsecfont}{\cftsecfont}
+\setlength\cftbeforesubsubsecskip{\l@cont@sep}
+\cftsetindents{subsubsection}{0pt}{6em}
+\renewcommand{\cftsubsubsecfont}{\cftsecfont}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 %
 %
 % \subsubsection{List of figures}
-%
-% \begin{macro}{\listoffigures}
-% This macro is used to request that \LaTeX\ produces a list of
-% figures. It is very similar to |\tableofcontents|.
+% \label{sec:implement-lof}
 %
 % From the Manual 3.7 p10
 % \begin{quote}
-%   The heading |List of Figures| must appear at the top of the first
-%   page.
-%   The heading must be bold, centered, and without punctuation.
-%   List figure captions exactly as they appear below the figures in
-%   the text.
-%   Single space each entry, but double-space between entries.
-%   Separate figure captions from page numbers with right-justified
-%   tabs and dot leaders.
-%   Do not use periods to separate captions and page numbers.
-%   These pages are counted and numbered in lowercase Roman numerals.
+%   \begin{itemize}
+%     \item The heading |List of Figures| must appear at the top of
+%       the first page.
+%     \item The heading must be bold, centered, and without
+%       punctuation.  List figure captions exactly as they appear
+%       below the figures in the text.
+%     \item Single space each entry, but double-space between entries.
+%     \item Separate figure captions from page numbers with
+%       right-justified tabs and dot leaders.
+%     \item Do not use periods to separate captions and page numbers.
+%     \item These pages are counted and numbered in lowercase Roman
+%     numerals.
+%   \end{itemize}
 % \end{quote}
 %
-% We drop the \Lopt{twocolumn} code, add a line to the table of
-% contents, and adjust paging.
-% (\file{classes.dtx}, L3981).
+% \begin{macro}{\cftloftitlefont}
+% Much like our |\cfttoctitlefont|, but the list of figures gets
+% listed in the TOC.
 %    \begin{macrocode}
-\renewcommand\listoffigures{%
-  \DUT@clearpage
-  \phantomsection
-  \AddContentsLine*{toc}{chapter}{}{\listfigurename}
-  \chapter*{\listfigurename}%
-  \@mkboth{\MakeUppercase\listfigurename}%
-          {\MakeUppercase\listfigurename}%
-  \@starttoc{lof}%
-}
+\renewcommand\cftloftitlefont{\listed@schapter}
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\afterloftitleskip}
+% Don't add any extra space after the title (the chapter will take
+% care of that).
+%    \begin{macrocode}
+\setlength\cftafterloftitleskip{0pt}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\cftbeforefigskip}
+% \begin{macro}{\cftfigindent}
+% \begin{macro}{\cftfigfont}
+% Setup figure entries.
+%    \begin{macrocode}
+\setlength{\cftbeforefigskip}{\l@cont@sep}
+\setlength{\cftfigindent}{0pt}
+\renewcommand{\cftfigfont}{\normalsize\singlespace}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 %
 %
 % \subsubsection{List of tables}
-%
-% \begin{macro}{\listoftables}
-% This macro is used to request that \LaTeX\ produces a list of
-% tables. It is very similar to |\tableofcontents|.
+% \label{sec:implement-lot}
 %
 % From the Manual 3.6 p10
 % \begin{quote}
-%   The heading |List of Tables| must appear at the top of the first
-%   page.
-%   The heading must be bold, centered, and without punctuation.
-%   List table captions exactly as they appear above the tables in
-%   the text.
-%   Single space each entry, but double-space between entries.
-%   Separate table captions from page numbers with right-justified
-%   tabs and dot leaders.
-%   Do not use periods to separate captions and page numbers.
-%   These pages are counted and numbered in lowercase Roman numerals.
+%   \begin{itemize}
+%     \item The heading |List of Tables| must appear at the top of the
+%       first page.
+%     \item The heading must be bold, centered, and without
+%       punctuation.
+%     \item List table captions exactly as they appear above the
+%       tables in the text.
+%     \item Single space each entry, but double-space between entries.
+%     \item Separate table captions from page numbers with
+%       right-justified tabs and dot leaders.
+%     \item Do not use periods to separate captions and page numbers.
+%       These pages are counted and numbered in lowercase Roman
+%       numerals.
+%   \end{itemize}
 % \end{quote}
 %
-% We drop the \Lopt{twocolumn} code, add a line to the table of
-% contents, and adjust paging.
-% (\file{classes.dtx}, L4017).
+% \begin{macro}{\cftlottitlefont}
+% Much like our |\cfttoctitlefont|, but the list of tables gets
+% listed in the TOC.
 %    \begin{macrocode}
-\renewcommand\listoftables{%
-  \DUT@clearpage
-  \phantomsection
-  \AddContentsLine*{toc}{chapter}{}{\listtablename}
-  \chapter*{\listtablename}%
-  \@mkboth{\MakeUppercase\listtablename}%
-          {\MakeUppercase\listtablename}%
-  \@starttoc{lot}%
-}
+\renewcommand\cftlottitlefont{\listed@schapter}
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\afterlottitleskip}
+% Don't add any extra space after the title (the chapter will take
+% care of that).
+%    \begin{macrocode}
+\setlength\cftafterlottitleskip{0pt}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\cftbeforetabskip}
+% \begin{macro}{\cfttabindent}
+% \begin{macro}{\cfttabfont}
+% Setup table entries.
+%    \begin{macrocode}
+\setlength{\cfttabindent}{0pt}
+\setlength{\cftbeforetabskip}{\l@cont@sep}
+\renewcommand{\cfttabfont}{\normalsize\singlespace}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 %
 %
@@ -2498,9 +2424,7 @@
 % so we will still get our table of contents entry.
 %    \begin{macrocode}
 \newcommand{\bib@heading}{%
-  \phantomsection%
-  \AddContentsLine*{toc}{chapter}{}{\bibname}%
-  \chapter*{\bibname}%
+  \listed@schapter{\bibname}%
   \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
 }
 %    \end{macrocode}
@@ -2609,28 +2533,6 @@
 %    \begin{macrocode}
 %</class>
 %    \end{macrocode}
-%
-%
-% \subsection{Caveats and bugs}
-%
-%
-% \subsubsection{\pkg{hyperref} and uppercase}
-%
-% In order to comply with the Manual's specifications,
-% part and chapter entries to the table of contents need
-% to be uppercased, which we do via |\AddContentsLine|.
-% This generates some whining from \pkg{hyperref}
-% \begin{example}
-%   Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding),
-%   (hyperref)                removing `\uppercase' on input line 72.
-% \end{example}
-% This is because |\uppercase| is parsed in \TeX's stomach, but
-% \pkg{hyperref} deals with code in \TeX's mouth, so \pkg{hyperref} is
-% drops the token and complains.  Which is fine, since the titles
-% don't actually need to be uppercased in the bookmark, but the
-% error messages are still produced.  If anyone knows of a good way
-% to either fix the problem or silence these particular error messages,
-% please let me know.  Otherwise, just ignore the errors.
 %
 %
 % \section{Examples}
@@ -2827,7 +2729,8 @@ parenthetical citation\citep{rief97}.
 \part{Another Part}
 \chapter{Another Chapter}
 \blabla{30}{20}
-\chapter{Yet another Chapter}
+\chapter{A Long Title Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
+Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 \blabla{30}{20}
 %</example-part>
 %    \end{macrocode}
