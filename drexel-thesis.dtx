@@ -1109,9 +1109,9 @@
 % \begin{macro}{\DUT@baselineskip}
 % Since we'll be messing with the spacing, save the single-spaced
 % baseline.
-%   \changes{0.3}{2010/01/13}{Use |\setlength| to store the value at
-%     the default font.  The previous version used |\let|, which made
-%     |\DUT@baselineskip| a synonym for |\baselineskip| that changed
+%   \changes{0.3}{2010/01/13}{Use \\setlength to store the value at
+%     the default font.  The previous version used \\let, which made
+%     \\DUT\@baselineskip a synonym for \\baselineskip that changed
 %     with font size.}
 %    \begin{macrocode}
 \newlength\DUT@baselineskip
@@ -1818,7 +1818,13 @@
 % (\file{classes.dtx}, L2540).
 %    \begin{macrocode}
 \def\@makechapterhead#1{%
-  \blanklines*{1}%
+%    \end{macro}
+% Adding even a \vspace*{0\p@} here seems to increase the vertical
+% space above the chapter heading by two lines.  I'm not sure why.
+% Workaround is to pass the ``value of blanklines you want minus two''
+% to |\blanklines*|.
+%    \begin{macro}
+  \blanklines*{-1}%
   {\parindent \z@ \raggedright \normalfont
 %    \end{macrocode}
 % Ensure single spacing.
@@ -1881,7 +1887,7 @@
 % (\file{classes.dtx}, L2595).
 %    \begin{macrocode}
 \def\@makeschapterhead#1{%
-  \blanklines*{1}%
+  \blanklines*{-1}%
   {\parindent \z@ \raggedright \normalfont
     \setstretch{\@ssp}%
     \interlinepenalty\@M
