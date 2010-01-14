@@ -511,7 +511,17 @@
 % For more useful float information, see the
 % \href{http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
 %   {\LaTeX\ wikibook page}.
-% 
+%
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}
+% cooperates with \cls{drexel-thesis}'s included \pkg{floatrow}.  If
+% you wish to use the \pkg{subfig} macros, you should add something
+% like
+% \begin{example}
+%   \usepackage{subfig}
+%   \usepackage{fr-subfig}
+% \end{example}
+% See the \pkg{floatrow} documentation for details.
+%
 %
 % \subsubsection{Citations}
 %
@@ -529,8 +539,10 @@
 %
 % \subsubsection{References}
 %
+% Easier cross referencing with
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/cleveref/}{\pkg{cleveref}}.
-% Is a wonderful tool for easy, consistent crosslinking.  The manual is also very good.
+% Is a wonderful tool for easy, consistent crosslinking via |\cref|,
+% |\Cref|, etc..  The manual is also very good.
 %
 %
 % \subsubsection{Hyperlinks}
