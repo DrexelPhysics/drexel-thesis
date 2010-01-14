@@ -2842,6 +2842,8 @@ parenthetical citation\citep{rief97}.
 \chapter{A Long Title Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
 Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 \blabla{30}{20}
+\section{Section in long-titled chapter}
+\blabla{30}{20}
 %</example-part>
 %    \end{macrocode}
 %
@@ -2968,6 +2970,13 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 %   \item Different space between chapter heading and section heading,
 %     vs.\ chapter heading and text.  Compare \emph{A Chapter Heading}
 %     and \emph{Another Chapter} in \file{example.pdf}.
+%   \item Footer overlap if chapter/section names are particularly long.
+%     See \emph{Section in long-titled chapter} in \file{example.pdf}.
+%     Workaround: turn off either chapters or sections in the footer.
+%     \begin{example}
+%       \fancyfoot[RE,LO]{\scshape\leftmark}
+%       \fancyfoot[LE,RO]{}
+%     \end{example}
 % \end{itemize}
 %
 %
