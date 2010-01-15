@@ -520,7 +520,9 @@
 %   \usepackage{subfig}
 %   \usepackage{fr-subfig}
 % \end{example}
-% See the \pkg{floatrow} documentation for details.
+% See the \pkg{floatrow} documentation (Sec.~7.1, ``The \pkg{subfig}
+% package'') and \pkg{subfig} documentation (Sec.~4.3,
+% ``\pkg{FloatRow} Package'') for details.
 %
 %
 % \subsubsection{Citations}
@@ -558,6 +560,39 @@
 % |\degree| automatically set |pdfauthor|, |pdftitle|, and
 % |pdfsubject| respectively.  You can use the |\hypersetup| macro to
 % set options overriding these defaults.
+%
+%
+% \subsubsection{Developing large \LaTeX\ documents}
+%
+% A thesis may take a while to compile, especially if it contains
+% lots of images, etc..  One way to save time, is to use |\includeonly|
+% when including chapter \file{*.tex} files (see
+% \href{http://en.wikibooks.org/wiki/TeX/includeonly}{the \TeX\ Wikibook}).
+% Usage would be something like
+% \begin{example}
+% \documentclass{drexel-thesis}
+% ...
+% \includeonly{chapter2.tex,chapter3.tex}
+% \begin{document}
+% ...
+% \begin{thesis}
+% \include{chapter1.tex}
+% \include{chapter2.tex}
+% \include{chapter3.tex}
+% \include{chapter4.tex}
+% \end{thesis}
+% ...
+% \end{document}
+% \end{example}
+% which would only compile chapters two and three.  Don't confuse the
+% similar commands |\include| and |\input|.  The more fundamental
+% |\input| just inserts the file contents at that point, while
+% |\include|
+% \begin{itemize}
+%   \item may only be used after |\begin{document}|
+%   \item acts like |\clearpage \input{} \clearpage|
+%   \item will not crash on nonexistent files
+% \end{itemize}
 %
 %
 % \StopEventually{\pagebreak\PrintChanges}
