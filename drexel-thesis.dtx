@@ -3016,7 +3016,19 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 % \begin{itemize}
 %   \item Different space between chapter heading and section heading,
 %     vs.\ chapter heading and text.  Compare \emph{A Chapter Heading}
-%     and \emph{Another Chapter} in \file{example.pdf}.
+%     and \emph{Another Chapter} in \file{example.pdf}.  This is a
+%     problem (although with opposite order) in the \cls{book} class
+%     itself.  For example, compile
+%     \begin{example}
+%\documentclass{book}
+%\begin{document}
+%\chapter{Chapter with text}
+%Bla bla bla.
+%\chapter{Chapter with section}
+%\section{Section}
+%Bla bla bla.
+%\end{document}
+%     \end{example}
 %   \item Footer overlap if chapter/section names are particularly long.
 %     See \emph{Section in long-titled chapter} in \file{example.pdf}.
 %     Workaround: turn off either chapters or sections in the footer.
