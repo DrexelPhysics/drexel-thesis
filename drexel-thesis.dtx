@@ -545,6 +545,12 @@
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/cleveref/}{\pkg{cleveref}}.
 % Is a wonderful tool for easy, consistent crosslinking via |\cref|,
 % |\Cref|, etc..  The manual is also very good.
+% Note that if you use |\part|s in your document, you need to tell
+% \pkg{cleveref} how to deal with them:
+% \begin{example}
+%   \usepackage{cleveref}
+%   \crefname{part}{part}{parts}
+% \end{example}
 %
 %
 % \subsubsection{Hyperlinks}
