@@ -211,6 +211,12 @@
 % options set all of the types.  For example, \Lopt{boldtoc} is
 % equivalent to \Lopt{boldchapter,boldpart}.
 %
+% \DescribeOption{indenttoc}
+% The example table of contents in the Manual p17 does not indent
+% section entries, etc., so neither does \cls{drexel-thesis}.  If you
+% \emph{do} want pretty, indented TOCs, like the \LaTeX\ defaults pass
+% \Lopt{indenttoc} to \cls{drexel-thesis}.
+%
 % \DescribeOption{draftwatermark}
 % \Lopt{draftwatermark} adds ``DRAFT \meta{date}'' watermarks to each
 % page.  A useful way to remember that the version you're looking at
@@ -629,6 +635,7 @@
 \newif\if@boldchapter
 \newif\if@boldpart
 \newif\if@dottedpart
+\newif\if@indenttoc
 \newif\if@draftwatermark
 \newif\if@mydraftwatermark
 \newif\if@indentfirst
@@ -705,6 +712,13 @@
   \setkeys{drexel-thesis.cls}{boldpart}
   \setkeys{drexel-thesis.cls}{boldchapter}
 }
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{indenttoc}
+% Set \Lopt{indenttoc} flag
+%    \begin{macrocode}
+\DeclareOptionX{indenttoc}{\@indenttoctrue}
 %    \end{macrocode}
 % \end{option}
 %
@@ -2460,6 +2474,19 @@
 % \end{macro}
 % \end{macro}
 % \end{macro}
+%
+% The default indents above are all |0pt|.  If \Lopt{indenttoc} was
+% given, override this, restoring the \pkg{tocloft} defaults, see the
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf}{%
+%   \pkg{tocloft} manual, Table 1}.
+%    \begin{macrocode}
+\if@indenttoc
+  \cftsetindents{chapter}{0pt}{1.5em}
+  \cftsetindents{section}{1.5em}{2.3em}
+  \cftsetindents{subsection}{3.8em}{3.2em}
+  \cftsetindents{subsubsection}{7.0em}{4.1em}
+\fi
+%    \end{macrocode}
 %
 %
 % \subsubsection{List of figures}
