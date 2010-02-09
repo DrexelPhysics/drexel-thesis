@@ -1039,6 +1039,7 @@
 %
 %
 % \subsubsection{\pkg{fancyhdr}}
+% \label{sec:fancyhdr}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/}{\pkg{fancyhdr}}
 % for correct page numbering and fancy headers.
@@ -1054,6 +1055,9 @@
 %    \begin{macrocode}
 \pagestyle{fancy}
 \fancyhf{}
+%    \end{macrocode}
+% Turn off the header rule by setting its width to $0$.
+%    \begin{macrocode}
 \renewcommand{\headrulewidth}{0pt}
 %    \end{macrocode}
 % 0.4 pt is \pkg{fancyhdr}'s default |\headrulewidth|, so we'll
@@ -1085,6 +1089,14 @@
   \renewcommand{\footrulewidth}{0pt}
 }
 %    \end{macrocode}
+%
+% Note that the Chapter / Section footer is not required.  You can
+% remove the footer text and rule entirely with.
+% \begin{example}
+%   \renewcommand{\footrulewidth}{0pt}
+%   \fancyfoot[RE,LO]{}
+%   \fancyfoot[LE,RO]{}
+% \end{example}
 %
 %
 % \subsubsection{\pkg{ifpdf}}
@@ -3110,11 +3122,12 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 %     \end{example}
 %   \item Footer overlap if chapter/section names are particularly long.
 %     See \emph{Section in long-titled chapter} in \file{example.pdf}.
-%     Workaround: turn off either chapters or sections in the footer.
+%     Workaround: turn off sections in the footer:
 %     \begin{example}
 %       \fancyfoot[RE,LO]{\scshape\leftmark}
 %       \fancyfoot[LE,RO]{}
 %     \end{example}
+%     For more header or footer manipulation ideas, see Section \ref{sec:fancyhdr}.
 % \end{itemize}
 %
 %
