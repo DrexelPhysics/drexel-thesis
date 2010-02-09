@@ -2658,6 +2658,7 @@
 % \end{macro}
 %
 % \subsubsection{Words}
+% \label{sec:words}
 %
 % Set the official names of the various sections encountered.  Some of
 % these are not defined in \file{classes.dtx} but are close analogs of
@@ -2855,8 +2856,31 @@
 \usepackage{fancyvrb} % nicer verbatim handling
 \DefineShortVerb{\|}  % \verb+TEXT+  ->  |TEXT|
 
+%     \end{macrocode}
+% Use
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/blindtext/}{\pkg{blindtext}}
+% for dummy text creation.  \pkg{blindtext} requires
+% \href{}{\pkg{babel}}.
+%     \begin{macrocode}
 \usepackage[english]{babel} % English blindtext
 \usepackage{blindtext} % macros for producing dummy output
+%     \end{macrocode}
+% \pkg{babel} messes with some of our words (Section \ref{sec:words}), so
+% we have to reset them.  See the
+% \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=latexwords}{\TeX\ FAQ}
+% for details.
+%     \begin{macrocode}
+\addto\captionsenglish{%
+  \renewcommand\dedicationsname{Dedications}%
+  \renewcommand\acknowledgmentsname{Acknowledgments}%
+  \renewcommand\contentsname{Table of Contents}%
+  \renewcommand\listtablename{List of Tables}%
+  \renewcommand\listfigurename{List of Figures}%
+  \renewcommand\abstractname{Abstract}%
+  \renewcommand\bibname{Bibliography}%
+  \renewcommand\appendixname{Appendix}%
+  \renewcommand\vitaname{Vita}%
+}
 
 \begin{document}
 \begin{preamble}
