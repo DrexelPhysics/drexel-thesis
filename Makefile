@@ -45,8 +45,8 @@ EXAMPLE_FILES = template.tex example.tex example-draft.tex drexel-logo.pdf \
 	example-1.tex example-a.tex example-ref.bib \
 	example.pdf example-draft.pdf
 USEFUL_PACKAGES = blindtext.sty draftmark.sty etextools.sty etoolbox.sty \
-	floatrow.sty forloop.sty lastpage.sty ltxnew.sty pagerange.sty \
-	tocloft.sty xifthen.sty
+	floatrow.sty forloop.sty fr-subfig.sty lastpage.sty ltxnew.sty \
+	pagerange.sty tocloft.sty xifthen.sty
 
 drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(USEFUL_PACKAGES)
 	rm -f $@

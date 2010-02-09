@@ -188,6 +188,15 @@
 %   \Lopt{mydraftwatermark} & It's good to have a timestamp. \\
 % \end{tabular}
 %
+% \DescribeOption{subfig}
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}
+% makes it easy to include and caption multi-part figures.  However,
+% getting \pkg{subfig} to cooperate with \pkg{floatrow} and
+% \pkg{tocloft} can be tricky.  If you want to use \pkg{subfig}, just
+% pass the \Lopt{subfig} option to \cls{drexel-thesis}, and all the
+% pesky details will be taken care of.  See Section
+% \ref{sec:better-example} for an example.
+%
 % \DescribeOption{finalspace}
 % Loosen spacing.
 %
@@ -508,21 +517,10 @@
 %      \caption{Some caption text}
 %   \end{float}
 % \end{example}
-% For more useful float information, see the
+% For more useful float information, see the examples in Section
+% \ref{sec:better-example-part} and the
 % \href{http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
 %   {\LaTeX\ wikibook page}.
-%
-% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}
-% cooperates with \cls{drexel-thesis}'s included \pkg{floatrow}.  If
-% you wish to use the \pkg{subfig} macros, you should add something
-% like
-% \begin{example}
-%   \usepackage{subfig}
-%   \usepackage{fr-subfig}
-% \end{example}
-% See the \pkg{floatrow} documentation (Sec.~7.1, ``The \pkg{subfig}
-% package'') and \pkg{subfig} documentation (Sec.~4.3,
-% ``\pkg{FloatRow} Package'') for details.
 %
 %
 % \subsubsection{Citations}
@@ -626,6 +624,7 @@
 % Define some booleans to store option states
 %    \begin{macrocode}
 \newif\if@mainmatter \@mainmattertrue
+\newif\if@DUT@subfigopt
 \newif\if@dottedchapter 
 \newif\if@boldchapter
 \newif\if@boldpart
@@ -635,6 +634,13 @@
 \newif\if@indentfirst
 \newif\if@final \@finalfalse
 %    \end{macrocode}
+%
+% \begin{option}{subfig}
+% Set \Lopt{subfig} flag
+%    \begin{macrocode}
+\DeclareOptionX{subfig}{\@DUT@subfigopttrue}
+%    \end{macrocode}
+% \end{option}
 %
 % \begin{option}{finalspace}
 %    \begin{macrocode}
@@ -673,7 +679,7 @@
 % \begin{option}{dottedchapter}
 %    \begin{macrocode}
 \DeclareOptionX{dottedchapter}{\@dottedchaptertrue}
-%    \end{macrocode}
+%    \end{macrocode}1
 % \end{option}
 % \begin{option}{boldpart}
 %    \begin{macrocode}
@@ -939,8 +945,18 @@
 % Typeset the table of contents, etc., with
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/}{\pkg{tocloft}}.
 %    \begin{macrocode}
-\RequirePackage{tocloft}
+\if@DUT@subfigopt
+  \RequirePackage[subfigure]{tocloft}
+\else
+  \RequirePackage{tocloft}
+\fi
 %    \end{macrocode}
+% The \Lopt{subfigure} option sets up \pkg{tocloft} for
+% \pkg{subfig}/\pkg{subfigure} compatibility. See the
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf}{%
+%   \pkg{tocloft} manual, Section 2.1}
+% for details.
+%
 % The configuration of \pkg{tocloft} takes place in Sections
 % \ref{sec:implement-toc}, \ref{sec:implement-lof}, and
 % \ref{sec:implement-lot}.
@@ -980,11 +996,32 @@
 \floatsetup{captionskip=10pt}
 \floatsetup[table]{captionskip=10pt}
 %    \end{macrocode}
+% Use \pkg{fr-subfig} for \pkg{floatrow}/\pkg{subfig} compatibility.
+% See the \pkg{floatrow} documentation (Sec.~7.1, ``The \pkg{subfig}
+% package'') and \pkg{subfig} documentation (Sec.~4.3,
+% ``\pkg{FloatRow} Package'') for details.
+%    \begin{macrocode}
+\if@DUT@subfigopt
+  \RequirePackage{fr-subfig}
+\fi
+%    \end{macrocode}
 % We set up the three-line surrounding spaces in Section
 % \ref{sec:implement-floats}.
 %
 % You can change these settings using |\floatsetup|, but you probably
 % won't need to.
+%
+%
+% \subsubsection{\pkg{subfig}}
+% \label{sec:subfig}
+%
+% Allow multi-partfigures with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}.
+%    \begin{macrocode}
+\if@DUT@subfigopt
+  \RequirePackage{subfig}
+\fi
+%    \begin{macrocode}
 %
 %
 % \subsubsection{\pkg{fancyhdr}}
@@ -2771,8 +2808,8 @@
 %     \begin{macrocode}
 %<*example|example-draft>
 %% See drexel-thesis.pdf for details.
-%<example>\documentclass{drexel-thesis}
-%<example-draft>\documentclass[draft]{drexel-thesis}
+%<example>\documentclass[subfig]{drexel-thesis}
+%<example-draft>\documentclass[draft,subfig]{drexel-thesis}
 
 %% Enter the appropriate information here
 \author{Johny Henry}
@@ -2833,6 +2870,7 @@
 %
 %
 % \subsubsection{Part}
+% \label{section:better-example-part}
 %
 %     \begin{macrocode}
 %<*example-part>
@@ -2888,6 +2926,22 @@ parenthetical citation\citep{rief97}.
     \includegraphics[width=0.4\textwidth]{drexel-logo}
   \end{center}
 \end{figure}
+\Blindtext{10}{20}
+\begin{figure}
+  \begin{center}
+    \subfloat[][]{%
+      \includegraphics[width=0.2\textwidth]{drexel-logo}%
+      \label{fig:sub-a}}
+    \subfloat[][]{%
+      \includegraphics[width=0.2\textwidth]{drexel-logo}%
+      \label{fig:sub-b}}
+    \caption{(a) One subfig float. (b) Another subfig float.%
+      \label{fig:both}}
+  \end{center}
+\end{figure}
+You can reference the subfig floats individually (\ref{fig:sub-a}) or
+together (\ref{fig:both}).
+
 \Blindtext{10}{20}
 
 \part{Another Part}
