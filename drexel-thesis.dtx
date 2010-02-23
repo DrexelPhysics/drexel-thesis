@@ -129,6 +129,12 @@
 %   Based on the University of Toronto Thesis \LaTeXe\ Class.  Also
 %   greatly improved the documentation by incorperating bits of
 %   the base/*.dtx files.}
+% \changes{0.4}{2010/02/23}{W.~Trevor King repositioned hyperref
+%   inclusion for proper hyperref overriding.  The previous
+%   implementation couldn't handle $\backslash$label for
+%   $\backslash$paragraph and some other section levels.  The page
+%   number for the reference was correct, but the link went to the
+%   label's parent chapter.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -1109,19 +1115,15 @@
 %    \end{macrocode}
 % 
 % \subsubsection{\pkg{hyperref}}
+% \label{sec:hyperref}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/}{\pkg{hyperref}}
 % for hyperlinks.  Not strictly necessary, but I can't imagine a
-% thesis without it.
-%    \begin{macrocode}
-\RequirePackage[final]{hyperref}
-%    \end{macrocode}
-% Nobody likes the default colored boxes.  Color the text itself.
-%    \begin{macrocode}
-\hypersetup{colorlinks}
-%    \end{macrocode}
-% If we're writing a PDF, we set the |pdfauthor|, etc.\ arguments in
-% |\author|, etc.\ to avoid using |\AtBeginDocument| or some such.
+% thesis without it.  We actually include this later
+% (Section~\ref{sec:hyperref-inclusion}), because \pkg{hyperref}
+% sticks its fingers into \emph{everything} and we want it to use our
+% versions of some macros (e.g. |\@sect|) but not others
+% (e.g. |thebibliography|).
 %
 %
 % \subsection{\LaTeX\ overrides and extensions}
@@ -1155,7 +1157,8 @@
 % |\author| for use in |\maketitle|.  If not given |\maketitle| will
 % produce a warning message (\file{ltsect.dtx}, L129).
 %
-% We extend |\author| to set \pkg{hyperref}'s |pdfauthor|.
+% We extend |\author| to set \pkg{hyperref}'s |pdfauthor| if we're
+% writing a PDF to avoid using |\AtBeginDocument| or some such.
 % (\file{ltsect.dtx}, L129).
 %    \begin{macrocode}
 \let\DUT@author\author
@@ -1295,10 +1298,11 @@
 % \begin{macro}{\DUT@baselineskip}
 % Since we'll be messing with the spacing, save the single-spaced
 % baseline.
-%   \changes{0.3}{2010/01/13}{Use \\setlength to store the value at
-%     the default font.  The previous version used \\let, which made
-%     \\DUT\@baselineskip a synonym for \\baselineskip that changed
-%     with font size.}
+%   \changes{0.3}{2010/01/13}{Use $\backslash$setlength to store the
+%     value at the default font.  The previous version used
+%     $\backslash$let, which made $\backslash$DUT\@baselineskip a
+%     synonym for $\backslash$baselineskip that changed with font
+%     size.}
 %    \begin{macrocode}
 \newlength\DUT@baselineskip
 \setlength\DUT@baselineskip\baselineskip
@@ -1541,6 +1545,21 @@
 % \end{macro}
 %
 %
+% \subsection{\pkg{hyperref} inclusion}
+% \label{sec:hyperref-inclusion}
+%
+% This is the awkward \pkg{hyperref} inclusion.  See
+% Section~\ref{sec:hyperref} for an explanation of why we stash it
+% here.
+%    \begin{macrocode}
+\RequirePackage[final]{hyperref}
+%    \end{macrocode}
+% Nobody likes the default colored boxes.  Color the text itself.
+%    \begin{macrocode}
+\hypersetup{colorlinks}
+%    \end{macrocode}
+%
+%
 % \subsection{\cls{book} overrides and extensions}
 %
 % Here we change the behavior of a bunch of macros and environments from
@@ -1699,7 +1718,7 @@
 % \begin{macro}{\copyrighttextCCBYSA}
 % The Creative Commons Attribution-ShareAlike License.
 % \changes{0.4}{2010/02/23}{W.~Trevor King renamed from
-% \\copyrighttextCC, and made specific to Creative Commons
+% $\backslash$copyrighttextCC, and made specific to Creative Commons
 % Attribution-ShareAlike Version 3.0.}
 %    \begin{macrocode}
 \newcommand\copyrighttextCCBYSA{
