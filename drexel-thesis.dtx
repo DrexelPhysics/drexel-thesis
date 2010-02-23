@@ -1,8 +1,8 @@
-% \def\fileversion{0.3}
-% \def\filedate{2010/01/13}
+% \def\fileversion{0.4}
+% \def\filedate{2010/02/23}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.3}
-%<class>\def\filedate{2010/01/13}
+%<class>\def\fileversion{0.4}
+%<class>\def\filedate{2010/02/23}
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -188,6 +188,15 @@
 %   \Lopt{mydraftwatermark} & It's good to have a timestamp. \\
 % \end{tabular}
 %
+% \DescribeOption{subfig}
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}
+% makes it easy to include and caption multi-part figures.  However,
+% getting \pkg{subfig} to cooperate with \pkg{floatrow} and
+% \pkg{tocloft} can be tricky.  If you want to use \pkg{subfig}, just
+% pass the \Lopt{subfig} option to \cls{drexel-thesis}, and all the
+% pesky details will be taken care of.  See Section
+% \ref{sec:better-example} for an example.
+%
 % \DescribeOption{finalspace}
 % Loosen spacing.
 %
@@ -201,6 +210,12 @@
 % printed.  \LaTeX\ defaults to bold but not dots.  The \Lopt{*toc}
 % options set all of the types.  For example, \Lopt{boldtoc} is
 % equivalent to \Lopt{boldchapter,boldpart}.
+%
+% \DescribeOption{indenttoc}
+% The example table of contents in the Manual p17 does not indent
+% section entries, etc., so neither does \cls{drexel-thesis}.  If you
+% \emph{do} want pretty, indented TOCs, like the \LaTeX\ defaults pass
+% \Lopt{indenttoc} to \cls{drexel-thesis}.
 %
 % \DescribeOption{draftwatermark}
 % \Lopt{draftwatermark} adds ``DRAFT \meta{date}'' watermarks to each
@@ -509,10 +524,11 @@
 %      \caption{Some caption text}
 %   \end{float}
 % \end{example}
-% For more useful float information, see the
+% For more useful float information, see the examples in Section
+% \ref{sec:better-example-part} and the
 % \href{http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
 %   {\LaTeX\ wikibook page}.
-% 
+%
 %
 % \subsubsection{Citations}
 %
@@ -530,8 +546,16 @@
 %
 % \subsubsection{References}
 %
+% Easier cross referencing with
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/cleveref/}{\pkg{cleveref}}.
-% Is a wonderful tool for easy, consistent crosslinking.  The manual is also very good.
+% Is a wonderful tool for easy, consistent crosslinking via |\cref|,
+% |\Cref|, etc..  The manual is also very good.
+% Note that if you use |\part|s in your document, you need to tell
+% \pkg{cleveref} how to deal with them:
+% \begin{example}
+%   \usepackage{cleveref}
+%   \crefname{part}{part}{parts}
+% \end{example}
 %
 %
 % \subsubsection{Hyperlinks}
@@ -547,6 +571,39 @@
 % |\degree| automatically set |pdfauthor|, |pdftitle|, and
 % |pdfsubject| respectively.  You can use the |\hypersetup| macro to
 % set options overriding these defaults.
+%
+%
+% \subsubsection{Developing large \LaTeX\ documents}
+%
+% A thesis may take a while to compile, especially if it contains
+% lots of images, etc..  One way to save time, is to use |\includeonly|
+% when including chapter \file{*.tex} files (see
+% \href{http://en.wikibooks.org/wiki/TeX/includeonly}{the \TeX\ Wikibook}).
+% Usage would be something like
+% \begin{example}
+% \documentclass{drexel-thesis}
+% ...
+% \includeonly{chapter2.tex,chapter3.tex}
+% \begin{document}
+% ...
+% \begin{thesis}
+% \include{chapter1.tex}
+% \include{chapter2.tex}
+% \include{chapter3.tex}
+% \include{chapter4.tex}
+% \end{thesis}
+% ...
+% \end{document}
+% \end{example}
+% which would only compile chapters two and three.  Don't confuse the
+% similar commands |\include| and |\input|.  The more fundamental
+% |\input| just inserts the file contents at that point, while
+% |\include|
+% \begin{itemize}
+%   \item may only be used after |\begin{document}|
+%   \item acts like |\clearpage \input{} \clearpage|
+%   \item will not crash on nonexistent files
+% \end{itemize}
 %
 %
 % \StopEventually{\pagebreak\PrintChanges}
@@ -574,15 +631,24 @@
 % Define some booleans to store option states
 %    \begin{macrocode}
 \newif\if@mainmatter \@mainmattertrue
+\newif\if@DUT@subfigopt
 \newif\if@dottedchapter 
 \newif\if@boldchapter
 \newif\if@boldpart
 \newif\if@dottedpart
+\newif\if@indenttoc
 \newif\if@draftwatermark
 \newif\if@mydraftwatermark
 \newif\if@indentfirst
 \newif\if@final \@finalfalse
 %    \end{macrocode}
+%
+% \begin{option}{subfig}
+% Set \Lopt{subfig} flag
+%    \begin{macrocode}
+\DeclareOptionX{subfig}{\@DUT@subfigopttrue}
+%    \end{macrocode}
+% \end{option}
 %
 % \begin{option}{finalspace}
 %    \begin{macrocode}
@@ -621,7 +687,7 @@
 % \begin{option}{dottedchapter}
 %    \begin{macrocode}
 \DeclareOptionX{dottedchapter}{\@dottedchaptertrue}
-%    \end{macrocode}
+%    \end{macrocode}1
 % \end{option}
 % \begin{option}{boldpart}
 %    \begin{macrocode}
@@ -647,6 +713,13 @@
   \setkeys{drexel-thesis.cls}{boldpart}
   \setkeys{drexel-thesis.cls}{boldchapter}
 }
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{indenttoc}
+% Set \Lopt{indenttoc} flag
+%    \begin{macrocode}
+\DeclareOptionX{indenttoc}{\@indenttoctrue}
 %    \end{macrocode}
 % \end{option}
 %
@@ -887,8 +960,18 @@
 % Typeset the table of contents, etc., with
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/}{\pkg{tocloft}}.
 %    \begin{macrocode}
-\RequirePackage{tocloft}
+\if@DUT@subfigopt
+  \RequirePackage[subfigure]{tocloft}
+\else
+  \RequirePackage{tocloft}
+\fi
 %    \end{macrocode}
+% The \Lopt{subfigure} option sets up \pkg{tocloft} for
+% \pkg{subfig}/\pkg{subfigure} compatibility. See the
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf}{%
+%   \pkg{tocloft} manual, Section 2.1}
+% for details.
+%
 % The configuration of \pkg{tocloft} takes place in Sections
 % \ref{sec:implement-toc}, \ref{sec:implement-lof}, and
 % \ref{sec:implement-lot}.
@@ -928,6 +1011,15 @@
 \floatsetup{captionskip=10pt}
 \floatsetup[table]{captionskip=10pt}
 %    \end{macrocode}
+% Use \pkg{fr-subfig} for \pkg{floatrow}/\pkg{subfig} compatibility.
+% See the \pkg{floatrow} documentation (Sec.~7.1, ``The \pkg{subfig}
+% package'') and \pkg{subfig} documentation (Sec.~4.3,
+% ``\pkg{FloatRow} Package'') for details.
+%    \begin{macrocode}
+\if@DUT@subfigopt
+  \RequirePackage{fr-subfig}
+\fi
+%    \end{macrocode}
 % We set up the three-line surrounding spaces in Section
 % \ref{sec:implement-floats}.
 %
@@ -935,7 +1027,20 @@
 % won't need to.
 %
 %
+% \subsubsection{\pkg{subfig}}
+% \label{sec:subfig}
+%
+% Allow multi-part figures with
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/}{\pkg{subfig}}.
+%    \begin{macrocode}
+\if@DUT@subfigopt
+  \RequirePackage{subfig}
+\fi
+%    \end{macrocode}
+%
+%
 % \subsubsection{\pkg{fancyhdr}}
+% \label{sec:fancyhdr}
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/}{\pkg{fancyhdr}}
 % for correct page numbering and fancy headers.
@@ -951,6 +1056,9 @@
 %    \begin{macrocode}
 \pagestyle{fancy}
 \fancyhf{}
+%    \end{macrocode}
+% Turn off the header rule by setting its width to $0$.
+%    \begin{macrocode}
 \renewcommand{\headrulewidth}{0pt}
 %    \end{macrocode}
 % 0.4 pt is \pkg{fancyhdr}'s default |\headrulewidth|, so we'll
@@ -982,6 +1090,14 @@
   \renewcommand{\footrulewidth}{0pt}
 }
 %    \end{macrocode}
+%
+% Note that the Chapter / Section footer is not required.  You can
+% remove the footer text and rule entirely with.
+% \begin{example}
+%   \renewcommand{\footrulewidth}{0pt}
+%   \fancyfoot[RE,LO]{}
+%   \fancyfoot[LE,RO]{}
+% \end{example}
 %
 %
 % \subsubsection{\pkg{ifpdf}}
@@ -1582,6 +1698,9 @@
 %
 % \begin{macro}{\copyrighttextCCBYSA}
 % The Creative Commons Attribution-ShareAlike License.
+% \changes{0.4}{2010/02/23}{W.~Trevor King renamed from
+% \\copyrighttextCC, and made specific to Creative Commons
+% Attribution-ShareAlike Version 3.0.}
 %    \begin{macrocode}
 \newcommand\copyrighttextCCBYSA{
   \begin{quote}
@@ -2373,6 +2492,19 @@
 % \end{macro}
 % \end{macro}
 %
+% The default indents above are all |0pt|.  If \Lopt{indenttoc} was
+% given, override this, restoring the \pkg{tocloft} defaults, see the
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf}{%
+%   \pkg{tocloft} manual, Table 1}.
+%    \begin{macrocode}
+\if@indenttoc
+  \cftsetindents{chapter}{0pt}{1.5em}
+  \cftsetindents{section}{1.5em}{2.3em}
+  \cftsetindents{subsection}{3.8em}{3.2em}
+  \cftsetindents{subsubsection}{7.0em}{4.1em}
+\fi
+%    \end{macrocode}
+%
 %
 % \subsubsection{List of figures}
 % \label{sec:implement-lof}
@@ -2543,6 +2675,7 @@
 % \end{macro}
 %
 % \subsubsection{Words}
+% \label{sec:words}
 %
 % Set the official names of the various sections encountered.  Some of
 % these are not defined in \file{classes.dtx} but are close analogs of
@@ -2720,8 +2853,8 @@
 %     \begin{macrocode}
 %<*example|example-draft>
 %% See drexel-thesis.pdf for details.
-%<example>\documentclass{drexel-thesis}
-%<example-draft>\documentclass[draft]{drexel-thesis}
+%<example>\documentclass[subfig]{drexel-thesis}
+%<example-draft>\documentclass[draft,subfig]{drexel-thesis}
 
 %% Enter the appropriate information here
 \author{Johny Henry}
@@ -2740,17 +2873,41 @@
 \usepackage{fancyvrb} % nicer verbatim handling
 \DefineShortVerb{\|}  % \verb+TEXT+  ->  |TEXT|
 
-\usepackage{blabla} % \blabla macro for producing dummy output
+%     \end{macrocode}
+% Use
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/blindtext/}{\pkg{blindtext}}
+% for dummy text creation.  \pkg{blindtext} requires
+% \href{}{\pkg{babel}}.
+%     \begin{macrocode}
+\usepackage[english]{babel} % English blindtext
+\usepackage{blindtext} % macros for producing dummy output
+%     \end{macrocode}
+% \pkg{babel} messes with some of our words (Section \ref{sec:words}), so
+% we have to reset them.  See the
+% \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=latexwords}{\TeX\ FAQ}
+% for details.
+%     \begin{macrocode}
+\addto\captionsenglish{%
+  \renewcommand\dedicationsname{Dedications}%
+  \renewcommand\acknowledgmentsname{Acknowledgments}%
+  \renewcommand\contentsname{Table of Contents}%
+  \renewcommand\listtablename{List of Tables}%
+  \renewcommand\listfigurename{List of Figures}%
+  \renewcommand\abstractname{Abstract}%
+  \renewcommand\bibname{Bibliography}%
+  \renewcommand\appendixname{Appendix}%
+  \renewcommand\vitaname{Vita}%
+}
 
 \begin{document}
 \begin{preamble}
 
 \begin{dedications}
-\blabla{10}{20}
+\Blindtext{10}{10}
 \end{dedications}
 
 \begin{acknowledgments}
-\blabla{10}{20}
+\Blindtext{10}{10}
 \end{acknowledgments}
 
 \tableofcontents
@@ -2758,7 +2915,7 @@
 \listoffigures
 
 \begin{abstract}
-\blabla{10}{20}
+\Blindtext{10}{10}
 \end{abstract}
 \end{preamble}
 
@@ -2772,7 +2929,7 @@
 \include{example-a}
 
 \begin{vita}
-\blabla{10}{20}
+\Blindtext{10}{10}
 \end{vita}
 
 \end{document}
@@ -2781,6 +2938,7 @@
 %
 %
 % \subsubsection{Part}
+% \label{section:better-example-part}
 %
 %     \begin{macrocode}
 %<*example-part>
@@ -2808,7 +2966,7 @@ Here we have a text citation \citet{rief97} followed by a
 parenthetical citation\citep{rief97}.
 
 \subsubsection{Tables and Figures}
-\blabla{2}{20}
+\Blindtext{2}{20}
 \begin{table}
   \begin{center}
   \begin{tabular}{r@{.}l r@{.}l r@{.}l}
@@ -2820,7 +2978,7 @@ parenthetical citation\citep{rief97}.
     30&0 & 11&9 & 10&1 \\
     \ldots
   \end{tabular}
-  \caption{A table float. \bla{20}}  % low caption allowed with floatrow
+  \caption{A table float.} %\blindtext{20}}  % low caption allowed with floatrow
 %% Note the strange |r@{.}l| notation in the |\tabular| column
 %% definition.  This allows for numbers aligned at the decimal point
 %% (see \href{http://www.stat.unipg.it/tex-man/ltx-68.html}{here}).
@@ -2829,21 +2987,37 @@ parenthetical citation\citep{rief97}.
 %% to span the pre- and post-decimal columns.
   \end{center}
 \end{table}
-\blabla{5}{20}
+\Blindtext{5}{20}
 \begin{figure}
-  \caption{A figure float. \bla{20}} % high caption allowed with floatrow
+  \caption{A figure float. \blindtext{20}} % high caption allowed with floatrow
   \begin{center}
     \includegraphics[width=0.4\textwidth]{drexel-logo}
   \end{center}
 \end{figure}
-\blabla{10}{20}
+\Blindtext{10}{20}
+\begin{figure}
+  \begin{center}
+    \subfloat[][]{%
+      \includegraphics[width=0.2\textwidth]{drexel-logo}%
+      \label{fig:sub-a}}
+    \subfloat[][]{%
+      \includegraphics[width=0.2\textwidth]{drexel-logo}%
+      \label{fig:sub-b}}
+    \caption{(a) One subfig float. (b) Another subfig float.%
+      \label{fig:both}}
+  \end{center}
+\end{figure}
+You can reference the subfig floats individually (\ref{fig:sub-a}) or
+together (\ref{fig:both}).
+
+\Blindtext{10}{20}
 
 \part{Another Part}
 \chapter{Another Chapter}
-\blabla{30}{20}
+\Blindtext{30}{20}
 \chapter{A Long Title Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
 Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
-\blabla{30}{20}
+\Blindtext{30}{20}
 %</example-part>
 %    \end{macrocode}
 %
@@ -2912,41 +3086,10 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 %    \begin{macrocode}
 %<*example-appendix>
 \chapter{Some Appendix Heading}
-\blabla{10}{20}
+\Blindtext{10}{20}
 \chapter{Another Appendix Heading}
-\blabla{10}{20}
+\Blindtext{10}{20}
 %</example-appendix>
-%    \end{macrocode}
-%
-%
-% \subsubsection{\pkg{blabla}}
-%
-% Define the \pkg{blabla} package for generating dummy text.  This
-% will make it easier to generate reasonable exampes.
-%    \begin{macrocode}
-%<*blabla>
-\ProvidesPackage{blabla} [2010/01/11 1.0 Dummy text generation]
-%    \end{macrocode}
-% Use
-% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/forloop/}{\pkg{foorloop}}
-% for
-% \begin{command}
-%   `\cs{forloop}\oarg{step}\marg{counter}\marg{initial value}\marg{condition}\marg{code}'
-% \end{command}
-%    \begin{macrocode}
-\RequirePackage{forloop}[2006/09/18]
-
-\newcounter{blabla@i}
-\newcounter{blabla@j}
-\newcommand{\bla}[1]{
-   Bla
-  \forloop{blabla@i}{0}{\value{blabla@i} < #1}{ bla }
-  bla.
-}
-\newcommand{\blabla}[2]{
-  \forloop{blabla@j}{0}{\value{blabla@j} < #1}{ \bla{#2}\par }
-}
-%</blabla>
 %    \end{macrocode}
 %
 %
@@ -2969,7 +3112,27 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 % \begin{itemize}
 %   \item Different space between chapter heading and section heading,
 %     vs.\ chapter heading and text.  Compare \emph{A Chapter Heading}
-%     and \emph{Another Chapter} in \file{example.pdf}.
+%     and \emph{Another Chapter} in \file{example.pdf}.  This is a
+%     problem (although with opposite order) in the \cls{book} class
+%     itself.  For example, compile
+%     \begin{example}
+%\documentclass{book}
+%\begin{document}
+%\chapter{Chapter with text}
+%Bla bla bla.
+%\chapter{Chapter with section}
+%\section{Section}
+%Bla bla bla.
+%\end{document}
+%     \end{example}
+%   \item Footer overlap if chapter/section names are particularly long.
+%     See \emph{Section in long-titled chapter} in \file{example.pdf}.
+%     Workaround: turn off sections in the footer:
+%     \begin{example}
+%       \fancyfoot[RE,LO]{\scshape\leftmark}
+%       \fancyfoot[LE,RO]{}
+%     \end{example}
+%     For more header or footer manipulation ideas, see Section \ref{sec:fancyhdr}.
 % \end{itemize}
 %
 %
