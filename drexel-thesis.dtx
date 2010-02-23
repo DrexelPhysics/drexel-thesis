@@ -324,11 +324,12 @@
 % See the Manual 3.2 p9.
 %
 % \begin{command}
-%   `\cs{copyrighttextCC}'
+%   `\cs{copyrighttextCCBYSA}'
 % \end{command}
 % There are a number of predefined copyright messages for ease of use \\
 % \begin{tabular}{l l}
-%   |\copyrighttextCC| & Creative Commons copyright \\
+%   |\copyrighttextCCBYSA| &
+%     Creative Commons Attribution-ShareAlike License Version 3.0.\\
 % \end{tabular}
 %
 % \begin{command}
@@ -1579,13 +1580,14 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\copyrighttextCC}
-% The Creative Commons license.
+% \begin{macro}{\copyrighttextCCBYSA}
+% The Creative Commons Attribution-ShareAlike License.
 %    \begin{macrocode}
-\newcommand\copyrighttextCC{
+\newcommand\copyrighttextCCBYSA{
   \begin{quote}
     This work is licensed under the terms of the Creative Commons
-    Attribution-ShareAlike license.  The license is available at \\
+    Attribution-ShareAlike license Version 3.0.  The license is
+    available at \\
     \url{http://creativecommons.org/licenses/by-sa/3.0/}.
   \end{quote}
 }
@@ -2730,7 +2732,7 @@
 \advisor{Collis Potter Huntington, R.R.D.}
 \advisor{Advisor 2, Ph.D.}
 \advisor{Advisor 3, Ph.D.}
-\copyrighttext{\copyrighttextCC}
+\copyrighttext{\copyrighttextCCBYSA}
 
 \usepackage[super,sort&compress]{natbib} % fancy citation extensions
 \bibliographystyle{unsrtnat}
