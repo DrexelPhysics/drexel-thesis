@@ -1,8 +1,8 @@
-% \def\fileversion{0.4}
-% \def\filedate{2010/02/23}
+% \def\fileversion{0.5}
+% \def\filedate{2010/03/03}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.4}
-%<class>\def\filedate{2010/02/23}
+%<class>\def\fileversion{0.5}
+%<class>\def\filedate{2010/03/03}
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -129,6 +129,8 @@
 %   Based on the University of Toronto Thesis \LaTeXe\ Class.  Also
 %   greatly improved the documentation by incorperating bits of
 %   the base/*.dtx files.}
+% \changes{0.5}{2010/03/03}{W.~Trevor King use hypcap for better
+%   caption hyperlink anchor placement.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -504,9 +506,11 @@
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/graphics/}{\pkg{graphicx}}
 % to define the |\includegraphics| macro,
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/caption/}{\pkg{caption}}
-% for pretty caption formatting, and
+% for pretty caption formatting,
 % \href{http://www.ctan.org/tex-archive/macros/latex/required/floatrow/}{\pkg{floatrow}}
-% for placing captions.
+% for placing captions, and
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/}{\pkg{hypcap}}
+% for placing caption anchors.
 %
 % Simple float definitions will look like
 % \begin{example}
@@ -1122,6 +1126,18 @@
 %    \end{macrocode}
 % If we're writing a PDF, we set the |pdfauthor|, etc.\ arguments in
 % |\author|, etc.\ to avoid using |\AtBeginDocument| or some such.
+%
+%
+% \subsubsection{\pkg{hypcap}}
+%
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/}{\pkg{hypcap}}
+% for placing caption hyperlink anchors.  Not strictly necessary, but
+% we're using \pkg{hyperref}, and the poor link targets are annoying.
+%    \begin{macrocode}
+\RequirePackage[all]{hypcap}
+%    \end{macrocode}
+% \Lopt{all} redefines the figure and table environments to
+% place the anchor at the start of the float.
 %
 %
 % \subsection{\LaTeX\ overrides and extensions}
