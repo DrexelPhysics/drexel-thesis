@@ -1,8 +1,8 @@
-% \def\fileversion{0.5}
-% \def\filedate{2010/03/03}
+% \def\fileversion{0.6}
+% \def\filedate{2010/03/11}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.5}
-%<class>\def\filedate{2010/03/03}
+%<class>\def\fileversion{0.6}
+%<class>\def\filedate{2010/03/11}
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -137,6 +137,9 @@
 %   label's parent chapter.}
 % \changes{0.5}{2010/03/03}{W.~Trevor King use hypcap for better
 %   caption hyperlink anchor placement.}
+% \changes{0.6}{2010/03/11}{W.~Trevor King fixed
+%   $\backslash$if\@ final handling.  Previous versions used
+%   it more like a hypothetical $\backslash$if\@ finalspace.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -650,7 +653,7 @@
 \newif\if@draftwatermark
 \newif\if@mydraftwatermark
 \newif\if@indentfirst
-\newif\if@final \@finalfalse
+\newif\if@final
 %    \end{macrocode}
 %
 % \begin{option}{subfig}
@@ -668,7 +671,6 @@
   \def\@ssp{1} % single space
   \def\@dsp{2} % double space
   \def\@tsp{3} % triple space
-  \@finaltrue
 }
 %    \end{macrocode}
 % \end{option}
@@ -684,7 +686,6 @@
 %  Don't force chapters onto right-hand pages.
 %    \begin{macrocode}
   \PassOptionsToClass{openany}{book}
-  \@finalfalse
 }
 %    \end{macrocode}
 % \end{option}
@@ -775,6 +776,7 @@
 % \begin{option}{final}
 %    \begin{macrocode}
 \DeclareOptionX{final}{
+  \@finaltrue
   \setkeys{drexel-thesis.cls}{oneside}
   \setkeys{drexel-thesis.cls}{finalspace}
   \setkeys{drexel-thesis.cls}{dottedtoc}
@@ -785,6 +787,7 @@
 % \begin{option}{draft}
 %    \begin{macrocode}
 \DeclareOptionX{draft}{
+  \@finalfalse
   \setkeys{drexel-thesis.cls}{twoside}
   \setkeys{drexel-thesis.cls}{draftspace}
   \setkeys{drexel-thesis.cls}{dottedtoc}
