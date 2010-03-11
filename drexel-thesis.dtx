@@ -139,7 +139,8 @@
 %   caption hyperlink anchor placement.}
 % \changes{0.6}{2010/03/11}{W.~Trevor King fixed
 %   $\backslash$if\@ final handling.  Previous versions used
-%   it more like a hypothetical $\backslash$if\@ finalspace.}
+%   it more like a hypothetical $\backslash$if\@ finalspace.
+%   Also adjusted theindex to use a listed\@ schapter.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -2061,7 +2062,7 @@
 % Workaround is to pass the ``value of blanklines you want minus two''
 % to |\blanklines*|.  HACK!
 %    \begin{macro}
-  \blanklines*{-1}%
+  \blanklines*{-1}% HACK!
   {\parindent \z@ \raggedright \normalfont
 %    \end{macrocode}
 % Ensure single spacing.
@@ -2111,9 +2112,15 @@
 % \pkg{fancyhdr}.
 % (\file{classes.dtx}, L2582).
 %    \begin{macrocode}
-\def\@schapter#1{\schaptermark{#1}%
-                 \@makeschapterhead{#1}%
-                 \@afterheading}
+\def\@schapter#1{
+% \end{macrocode}
+% Inform the user that a new chapter is about to be typeset by writing
+% a message to the terminal.
+% \begin{macrocode}
+  \typeout{\@chapapp\space #1}%
+  \schaptermark{#1}%
+  \@makeschapterhead{#1}%
+  \@afterheading}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2716,10 +2723,66 @@
 %    \begin{macrocode}
 \newcommand{\bib@heading}{%
   \listed@schapter{\bibname}%
-  \@mkboth{\MakeUppercase\bibname}{\MakeUppercase\bibname}%
 }
 %    \end{macrocode}
 % \end{macro}
+%
+%
+% \subsubsection{Index}
+%
+% \begin{environment}{theindex}
+% The environment |theindex| can be used for indices. It makes an
+% index with two columns, with each entry a separate paragraph. At
+% the user level the commands |\item|, |\subitem| and |\subsubitem|
+% are used to produce index entries of various levels. When a new
+% letter of the alphabet is encountered an amount of |\indexspace|
+% white space can be added.
+%
+% Override \cls{book}'s version, adding a line to the table of
+% contents.  We split out the section-creation code into
+% |\bib@heading| for \pkg{natbib} compatibility.
+% (\file{classes.dtx}, L4107).
+%    \begin{macrocode}
+\renewenvironment{theindex}
+               {\if@twocolumn
+                  \@restonecolfalse
+                \else
+                  \@restonecoltrue
+                \fi
+%    \end{macrocode}
+% Here we add our TOC entry, and setup two-columness by hand
+% to avoid the |\clearpage| in \LaTeX's default |\twocolumn|.
+%    \begin{macrocode}
+  \listed@schapter{\indexname}
+  \global\columnwidth\textwidth
+  \global\advance\columnwidth-\columnsep
+  \global\divide\columnwidth\tw@
+  \global\hsize\columnwidth
+  \global\linewidth\columnwidth
+  \global\@twocolumntrue
+  \global\@firstcolumntrue
+  \col@number \tw@
+%    \end{macrocode}
+%    Parameter changes to |\columnseprule| and |\columnsep| have to be
+%    done after |\twocolumn| has acted. Otherwise they can affect the
+%    last page before the index.
+% \changes{ v1.4f}{2004/02/16}{Moved setting of \cs{columnsep} and
+%    \cs{columnseprule} later to avoid affecting the wrong page (pr/3616)}
+%    \begin{macrocode}
+                \parindent\z@
+                \parskip\z@ \@plus .3\p@\relax
+                \columnseprule \z@
+                \columnsep 35\p@
+                \let\item\@idxitem}
+%    \end{macrocode}
+%    When the document continues after the index and it was a one
+%    column document we have to switch back to one column after the
+%    index.
+%    \begin{macrocode}
+               {\if@restonecol\onecolumn\else\DUT@clearpage\fi}
+%    \end{macrocode}
+% \end{environment}
+%
 %
 % \subsubsection{Words}
 % \label{sec:words}
