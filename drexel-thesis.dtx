@@ -1,8 +1,8 @@
-% \def\fileversion{0.6}
-% \def\filedate{2010/03/11}
+% \def\fileversion{0.7}
+% \def\filedate{2010/03/14}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.6}
-%<class>\def\filedate{2010/03/11}
+%<class>\def\fileversion{0.7}
+%<class>\def\filedate{2010/03/14}
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -413,6 +413,15 @@
 % The skipped lines are always \emph{single spaced} lines, regardless
 % of the current line spacing in the environment calling this macro.
 %
+% \begin{command}
+%   `\cs{iffinal}\marg{final-mode-action}\marg{draft-mode-action}'
+% \end{command}
+% \DescribeMacro{\iffinal}
+% Include \Lopt{final}- or \Lopt{draft}-specific code.
+% \begin{example}
+%   We're in \iffinal{final}{draft} mode!
+% \end{example}
+%
 %
 % \subsection{Environments}
 %
@@ -656,6 +665,15 @@
 \newif\if@indentfirst
 \newif\if@final
 %    \end{macrocode}
+%
+% \begin{macro}{\iffinal}
+% Setup a user-friendly means for including \Lopt{final}- or
+% \Lopt{draft}-specific code.
+% \changes{0.7}{2010/03/14}{W.~Trevor King added macro.}
+%    \begin{macrocode}
+\newcommand\iffinal[2]{\if@final #1\else #2\fi}
+%    \end{macrocode}
+% \end{macro}
 %
 % \begin{option}{subfig}
 % Set \Lopt{subfig} flag
@@ -2766,8 +2784,6 @@
 %    Parameter changes to |\columnseprule| and |\columnsep| have to be
 %    done after |\twocolumn| has acted. Otherwise they can affect the
 %    last page before the index.
-% \changes{ v1.4f}{2004/02/16}{Moved setting of \cs{columnsep} and
-%    \cs{columnseprule} later to avoid affecting the wrong page (pr/3616)}
 %    \begin{macrocode}
                 \parindent\z@
                 \parskip\z@ \@plus .3\p@\relax
@@ -3013,11 +3029,13 @@
 \begin{preamble}
 
 \begin{dedications}
-\Blindtext{10}{10}
+We're in \iffinal{final}{draft} mode!
+
+\Blindtext[3]
 \end{dedications}
 
 \begin{acknowledgments}
-\Blindtext{10}{10}
+\Blindtext[3]
 \end{acknowledgments}
 
 \tableofcontents
@@ -3025,7 +3043,7 @@
 \listoffigures
 
 \begin{abstract}
-\Blindtext{10}{10}
+\Blindtext[3]
 \end{abstract}
 \end{preamble}
 
@@ -3039,7 +3057,7 @@
 \include{example-a}
 
 \begin{vita}
-\Blindtext{10}{10}
+\Blindtext[3]
 \end{vita}
 
 \end{document}
@@ -3076,7 +3094,7 @@ Here we have a text citation \citet{rief97} followed by a
 parenthetical citation\citep{rief97}.
 
 \subsubsection{Tables and Figures}
-\Blindtext{2}{20}
+\Blindtext[2]
 \begin{table}
   \begin{center}
   \begin{tabular}{r@{.}l r@{.}l r@{.}l}
@@ -3088,7 +3106,7 @@ parenthetical citation\citep{rief97}.
     30&0 & 11&9 & 10&1 \\
     \ldots
   \end{tabular}
-  \caption{A table float.} %\blindtext{20}}  % low caption allowed with floatrow
+  \caption{A table float.} % low caption allowed with floatrow
 %% Note the strange |r@{.}l| notation in the |\tabular| column
 %% definition.  This allows for numbers aligned at the decimal point
 %% (see \href{http://www.stat.unipg.it/tex-man/ltx-68.html}{here}).
@@ -3097,14 +3115,14 @@ parenthetical citation\citep{rief97}.
 %% to span the pre- and post-decimal columns.
   \end{center}
 \end{table}
-\Blindtext{5}{20}
+\Blindtext[2]
 \begin{figure}
-  \caption{A figure float. \blindtext{20}} % high caption allowed with floatrow
+  \caption{A figure float. \blindtext} % high caption allowed with floatrow
   \begin{center}
     \includegraphics[width=0.4\textwidth]{drexel-logo}
   \end{center}
 \end{figure}
-\Blindtext{10}{20}
+\Blindtext[3]
 \begin{figure}
   \begin{center}
     \subfloat[][]{%
@@ -3120,14 +3138,14 @@ parenthetical citation\citep{rief97}.
 You can reference the subfig floats individually (\ref{fig:sub-a}) or
 together (\ref{fig:both}).
 
-\Blindtext{10}{20}
+\Blindtext[3]
 
 \part{Another Part}
 \chapter{Another Chapter}
-\Blindtext{30}{20}
+\Blindtext[5]
 \chapter{A Long Title Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla
 Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
-\Blindtext{30}{20}
+\Blindtext[5]
 %</example-part>
 %    \end{macrocode}
 %
@@ -3196,9 +3214,9 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 %    \begin{macrocode}
 %<*example-appendix>
 \chapter{Some Appendix Heading}
-\Blindtext{10}{20}
+\Blindtext[5]
 \chapter{Another Appendix Heading}
-\Blindtext{10}{20}
+\Blindtext[5]
 %</example-appendix>
 %    \end{macrocode}
 %
