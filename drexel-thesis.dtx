@@ -1,8 +1,8 @@
-% \def\fileversion{0.7}
-% \def\filedate{2010/03/14}
+% \def\fileversion{0.8}
+% \def\filedate{2010/05/20}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.7}
-%<class>\def\filedate{2010/03/14}
+%<class>\def\fileversion{0.8}
+%<class>\def\filedate{2010/05/20}
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -1669,9 +1669,11 @@
 % bookmark is set at the \emph{part} level (-1) to hold all bookmarks
 % from the |preamble| environment, since those entries are all
 % chapters.
+% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Titlepage with
+%   Title Page for consistency with \LaTeX's book class.}
 %    \begin{macrocode}
     \ifpdf
-      \pdfbookmark[-1]{Frontmatter}{Frontmatter}
+      \pdfbookmark[-1]{Front Matter}{Front Matter}
       \pdfbookmark[0]{Title Page}{Title Page}
     \fi
 %    \end{macrocode}
@@ -1824,9 +1826,15 @@
 % \subsubsection{Front Matter, Main Matter, and Back Matter}
 %
 % A book contains these three (logical) sections. The switch
-% |\@mainmatter| is true iff we are processing Main Matter.  When this
-% switch is false, the |\chapter| command does not print chapter
-% numbers.
+% |\@mainmatter| is true if and only if we are processing main
+% matter\footnote{%
+%   \href{http://en.wikipedia.org/wiki/Book_design}{Wikipedia}
+%   suggests \emph{body matter} for the main content, but
+%   \href{http://mirror.ctan.org/macros/latex/base/classes.dtx}{\LaTeX's
+%   \cls{book}} uses \emph{Main Matter}.  We're a \LaTeX\ class, so
+%   we'll stick with ``main matter'' for consistency.
+% }.  When this switch is false, the
+% |\chapter| command does not print chapter numbers.
 %
 % \begin{macro}{\mainmatter}
 % This command clears the page (in final mode), starts arabic page
@@ -2318,9 +2326,13 @@
 }{%
   \setstretch{\@ssp}%
   \DUT@clearpage
+%    \end{macrocode}
+% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Titlepage with
+%   Title Page for consistency with \LaTeX's book class.}
+%    \begin{macrocode}
   \ifpdf
     \phantomsection
-    \pdfbookmark[-1]{Backmatter}{Backmatter}
+    \pdfbookmark[-1]{Back Matter}{Back Matter}
   \fi
 }
 %    \end{macrocode}
@@ -2949,6 +2961,11 @@
 \end{preamble}
 
 \begin{thesis}
+%% If your thesis does not use \part{}s, you may want to add a
+%% part-level PDF bookmark to set the main matter of from the front
+%% matter.
+%%\pdfbookmark[-1]{Main Matter}{Main Matter}
+
 %% Use include statements to include your main thesis code
 %% from seperate files.
 %%\include{part1}
