@@ -1253,12 +1253,16 @@
 %
 %  \begin{macro}{\advisor}
 %  \begin{macro}{\@advisor}
-% |\advisor| for use in |\maketitle|.  If not given |\maketitle| will
-% produce an error message.  We get a bit fancier here to support
-% multiple advisors.
+% |\advisor| stores advisor names, and |\@advisor| prints them out
+% nicely for the |abstract| environment.  If no advisors are given
+% |\@advisor| will produce an error message.  We get a bit fancier
+% here to support multiple advisors.
 %    \begin{macrocode}
 \newcounter{advisors}
 \setcounter{advisors}{0}
+%    \end{macrocode}
+% Store a new advisor name.
+%    \begin{macrocode}
 \newcommand\advisor[1]{%
   \ifx
 %    \end{macrocode}
@@ -1275,30 +1279,46 @@
     \stepcounter{advisors}
     \expandafter\gdef\csname @advisor@\alph{advisors}\endcsname{#1}
   \fi}
+%    \end{macrocode}
+% Format and print a list of advisor names.
+%    \begin{macrocode}
 \newcommand\@advisor{%
   \ifnum\c@advisors=0%
     \@latex@error{No \noexpand\advisor given}\@ehc%
   \else%
 %    \end{macrocode}
-% Start a group so \Lcount{advisor@loop} is released afterwards to
-% save memory.
+% Start a group so the scratch counter \Lcount{count\@} is restored
+% afterwards\footnote{See the discussion in
+%   \href{http://www.ctan.org/tex-archive/macros/latex/contrib/localloc/}{%
+%     \pkg{localloc}}
+%   for some points on counter allocation.}.
 %    \begin{macrocode}
     \begingroup%
-      \newcounter{advisor@loop}%
-      \setcounter{advisor@loop}{1}%
 %    \end{macrocode}
-% Print the first advisor.
+% Because \Lcount{count\@} is a \TeX\ counter register not wrapped by
+% \LaTeX's counter sugar, we don't use \LaTeX's |\setcounter| to set
+% \Lcount{count\@} to one.
 %    \begin{macrocode}
-      \csname @advisor@\alph{advisor@loop}\endcsname\relax%
+      \count@\@ne
+%    \end{macrocode}
+% Print the first advisor, using \TeX's |\@alph| macro instead of
+% \LaTeX's |\alph|.
+%    \begin{macrocode}
+%    \begin{macrocode}
+      \csname @advisor@\@alph\count@\endcsname\relax%
 %    \end{macrocode}
 % For any remaining advisors\ldots
 %    \begin{macrocode}
-      \loop\ifnum\c@advisor@loop<\c@advisors%
-        \stepcounter{advisor@loop}%
+      \loop\ifnum\count@<\c@advisors%
+%    \end{macrocode}
+% Advance \Lcount{count\@} using \TeX's |\advance| macro instead of
+% \LaTeX's |\stepcounter|.
+%    \begin{macrocode}
+        \advance\count@\@ne
 %    \end{macrocode}
 % Print the connecting text.
 %    \begin{macrocode}
-        \ifnum\c@advisor@loop=\c@advisors%
+        \ifnum\count@=\c@advisors%
           \ifnum\c@advisors=2%
 %    \end{macrocode}
 % The next advisor if the last of two.
@@ -1319,7 +1339,7 @@
 %    \end{macrocode}
 % Print the advisor's name.
 %    \begin{macrocode}
-        \csname @advisor@\alph{advisor@loop}\endcsname\relax%
+        \csname @advisor@\@alph\count@\endcsname\relax%
       \repeat%
     \endgroup%
   \fi}
