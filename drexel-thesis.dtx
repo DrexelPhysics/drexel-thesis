@@ -1,4 +1,4 @@
-% \def\fileversion{0.9}
+% \def\fileversion{0.10}
 % \def\filedate{2010/05/21}
 % \iffalse meta-comment
 %<*driver>
@@ -6,7 +6,7 @@
 \documentclass{ltxdoc}
 %</driver>
 %<*class|driver>
-\def\fileversion{0.9}
+\def\fileversion{0.10}
 \def\filedate{2010/05/21}
 %</class|driver>
 %
@@ -152,6 +152,11 @@
 %   $\backslash$if$@$final handling.  Previous versions used
 %   it more like a hypothetical $\backslash$if$@$finalspace.
 %   Also adjusted theindex to use a listed$@$schapter.}
+% \changes{0.10}{2010/05/21}{W.~Trevor King added $\backslash$DUT\*
+%   aliases for all public macros and environments and renamed
+%   $\backslash$defmonth and $\backslash$defyear to
+%   $\backslash$DUTmonth and $\backslash$DUTyear for consistency with
+%   the new aliases.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -274,10 +279,22 @@
 %
 % \subsection{Macros}
 %
+% To help deal with name collisions, all \cls{drexel-thesis} macros
+% have ``secret'' aliases.  For example, |\author| can also be used as
+% |\DUTauthor|.  This is useful if one of your packages clobbers a
+% \cls{drexel-thesis} macro, but you still want to use the original.
+% \begin{example}
+%   \documentclass{drexel-thesis}
+%   \renewcommand{\author}[1]{I'm forgetting about your author! Muahahaha!}
+%   \DUTauthor{Your Name Here}
+%   ...
+% \end{example}
+%
 % \begin{command}
 %   `\cs{author}\marg{name}'
 % \end{command}
 % \DescribeMacro{\author}
+% \DescribeMacro{\DUTauthor}
 % Use this macro to set your full name to \meta{name}, including
 % your middle initial or name.  For example
 % \begin{example}
@@ -289,6 +306,7 @@
 %   `\cs{title}\marg{title}'
 % \end{command}
 % \DescribeMacro{\title}
+% \DescribeMacro{\DUTtitle}
 % Use this macro to set your thesis title to \meta{name}.  For example
 % \begin{example}
 %   \title{A New Approach to Quantum Theory}
@@ -299,6 +317,7 @@
 %   `\cs{advisor}\marg{name}'
 % \end{command}
 % \DescribeMacro{\advisor}
+% \DescribeMacro{\DUTadvisor}
 % Use this macro to set your advisor's name to \meta{name}.  For
 % example
 % \begin{example}
@@ -313,21 +332,21 @@
 % See the Manual \S 3.1 p8.
 %
 % \begin{command}
-%   `\cs{defmonth}\marg{month}'
-%   `\cs{defyear}\marg{year}'
+%   `\cs{DUTmonth}\marg{month}'
+%   `\cs{DUTyear}\marg{year}'
 % \end{command}
-% \DescribeMacro{\defmonth}
-% \DescribeMacro{\defyear}
+% \DescribeMacro{\DUTmonth}
+% \DescribeMacro{\DUTyear}
 % Use these macros to set the month with \meta{month} (spelled out)
 % and year with \meta{year} (four digits) of your thesis defense.  For
 % example
 % \begin{example}
-%   \defmonth{June}
-%   \defyear{1942}
+%   \DUTmonth{June}
+%   \DUTyear{1942}
 % \end{example}
 % See the Manual \S 3.1 p8.
-% The |def| in |\def*| avoids collisions with the plain \TeX\ 
-% |\month| and |\year| (see the
+% There are no non-|DUT| versions of these commands to avoid
+% collisions with the plain \TeX\ |\month| and |\year| (see the
 % \href{http://www.tug.org/utilities/plain/cseq.html#month-rp}{month}
 % and
 % \href{http://www.tug.org/utilities/plain/cseq.html#year-rp}{year}
@@ -338,6 +357,7 @@
 %   `\cs{degree}\marg{degree}'
 % \end{command}
 % \DescribeMacro{\degree}
+% \DescribeMacro{\DUTdegree}
 % Set your target degree with \meta{degree}.  From the Manual \S 3.1
 % p8.
 % \begin{quote}
@@ -355,6 +375,7 @@
 %   `\cs{copyrighttext}\marg{text}'
 % \end{command}
 % \DescribeMacro{\copyrighttext}
+% \DescribeMacro{\DUTcopyrighttext}
 % Use this macro to set the copyright text to \meta{text}.
 % The default value is ``All Rights Reserved.''.
 % \begin{example}
@@ -365,6 +386,8 @@
 % \begin{command}
 %   `\cs{copyrighttextCCBYSA}'
 % \end{command}
+% \DescribeMacro{\copyrighttextCCBYSA}
+% \DescribeMacro{\DUTcopyrighttextCCBYSA}
 % There are a number of predefined copyright messages for ease of use \\
 % \begin{tabular}{l l}
 %   |\copyrighttextCCBYSA| &
@@ -375,6 +398,7 @@
 %   `\cs{tableofcontents}'
 % \end{command}
 % \DescribeMacro{\tableofcontents}
+% \DescribeMacro{\DUTtableofcontents}
 % Write the table of contents (Manual \S 3.5 p9).  You can control the
 % verbosity by setting |\tocdepth| according to the following table
 % (\href{http://www.image.ufl.edu/help/latex/intext.shtml}{source}). \\
@@ -404,6 +428,7 @@
 %   `\cs{listoftables}'
 % \end{command}
 % \DescribeMacro{\listoftables}
+% \DescribeMacro{\DUTlistoftables}
 % Write the List of Tables page (Manual \S 3.6 p10).
 % Skip if you have no tables in your thesis.
 %
@@ -411,6 +436,7 @@
 %   `\cs{listoffigures}'
 % \end{command}
 % \DescribeMacro{\listoffigures}
+% \DescribeMacro{\DUTlistoffigures}
 % Write the List of Figures page (Manual \S 3.7 p10).
 % Skip if you have no figures in your thesis.
 %
@@ -418,6 +444,7 @@
 %   `\cs{blanklines}\marg{num}'
 % \end{command}
 % \DescribeMacro{\blanklines}
+% \DescribeMacro{\DUTblanklines}
 % Insert \meta{num} blank lines.  For example
 % \begin{example}
 %   \blanklines{2}
@@ -429,6 +456,7 @@
 %   `\cs{iffinal}\marg{final-mode-action}\marg{draft-mode-action}'
 % \end{command}
 % \DescribeMacro{\iffinal}
+% \DescribeMacro{\DUTiffinal}
 % Include \Lopt{final}- or \Lopt{draft}-specific code.
 % \begin{example}
 %   We're in \iffinal{final}{draft} mode!
@@ -437,7 +465,24 @@
 %
 % \subsection{Environments}
 %
+% To help deal with name collisions, all \cls{drexel-thesis}
+% environments have ``secret'' aliases.  For example, |preamble| can
+% also be used as |DUTpreamble|.  This is useful if one of your
+% packages clobbers a \cls{drexel-thesis} environment, but you still
+% want to use the original.
+% \begin{example}
+%   \documentclass{drexel-thesis}
+%   \renewenvironment{preamble}{%
+%     What preamble?\begingroup\color{white}}{\endgroup}
+%   \begin{document}
+%   \begin{DUTpreamble}
+%   Thwarted again, evil one!
+%   ...
+% \end{example}
+%
+%
 % \DescribeEnv{preamble}
+% \DescribeEnv{DUTpreamble}
 % Generalize the |\frontmatter| for the thesis, setting up page
 % numbering, including the title page, copyright page etc.  The
 % |preamble| environment should contain the following elements
@@ -454,6 +499,7 @@
 % up through the blank page before the text (Manual \S 3.9).
 %
 % \DescribeEnv{dedications}
+% \DescribeEnv{DUTdedications}
 % Set the dedications text.
 % Highlights from the Manual \S 3.3 p9:
 % \begin{quote}
@@ -461,6 +507,7 @@
 % \end{quote}
 %
 % \DescribeEnv{acknowledgments}
+% \DescribeEnv{DUTacknowledgments}
 % Set the acknowledgments text.
 % Highlights from the Manual \S 3.4 p9:
 % \begin{quote}
@@ -470,6 +517,7 @@
 % \end{quote}
 %
 % \DescribeEnv{abstract}
+% \DescribeEnv{DUTabstract}
 % Set the thesis abstract text.  In the Thesis Manual, see \S 3.8
 % Abstract (p10) for details, p20 for an example.
 %
@@ -485,6 +533,7 @@
 % \end{itemize}
 %
 % \DescribeEnv{thesis}
+% \DescribeEnv{DUTthesis}
 % Set the thesis text.  In the Thesis Manual, see \S 3.10 Thesis (p11)
 % for details.
 %
@@ -500,6 +549,7 @@
 % \end{quote}
 %
 % \DescribeEnv{vita}
+% \DescribeEnv{DUTvita}
 % Set the thesis vita text (Ph.D.\ only).  See the Manual \S 3.15 p12,
 % ``Vita'', for details.
 %
@@ -1160,7 +1210,7 @@
 % thesis without it.  We actually include this later (\S
 % \ref{sec:hyperref-inclusion}), because \pkg{hyperref} sticks its
 % fingers into \emph{everything} and we want it to use our versions of
-% some macros (e.g. |\@sect|) but not others (e.g. |thebibliography|).
+% some macros (e.g., |\@sect|) but not others (e.g., |thebibliography|).
 %
 %
 % \subsubsection{\pkg{hypcap}}
@@ -1185,21 +1235,28 @@
 % \subsubsection{\file{ltsect.dtx}}
 %
 % \begin{macro}{\title}
+% \begin{macro}{\DUTtitle}
+% \begin{macro}{\@DUT@title}
 % |\title| for use in |\maketitle|. If not given |\maketitle| will
 % produce a warning message (\file{ltsect.dtx}, L117).
 %
 % We extend |\title| to set \pkg{hyperref}'s |pdftitle|.
 % (\file{ltsect.dtx}, L117).
 %    \begin{macrocode}
-\let\DUT@title\title
 \renewcommand{\title}[1]{
-  \DUT@title{#1}
-  \ifpdf \hypersetup{pdftitle={\@title}} \fi
+  \gdef\@DUT@title{#1}
+  \ifpdf \hypersetup{pdftitle={\@DUT@title}} \fi
 }
+\let\DUTtitle\title
+\def\@DUT@title{\@latex@error{No \noexpand\title given}\@ehc}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\author}
+% \begin{macro}{\DUTauthor}
+% \begin{macro}{\@DUT@author}
 % |\author| for use in |\maketitle|.  If not given |\maketitle| will
 % produce a warning message (\file{ltsect.dtx}, L129).
 %
@@ -1207,70 +1264,80 @@
 % writing a PDF to avoid using |\AtBeginDocument| or some such.
 % (\file{ltsect.dtx}, L129).
 %    \begin{macrocode}
-\let\DUT@author\author
 \renewcommand{\author}[1]{
-  \DUT@author{#1}
-  \ifpdf \hypersetup{pdfauthor={\@author}} \fi
+  \gdef\@DUT@author{#1}
+  \ifpdf \hypersetup{pdfauthor={\protect\@DUT@author}} \fi
 }
+\let\DUTauthor\author
+\def\@DUT@author{\@latex@error{No \noexpand\author given}\@ehc}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 %
 % In a similar vein, we some additional meta-info macros.
 %
-%  \begin{macro}{\defmonth}
-%  \begin{macro}{\@defmonth}
-% |\defmonth| (defense month) for use in |\maketitle|.  If not given
+%  \begin{macro}{\DUTmonth}
+%  \begin{macro}{\@DUT@month}
+% |\DUTmonth| (defense month) for use in |\maketitle|.  If not given
 % |\maketitle| will produce an error message.
 %    \begin{macrocode}
-\def\defmonth#1{\gdef\def@month{#1}}
-\def\def@month{\@latex@error{No \noexpand\defmonth given}\@ehc}
+\def\DUTmonth#1{\gdef\@DUT@month{#1}}
+\def\@DUT@month{\@latex@error{No \noexpand\DUTmonth given}\@ehc}
 %    \end{macrocode}
 %  \end{macro}
 %  \end{macro}
 %
-%  \begin{macro}{\defyear}
-%  \begin{macro}{\@defyear}
-% |\defyear| (defense year) for use in |\maketitle|.  If not given
+%  \begin{macro}{\DUTyear}
+%  \begin{macro}{\@DUT@year}
+% |\DUTyear| (defense year) for use in |\maketitle|.  If not given
 % |\maketitle| will produce an error message.
 %    \begin{macrocode}
-\def\defyear#1{\gdef\def@year{#1}}
-\def\def@year{\@latex@error{No \noexpand\defyear given}\@ehc}
+\def\DUTyear#1{\gdef\@DUT@year{#1}}
+\def\@DUT@year{\@latex@error{No \noexpand\DUTyear given}\@ehc}
 %    \end{macrocode}
 %  \end{macro}
 %  \end{macro}
 %
 %  \begin{macro}{\degree}
-%  \begin{macro}{\@degree}
+%  \begin{macro}{\DUTdegree}
+%  \begin{macro}{\@DUT@degree}
 % |\degree| for use in |\maketitle|.  If not given |\maketitle| will
 % produce an error message.
 %    \begin{macrocode}
-\def\degree#1{\gdef\@degree{#1}
-  \ifpdf \hypersetup{pdfsubject={\@degree}} \fi}
-\def\@degree{\@latex@error{No \noexpand\degree given}\@ehc}
+\def\degree#1{\gdef\@DUT@degree{#1}
+  \ifpdf \hypersetup{pdfsubject={\@DUT@degree}} \fi}
+\let\DUTdegree\degree
+\def\@DUT@degree{\@latex@error{No \noexpand\degree given}\@ehc}
 %    \end{macrocode}
+%  \end{macro}
 %  \end{macro}
 %  \end{macro}
 %
 %  \begin{macro}{\copyrighttext}
+%  \begin{macro}{\DUTcopyrighttext}
 %  \begin{macro}{\@copyrighttext}
-% |\copyrighttext| for use in |\makecopyright|.  There are a number of
-% blurbs predefined in \S \ref{sec:implement-copyright}.
+% |\copyrighttext| for use in |\@DUT@makecopyright|.  There are a
+% number of blurbs predefined in \S \ref{sec:implement-copyright}.
 %    \begin{macrocode}
-\def\copyrighttext#1{\gdef\@copyrighttext{#1}}
-\def\@copyrighttext{All Rights Reserved.}
+\def\copyrighttext#1{\gdef\@DUT@copyrighttext{#1}}
+\let\DUTcopyrighttext\copyrighttext
+\def\@DUT@copyrighttext{All Rights Reserved.}
 %    \end{macrocode}
+%  \end{macro}
 %  \end{macro}
 %  \end{macro}
 %
 %  \begin{macro}{\advisor}
-%  \begin{macro}{\@advisor}
-% |\advisor| stores advisor names, and |\@advisor| prints them out
+%  \begin{macro}{\DUTadvisor}
+%  \begin{macro}{\@DUT@advisor}
+% |\advisor| stores advisor names, and |\@DUT@advisor| prints them out
 % nicely for the |abstract| environment.  If no advisors are given
-% |\@advisor| will produce an error message.  We get a bit fancier
+% |\@DUT@advisor| will produce an error message.  We get a bit fancier
 % here to support multiple advisors.
 %    \begin{macrocode}
-\newcounter{advisors}
-\setcounter{advisors}{0}
+\newcounter{@DUT@advisors}
+\setcounter{@DUT@advisors}{0}
 %    \end{macrocode}
 % Store a new advisor name.
 %    \begin{macrocode}
@@ -1282,19 +1349,19 @@
     \empty{#1}
   \else
 %    \end{macrocode}
-% Save the advisors to |\@advisor@a|, |\@advisor@b|, \ldots.
+% Save the advisors to |\@DUT@advisor@a|, |\@DUT@advisor@b|, \ldots.
 % |\alph{|\Lcount{COUNTER}|}| (\file{ltcounts.dtx}, L319) prints the
 %   value of \Lcount{COUNTER} as a lowercase letter: $1 =$~a, $2 =$~
 %   b, etc.
 %    \begin{macrocode}
-    \stepcounter{advisors}
-    \expandafter\gdef\csname @advisor@\alph{advisors}\endcsname{#1}
+    \stepcounter{@DUT@advisors}
+    \expandafter\gdef\csname @DUT@advisor@\alph{@DUT@advisors}\endcsname{#1}
   \fi}
 %    \end{macrocode}
 % Format and print a list of advisor names.
 %    \begin{macrocode}
-\newcommand\@advisor{%
-  \ifnum\c@advisors=0%
+\newcommand\@DUT@advisor{%
+  \ifnum\c@@DUT@advisors=0%
     \@latex@error{No \noexpand\advisor given}\@ehc%
   \else%
 %    \end{macrocode}
@@ -1316,11 +1383,11 @@
 % \LaTeX's |\alph|.
 %    \begin{macrocode}
 %    \begin{macrocode}
-      \csname @advisor@\@alph\count@\endcsname\relax%
+      \csname @DUT@advisor@\@alph\count@\endcsname\relax%
 %    \end{macrocode}
 % For any remaining advisors\ldots
 %    \begin{macrocode}
-      \loop\ifnum\count@<\c@advisors%
+      \loop\ifnum\count@<\c@@DUT@advisors%
 %    \end{macrocode}
 % Advance \Lcount{count\textat} using \TeX's |\advance| macro instead
 % of \LaTeX's |\stepcounter|.
@@ -1329,8 +1396,8 @@
 %    \end{macrocode}
 % Print the connecting text.
 %    \begin{macrocode}
-        \ifnum\count@=\c@advisors%
-          \ifnum\c@advisors=2%
+        \ifnum\count@=\c@@DUT@advisors%
+          \ifnum\c@@DUT@advisors=2%
 %    \end{macrocode}
 % The next advisor if the last of two.
 %    \begin{macrocode}
@@ -1350,18 +1417,19 @@
 %    \end{macrocode}
 % Print the advisor's name.
 %    \begin{macrocode}
-        \csname @advisor@\@alph\count@\endcsname\relax%
+        \csname @DUT@advisor@\@alph\count@\endcsname\relax%
       \repeat%
     \endgroup%
   \fi}
 %    \end{macrocode}
 %  \end{macro}
 %  \end{macro}
+%  \end{macro}
 %
 % \paragraph{baselineskip}
 % \label{sec:implement-line-spacing}
 %
-% \begin{macro}{\DUT@baselineskip}
+% \begin{macro}{\@DUT@baselineskip}
 % Since we'll be messing with the spacing, save the single-spaced
 % baseline.
 %   \changes{0.3}{2010/01/13}{Use $\backslash$setlength to store the
@@ -1370,8 +1438,8 @@
 %     synonym for $\backslash$baselineskip that changed with font
 %     size.}
 %    \begin{macrocode}
-\newlength\DUT@baselineskip
-\setlength\DUT@baselineskip\baselineskip
+\newlength\@DUT@baselineskip
+\setlength\@DUT@baselineskip\baselineskip
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1385,7 +1453,7 @@
 % requires \pkg{calc} for the multiplication.
 %    \begin{macrocode}
 \newcommand{\set@lines@length}[2]{%
-  \setlength{#1}{\DUT@baselineskip * {#2}}}
+  \setlength{#1}{\@DUT@baselineskip * {#2}}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1550,27 +1618,27 @@
 %
 % \subsubsection{\file{ltoutput.dtx}}
 %
-% \begin{macro}{\DUT@clearpage}
-% \begin{macro}{\DUT@cleardoublepage}
+% \begin{macro}{\@DUT@clearpage}
+% \begin{macro}{\@DUT@cleardoublepage}
 % Versions of |\clear*page| that only work when |\if@final| is true
 % (\file{ltoutput.dtx}, L877 and L904).
 %    \begin{macrocode}
-\newcommand\DUT@clearpage{\if@final \clearpage \fi}
-\newcommand\DUT@cleardoublepage{\if@final \cleardoublepage \fi}
+\newcommand\@DUT@clearpage{\if@final \clearpage \fi}
+\newcommand\@DUT@cleardoublepage{\if@final \cleardoublepage \fi}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
 %
-% \begin{macro}{\blankpage}
+% \begin{macro}{\@DUT@blankpage}
 % Add a useful extension to insert a blank page without numbering.
 % In draft mode, this macro is a no-op.
 %    \begin{macrocode}
-\newcommand\blankpage{%
+\newcommand\@DUT@blankpage{%
   \if@final
-    \DUT@clearpage
+    \@DUT@clearpage
     \thispagestyle{empty}
     \hphantom{0}
-    \DUT@clearpage
+    \@DUT@clearpage
   \else\fi
 }
 %    \end{macrocode}
@@ -1587,26 +1655,26 @@
 % add a trailing |\par|.  \emph{I'm still trying to get this part working
 % cleanly\ldots}
 %    \begin{macrocode}
-\newlength\DUT@blanklines@length
+\newlength\@DUT@blanklines@length
 \newcommand{\@blanklines@setup}[1]{%
-  \set@lines@length{\DUT@blanklines@length}{#1}%
+  \set@lines@length{\@DUT@blanklines@length}{#1}%
   %\typeout{BLANKLINES -- #1}%
-  %\showthe\DUT@blanklines@length
+  %\showthe\@DUT@blanklines@length
 }
 \newcommand{\blanklines}{\@ifstar\@sblanklines\@blanklines}
 \newcommand{\@blanklines}[1]{%
   \@blanklines@setup{#1}%
-  \vspace{\DUT@blanklines@length}}
+  \vspace{\@DUT@blanklines@length}}
 \newcommand{\@sblanklines}[1]{%
   \@blanklines@setup{#1}%
-  \vspace*{\DUT@blanklines@length}}
+  \vspace*{\@DUT@blanklines@length}}
 \newcommand{\blanklinesp}{\@ifstar\@sblanklines\@blanklines}
 \newcommand{\@blanklinesp}[1]{%
   \@blanklines@setup{#1}%
-  \vspace{\DUT@blanklines@length}\par}
+  \vspace{\@DUT@blanklines@length}\par}
 \newcommand{\@sblanklinesp}[1]{%
   \@blanklines@setup{#1}%
-  \vspace*{\DUT@blanklines@length}\par}
+  \vspace*{\@DUT@blanklines@length}\par}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1692,8 +1760,8 @@
 % Our definition simplifies \cls{book}'s by ignoring footnotes.
 % (\file{classes.dtx}, L1796)
 %    \begin{macrocode}
-\renewcommand\maketitle{
-  \begin{titlepage}%
+\newcommand\@DUT@maketitle{
+  \begin{@DUT@titlepage}%
 %    \end{macrocode}
 % Add some bookmarks if we're using pdf\LaTeX.  The |frontmatter|
 % bookmark is set at the \emph{part} level (-1) to hold all bookmarks
@@ -1715,7 +1783,7 @@
 % Here is the title text itself.
 %    \begin{macrocode}
     \begin{center}%
-      {\setstretch{\@tsp} \bfseries \@title \par}%
+      {\setstretch{\@tsp} \bfseries \@DUT@title \par}%
 %    \end{macrocode}
 % We want two blank lines (triple spacing) between the title and the
 % remaining material, so add three but don't end the paragraph.
@@ -1727,12 +1795,12 @@
       of\\
       Drexel University\\
       by\\
-      \@author\\
+      \@DUT@author\\
       in partial fulfillment of the\\
       requirements for the degree\\
       of\\
-      \@degree\\
-      \def@month\ \def@year
+      \@DUT@degree\\
+      \@DUT@month\ \@DUT@year
     \end{center}\par
 %    \end{macrocode}
 % Some more stretchy space for the bottom if we're not in draft mode.
@@ -1742,7 +1810,7 @@
 % in draft mode.
 %    \begin{macrocode}
     \if@final \vspace*{\fill} \fi
-  \end{titlepage}%
+  \end{@DUT@titlepage}%
 %    \end{macrocode}
 % And that's it.  We reset the footnote counter for the rest of the
 % document and save space by freeing the memory associated with the
@@ -1759,7 +1827,7 @@
 % \subsubsection{Copyright pages}
 % \label{sec:implement-copyright}
 %
-% \begin{macro}{\makecopyright}
+% \begin{macro}{\@DUT@makecopyright}
 % The Manual allows for the selection of different copyrights, so we
 % define a base macro that generates a proper copyright page
 % containing |\@copyrighttext|, which the user can set with
@@ -1774,16 +1842,16 @@
 % In final mode, we start off on a new page and center the blurb.
 % In draft mode, we dive right into the text.
 %    \begin{macrocode}
-\newcommand\makecopyright{%
-  \DUT@clearpage
+\newcommand\@DUT@makecopyright{%
+  \@DUT@clearpage
 %    \end{macrocode}
 % If we're using pdf\LaTeX, add a bookmark.
 %    \begin{macrocode}
   \ifpdf \pdfbookmark[0]{Copyright Page}{Copyright Page} \fi
   \if@final \vspace*{\fill} \fi
   \begin{center}
-    \copyright~Copyright \def@year\\
-    \@author.  \@copyrighttext
+    \copyright~Copyright \@DUT@year\\
+    \@DUT@author.  \@DUT@copyrighttext
   \end{center}
   \if@final \vspace*{\fill} \else \blanklinesp{2} \fi
 %    \end{macrocode}
@@ -1795,6 +1863,7 @@
 % \end{macro}
 %
 % \begin{macro}{\copyrighttextCCBYSA}
+% \begin{macro}{\DUTcopyrighttextCCBYSA}
 % The Creative Commons Attribution-ShareAlike License.
 % \changes{0.4}{2010/02/23}{W.~Trevor King renamed from
 % $\backslash$copyrighttextCC, and made specific to Creative Commons
@@ -1808,7 +1877,9 @@
     \url{http://creativecommons.org/licenses/by-sa/3.0/}.
   \end{quote}
 }
+\let\DUTcopyrighttextCCBYSA\copyrighttextCCBYSA
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 %
@@ -1872,11 +1943,11 @@
 % page numbering from 1, it should also ensure that a recto page is
 % used.
 %
-% We replace \cls{book}'s |\clear*page| calls with |\DUT@clearpage| calls.
+% We replace \cls{book}'s |\clear*page| calls with |\@DUT@clearpage| calls.
 % (\file{classes.dtx}, L2211)
 %    \begin{macrocode}
 \renewcommand\mainmatter{%
-  \DUT@cleardoublepage
+  \@DUT@cleardoublepage
   \@mainmattertrue
   \pagenumbering{arabic}}
 %    \end{macrocode}
@@ -1890,14 +1961,14 @@
 %
 % We start a new (righthand) page and use the \pstyle{plain}
 % pagestyle, replacing \cls{book}'s |\clear*page| calls with
-% |\DUT@clearpage| calls and dropping twopage code.
+% |\@DUT@clearpage| calls and dropping twopage code.
 % (\file{classes.dtx}, L2249)
 %    \begin{macrocode}
 \renewcommand\part{%
   \if@openright
-    \DUT@cleardoublepage
+    \@DUT@cleardoublepage
   \else
-    \DUT@clearpage
+    \@DUT@clearpage
   \fi
   \thispagestyle{plain}%
   \@tempswafalse
@@ -2005,7 +2076,7 @@
 % (\file{classes.dtx}, L2472).
 %    \begin{macrocode}
 \renewcommand\chapter{%
-  \if@openright\DUT@cleardoublepage\else\DUT@clearpage\fi
+  \if@openright\@DUT@cleardoublepage\else\@DUT@clearpage\fi
   \thispagestyle{plain}%
 %    \end{macrocode}
 % Then we prevent floats from appearing at the top of this page
@@ -2033,7 +2104,7 @@
 % listed in the TOC.
 %    \begin{macrocode}
 \newcommand\listed@schapter[1]{%
-  \if@openright\DUT@cleardoublepage\else\DUT@clearpage\fi
+  \if@openright\@DUT@cleardoublepage\else\@DUT@clearpage\fi
   \thispagestyle{plain}%
   \global\@topnum\z@
   \phantomsection
@@ -2070,16 +2141,16 @@
 %   \label{x}
 % \end{example}
 % The embedded |\label| chokes |\typeout| so we temporarily redefine
-% |\label| to just gobble its contents.  |\DUT@label| stores the
+% |\label| to just gobble its contents.  |\@DUT@label| stores the
 % original definition.
 %    \begin{macrocode}
-  \let\DUT@label=\label%
+  \let\@DUT@label=\label%
   \renewcommand{\label}[1]{}%
   \typeout{\@chapapp\space\thechapter. #1}%
 %    \end{macrocode}
 % Restore |\label| to its previous glory.
 %    \begin{macrocode}
-  \let\label=\DUT@label%
+  \let\label=\@DUT@label%
 %    \end{macrocode}
 % Now we can get on with the real work.
 %    \begin{macrocode}
@@ -2129,7 +2200,7 @@
 %   Headings must not be larger than 12 points.
 %   Headings must be single spaced.
 % \end{quote}
-% \cls{book} sets |\@chapapp| and |\thechapter| (e.g.\ ``Chapter 5'')
+% \cls{book} sets |\@chapapp| and |\thechapter| (e.g., ``Chapter 5'')
 % on a line above the chapter title, but that doesn't match the
 % Manual's specification.
 %
@@ -2249,6 +2320,7 @@
 % ours here too.
 %
 % \begin{environment}{preamble}
+% \begin{environment}{DUTpreamble}
 %    \begin{macrocode}
 \newenvironment{preamble}{%
   \cleardoublepage
@@ -2257,11 +2329,11 @@
 %    \end{macrocode}
 % From Manual \S 3.1 p8, ``Title Page''.
 %    \begin{macrocode}
-  \maketitle
+  \@DUT@maketitle
 %    \end{macrocode}
 % From Manual \S 3.2 p9, ``Copyright Page''.
 %    \begin{macrocode}
-  \makecopyright
+  \@DUT@makecopyright
 }{%
 %    \end{macrocode}
 % From the Manual \S 3.9, p11:
@@ -2270,12 +2342,21 @@
 %   of text.  The blank page is neither numbered nor counted.
 % \end{quote}
 %    \begin{macrocode}
-  \blankpage
+  \@DUT@blankpage
 }
 %    \end{macrocode}
+% \LaTeX's |\newenvironment| and company work by defining |\X| and
+% |\endX| for the environment |X|.  We can alias the preamble
+% environment by saving these macros.
+%    \begin{macrocode}
+\let\DUTpreamble\preamble
+\let\endDUTpreamble\endpreamble
+%    \end{macrocode}
+% \end{environment}
 % \end{environment}
 %
 % \begin{environment}{dedications}
+% \begin{environment}{DUTdedications}
 % From the Manual \S 3.3 p9
 % \begin{itemize}
 %   \item The heading |Dedications| must appear at the top of the
@@ -2285,20 +2366,24 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{dedications}{%
-  \DUT@clearpage
+  \@DUT@clearpage
   \ifpdf
     \phantomsection
-    \pdfbookmark[0]{\dedicationsname}{\dedicationsname}
+    \pdfbookmark[0]{\DUTdedicationsname}{\DUTdedicationsname}
   \fi
-  \chapter*{\dedicationsname}
+  \chapter*{\DUTdedicationsname}
   \setstretch{\@dsp}%
 }{%
   \setstretch{\@ssp}%
 }
+\let\DUTdedications\dedications
+\let\endDUTdedications\enddedications
 %    \end{macrocode}
+% \end{environment}
 % \end{environment}
 %
 % \begin{environment}{acknowledgments}
+% \begin{environment}{DUTacknowledgments}
 % From the Manual \S 3.4 p9
 % \begin{itemize}
 %   \item The heading |Acknowledgments| must appear at the top of the
@@ -2308,10 +2393,10 @@
 % \end{itemize}
 %    \begin{macrocode}
 \newenvironment{acknowledgments}{%
-  \DUT@clearpage
+  \@DUT@clearpage
   \ifpdf
     \phantomsection
-    \pdfbookmark[0]{\acknowledgmentsname}{\acknowledgmentsname}
+    \pdfbookmark[0]{\DUTacknowledgmentsname}{\DUTacknowledgmentsname}
   \fi
   \chapter*{\acknowledgmentsname}
   \setstretch{\@dsp}%
@@ -2319,9 +2404,13 @@
   \setstretch{\@ssp}%
 }
 %    \end{macrocode}
+\let\DUTacknowledgments\acknowledgments
+\let\endDUTacknowledgments\endacknowledgments
+% \end{environment}
 % \end{environment}
 %
 % \begin{environment}{abstract}
+% \begin{environment}{DUTabstract}
 %    \begin{macrocode}
 \newenvironment{abstract}{%
   \listed@schapter{\abstractname}%
@@ -2356,9 +2445,9 @@
 %    \begin{macrocode}
     \begin{center}
       \setstretch{\@ssp}%
-      \@title\\
-      \@author\\
-      \@advisor\\
+      \@DUT@title\\
+      \@DUT@author\\
+      \@DUT@advisor\\
     \end{center}
   \blanklines{4}%
   \setstretch{\@dsp}%
@@ -2368,10 +2457,14 @@
 }{%
   \setstretch{\@ssp}%
 }
+\let\DUTabstract\abstract
+\let\endDUTabstract\endabstract
 %    \end{macrocode}
+% \end{environment}
 % \end{environment}
 %
 % \begin{environment}{thesis}
+% \begin{environment}{DUTthesis}
 % From the Manual \S 3.10 p11
 % \begin{itemize}
 %   \item The pages are counted and numbered in Arabic numerals.
@@ -2382,7 +2475,7 @@
   \setstretch{\@dsp}%
 }{%
   \setstretch{\@ssp}%
-  \DUT@clearpage
+  \@DUT@clearpage
 %    \end{macrocode}
 % \changes{0.8}{2010/05/20}{W.~Trevor King replaced Titlepage with
 %   Title Page for consistency with \LaTeX's book class.}
@@ -2392,13 +2485,17 @@
     \pdfbookmark[-1]{Back Matter}{Back Matter}
   \fi
 }
+\let\DUTthesis\thesis
+\let\endDUTthesis\endthesis
 %    \end{macrocode}
+% \end{environment}
 % \end{environment}
 %
 % \paragraph{Vita}
 % \label{sec:implement-vita}
 % 
 % \begin{environment}{vita}
+% \begin{environment}{DUTvita}
 % From the Manual \S 3.15 p13
 % \begin{itemize}
 %   \item The heading |Vita| must appear at the top of the page.  The
@@ -2414,7 +2511,10 @@
 }{%
   \setstretch{\@ssp}%
 }
+\let\DUTvita\vita
+\let\endDUTvita\endvita
 %    \end{macrocode}
+% \end{environment}
 % \end{environment}
 %
 %
@@ -2427,9 +2527,12 @@
 % the title.  We also drop the \Lopt{twocolumn} code.
 % (\file{classes.dtx}, L3111)
 %    \begin{macrocode}
-\renewenvironment{titlepage}{\thispagestyle{empty}%
-                             \setcounter{page}\z@}%
-                            {\if@final \newpage \else \blanklinesp{2} \par \fi}
+\renewenvironment{titlepage}%
+  {\thispagestyle{empty}%
+    \setcounter{page}\z@}%
+  {\if@final \newpage \else \blanklinesp{2} \par \fi}
+\let\@DUT@titlepage\titlepage
+\let\end@DUT@titlepage\endtitlepage
 %    \end{macrocode}
 % \end{environment}
 %
@@ -2438,6 +2541,7 @@
 % \label{sec:implement-appendix}
 %
 % \begin{macro}{\appendix}
+% \begin{macro}{\DUTappendix}
 % The |\appendix| command is not really an environment, it is a
 % macro that makes some changes in the way things are done.
 %
@@ -2456,9 +2560,9 @@
 % double-spacing.
 % (\file{classes.dtx}, L3177)
 %    \begin{macrocode}
-\let\DUT@appendix\appendix
+\let\@DUT@appendix\appendix
 \renewcommand\appendix{%
-  \DUT@appendix%
+  \@DUT@appendix%
 %    \end{macrocode}
 % Setup TOC entries like
 % \begin{center}
@@ -2485,7 +2589,9 @@
 %    \begin{macrocode}
   \setstretch{\@dsp}%
 }
+\let\DUTappendix\appendix
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 %
@@ -2496,7 +2602,7 @@
 % \begin{quote}
 %   \begin{itemize}
 %     \item Do not list any sections that precede the
-%     |Table of Contents| (e.g.\ |Dedications|, |Acknowledgments|).  Do
+%     |Table of Contents| (e.g., |Dedications|, |Acknowledgments|).  Do
 %     not list the |Table of Contents| itself.
 %     \item These pages are counted and numbered in lowercase Roman numerals.
 %   \end{itemize}
@@ -2519,7 +2625,7 @@
 %    \end{macrocode}
 % Start a new page in \Lopt{final} mode
 %    \begin{macrocode}
-  \DUT@clearpage
+  \@DUT@clearpage
 %    \end{macrocode}
 % Add a bookmark if we're using pdf\LaTeX.
 %    \begin{macrocode}
@@ -2864,7 +2970,7 @@
 %    column document we have to switch back to one column after the
 %    index.
 %    \begin{macrocode}
-               {\if@restonecol\onecolumn\else\DUT@clearpage\fi}
+               {\if@restonecol\onecolumn\else\@DUT@clearpage\fi}
 %    \end{macrocode}
 % \end{environment}
 %
@@ -2881,6 +2987,7 @@
 % the top of the page.''
 %    \begin{macrocode}
 \newcommand\dedicationsname{Dedications}
+\let\DUTdedicationsname\dedicationsname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2889,6 +2996,7 @@
 % at the top of the page.''
 %    \begin{macrocode}
 \newcommand\acknowledgmentsname{Acknowledgments}
+\let\DUTacknowledgmentsname\acknowledgmentsname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2897,6 +3005,7 @@
 % appear at the top of the page.''  (\file{classes.dtx}, L4331)
 %    \begin{macrocode}
 \renewcommand\contentsname{Table of Contents}
+\let\DUTcontentsname\contentsname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2905,6 +3014,7 @@
 % at the top of the page.''  (\file{classes.dtx}, L4333)
 %    \begin{macrocode}
 \renewcommand\listtablename{List of Tables}
+\let\DUTlisttablename\listtablename
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2913,6 +3023,7 @@
 % at the top of the page.''  (\file{classes.dtx}, L4332)
 %    \begin{macrocode}
 \renewcommand\listfigurename{List of Figures}
+\let\DUTlistfigurename\listfigurename
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2922,6 +3033,7 @@
 % (\file{classes.dtx}, L4367)
 %    \begin{macrocode}
 \newcommand\abstractname{Abstract}
+\let\DUTabstractname\abstractname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2931,6 +3043,7 @@
 % (\file{classes.dtx}, L4344)
 %    \begin{macrocode}
 \renewcommand\bibname{Bibliography}
+\let\DUTbibname\bibname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2941,6 +3054,7 @@
 % (\file{classes.dtx}, L4366)
 %    \begin{macrocode}
 \renewcommand\appendixname{Appendix}
+\let\DUTappendixname\appendixname
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2949,7 +3063,24 @@
 % top of the page.''
 %    \begin{macrocode}
 \newcommand\vitaname{Vita}
+\let\DUTvitaname\vitaname
 %    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\DUTnames}
+% Some packages (e.g.,
+%   \href{http://www.ctan.org/tex-archive/macros/latex/required/babel/}{%
+%     \pkg{babel}})
+% mess with our |\*name| values and we have to restore them.
+\newcommand{\DUTnames}{%
+  \gdef\dedicationsname{\DUTdedicationsname}%
+  \gdef\contentsname{\DUTcontentsname}%
+  \gdef\listtablename{\DUTlisttablename}%
+  \gdef\listfigurename{\DUTlistfigurename}%
+  \gdef\bibname{\DUTbibname}%
+  \gdef\appendixname{\DUTappendixname}%
+  \gdef\vitaname{\DUTvitaname}%
+}
 % \end{macro}
 %
 %
@@ -2966,7 +3097,7 @@
 %   numbered.
 % \end{quote}
 %    \begin{macrocode}
-\AtEndDocument{\blankpage}
+\AtEndDocument{\@DUT@blankpage}
 %    \end{macrocode}
 %
 %
@@ -2988,8 +3119,8 @@
 %% Enter the appropriate information here
 \author{}    % Fullname
 \title{}     % Title Of Thesis
-\defmonth{}  % Name of the month of you defense
-\defyear{}   % Year you are defending
+\DUTmonth{}  % Name of the month of you defense
+\DUTyear{}   % Year you are defending
 \degree{}    % Your target degree, spelled out
 \advisor{}   % Advisor's full name, degree
 \copyrighttext{} % If not "All Rights Reserved."
@@ -3059,8 +3190,8 @@
 %% Enter the appropriate information here
 \author{Johny Henry}
 \title{Inadequacies of Steam-Driven Boring Machines}
-\defmonth{July}
-\defyear{1872}
+\DUTmonth{July}
+\DUTyear{1872}
 \degree{Doctor of Philosophy}
 \advisor{Collis Potter Huntington, R.R.D.}
 \advisor{Advisor 2, Ph.D.}
@@ -3072,6 +3203,14 @@
 
 \usepackage{fancyvrb} % nicer verbatim handling
 \DefineShortVerb{\|}  % \verb+TEXT+  ->  |TEXT|
+
+%    \end{macrocode}
+% Sometimes other packages clobber \cls{drexel-thesis}'s macros and
+% environments.  It's ok though, the originals are all aliased to
+% |\DUT*|.  We'll just have to use |DUTpreamble| instead.
+%    \begin{macrocode}
+\renewenvironment{preamble}{% look, we're clobbering an environment!
+  What preamble?\begingroup\color{white}}{\endgroup}
 
 %    \end{macrocode}
 % Use
@@ -3089,20 +3228,10 @@
 % \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=latexwords}{\TeX\ FAQ}
 % for details.
 %    \begin{macrocode}
-\addto\captionsenglish{%
-  \renewcommand\dedicationsname{Dedications}%
-  \renewcommand\acknowledgmentsname{Acknowledgments}%
-  \renewcommand\contentsname{Table of Contents}%
-  \renewcommand\listtablename{List of Tables}%
-  \renewcommand\listfigurename{List of Figures}%
-  \renewcommand\abstractname{Abstract}%
-  \renewcommand\bibname{Bibliography}%
-  \renewcommand\appendixname{Appendix}%
-  \renewcommand\vitaname{Vita}%
-}
+\addto\captionsenglish{\DUTnames}
 
 \begin{document}
-\begin{preamble}
+\begin{DUTpreamble} % "DUT" because original preamble was clobbered.
 
 \begin{dedications}
 We're in \iffinal{final}{draft} mode!
@@ -3121,7 +3250,7 @@ We're in \iffinal{final}{draft} mode!
 \begin{abstract}
 \Blindtext[3]
 \end{abstract}
-\end{preamble}
+\end{DUTpreamble}
 
 \begin{thesis}
 \include{example-1}
