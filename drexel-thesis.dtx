@@ -1,8 +1,14 @@
 % \def\fileversion{0.9}
 % \def\filedate{2010/05/21}
 % \iffalse meta-comment
-%<class>\def\fileversion{0.9}
-%<class>\def\filedate{2010/05/21}
+%<*driver>
+\ProvidesFile{drexel-thesis.dtx}
+\documentclass{ltxdoc}
+%</driver>
+%<*class|driver>
+\def\fileversion{0.9}
+\def\filedate{2010/05/21}
+%</class|driver>
 %
 % Copyright (C) 2010  C.Y. Ip
 %                     Christopher D. Cera
@@ -36,17 +42,15 @@
 % \fi
 %
 % \iffalse meta-comment
-%<*driver>
-\ProvidesFile{drexel-thesis.dtx}
-%</driver>
 %<class>\NeedsTeXFormat{LaTeX2e}
 %<class>\ProvidesClass{drexel-thesis}
 %<class> [\filedate\ \fileversion\ Drexel Thesis]
 %
 % Code for the .ini driver, see \S 2.1 ``The driver file'' of doc.dtx.
 %<*driver>
-\documentclass{ltxdoc}
-\usepackage[colorlinks=true]{hyperref}
+\usepackage[colorlinks=true,]{hyperref}
+\hypersetup{pdfauthor={W. Trevor King et al.}}
+\hypersetup{pdftitle={drexel-thesis \fileversion\ documentation}}
 %</driver>
 % Include some useful commands from |xkeyval|'s |<preamble>|.
 %<*driver>
