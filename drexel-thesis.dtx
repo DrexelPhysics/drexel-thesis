@@ -2019,13 +2019,40 @@
 % we display the chapter number.
 % We drop \cls{book}'s \Lopt{twocolumn} code. 
 % (\file{classes.dtx}, L2496).
-% \begin{macrocode}
+%    \begin{macrocode}
 \def\@chapter[#1]#2{
-% \end{macrocode}
+%    \end{macrocode}
 % Inform the user that a new chapter is about to be typeset by writing
 % a message to the terminal.
-% \begin{macrocode}
+% \changes{0.9}{2010/05/21}{W.~Trevor King. disabled the label macro
+% for typeout.}
+% Some users place |\label| in their chapter argument:
+% \begin{example}
+%   \chapter{Bla bla\label{x}}
+% \end{example}
+% rather than after (as recommended by
+% \href{http://en.wikibooks.org/wiki/LaTeX/Labels_and_Cross-referencing#Sections}%
+%   {the \LaTeX\ Wikibook} and
+% \href{http://www.ctan.org/tex-archive/info/lshort/english/lshort.pdf}%
+%   {The Not So Short Introduction to \LaTeXe\ (section 2.8, p36)}):
+% \begin{example}
+%   \chapter{Bla bla}
+%   \label{x}
+% \end{example}
+% The embedded |\label| chokes |\typeout| so we temporarily redefine
+% |\label| to just gobble its contents.  |\DUT@label| stores the
+% original definition.
+%    \begin{macrocode}
+  \let\DUT@label=\label%
+  \renewcommand{\label}[1]{}%
   \typeout{\@chapapp\space\thechapter. #1}%
+%    \end{macrocode}
+% Restore |\label| to its previous glory.
+%    \begin{macrocode}
+  \let\label=\DUT@label%
+%    \end{macrocode}
+% Now we can get on with the real work.
+%    \begin{macrocode}
   \ifnum \c@secnumdepth >\m@ne
     \if@mainmatter
       \refstepcounter{chapter}%
@@ -2139,10 +2166,10 @@
 % (\file{classes.dtx}, L2582).
 %    \begin{macrocode}
 \def\@schapter#1{
-% \end{macrocode}
+%    \end{macrocode}
 % Inform the user that a new chapter is about to be typeset by writing
 % a message to the terminal.
-% \begin{macrocode}
+%    \begin{macrocode}
   \typeout{\@chapapp\space #1}%
   \schaptermark{#1}%
   \@makeschapterhead{#1}%
