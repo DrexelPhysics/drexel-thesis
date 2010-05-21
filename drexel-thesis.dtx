@@ -43,7 +43,7 @@
 %<class>\ProvidesClass{drexel-thesis}
 %<class> [\filedate\ \fileversion\ Drexel Thesis]
 %
-% Code for the .ini driver, see section "2.1 The driver file" of doc.dtx.
+% Code for the .ini driver, see \S 2.1 ``The driver file'' of doc.dtx.
 %<*driver>
 \documentclass{ltxdoc}
 \usepackage[colorlinks=true]{hyperref}
@@ -206,7 +206,7 @@
 % getting \pkg{subfig} to cooperate with \pkg{floatrow} and
 % \pkg{tocloft} can be tricky.  If you want to use \pkg{subfig}, just
 % pass the \Lopt{subfig} option to \cls{drexel-thesis}, and all the
-% pesky details will be taken care of.  See Section
+% pesky details will be taken care of.  See \S
 % \ref{sec:better-example} for an example.
 %
 % \DescribeOption{finalspace}
@@ -272,7 +272,7 @@
 % \begin{example}
 %   \name{Richard P. Feynman}
 % \end{example}
-% See the Manual 3.1 p8.
+% See the Manual \S 3.1 p8.
 %
 % \begin{command}
 %   `\cs{title}\marg{title}'
@@ -299,7 +299,7 @@
 %   \advisor{John A. Wheeler, Ph.D.}
 %   \advisor{Advisor 2}
 % \end{example}
-% See the Manual 3.1 p8.
+% See the Manual \S 3.1 p8.
 %
 % \begin{command}
 %   `\cs{defmonth}\marg{month}'
@@ -314,7 +314,7 @@
 %   \defmonth{June}
 %   \defyear{1942}
 % \end{example}
-% See the Manual 3.1 p8.
+% See the Manual \S 3.1 p8.
 % The |def| in |\def*| avoids collisions with the plain \TeX\ 
 % |\month| and |\year| (see the
 % \href{http://www.tug.org/utilities/plain/cseq.html#month-rp}{month}
@@ -327,7 +327,8 @@
 %   `\cs{degree}\marg{degree}'
 % \end{command}
 % \DescribeMacro{\degree}
-% Set your target degree with \meta{degree}.  From the Manual 3.1 p8.
+% Set your target degree with \meta{degree}.  From the Manual \S 3.1
+% p8.
 % \begin{quote}
 %   Write out the name of the degree for which you are a candidate.
 %   All Ph.D.\ candidates must use |Doctor of Philosophy|.  All
@@ -348,7 +349,7 @@
 % \begin{example}
 %   \copyrighttext{Released to the Public Domain.}
 % \end{example}
-% See the Manual 3.2 p9.
+% See the Manual \S 3.2 p9.
 %
 % \begin{command}
 %   `\cs{copyrighttextCCBYSA}'
@@ -363,7 +364,7 @@
 %   `\cs{tableofcontents}'
 % \end{command}
 % \DescribeMacro{\tableofcontents}
-% Write the table of contents (Manual 3.5 p9).  You can control the
+% Write the table of contents (Manual \S 3.5 p9).  You can control the
 % verbosity by setting |\tocdepth| according to the following table
 % (\href{http://www.image.ufl.edu/help/latex/intext.shtml}{source}). \\
 % \begin{tabular}{l l l}
@@ -384,7 +385,7 @@
 % to your preamble (the section before |\begin{document}|, not the
 % |preamble| environment discussed below).
 %
-% Note that the Manual 3.5 p9 requires ``List chapter titles and at
+% Note that the Manual \S 3.5 p9 requires ``List chapter titles and at
 % least the first and second order subdivisions.'', which corresponds
 % to a |\tocdepth| of at least 2.
 %
@@ -392,14 +393,14 @@
 %   `\cs{listoftables}'
 % \end{command}
 % \DescribeMacro{\listoftables}
-% Write the List of Tables page (Manual 3.6 p10).
+% Write the List of Tables page (Manual \S 3.6 p10).
 % Skip if you have no tables in your thesis.
 %
 % \begin{command}
 %   `\cs{listoffigures}'
 % \end{command}
 % \DescribeMacro{\listoffigures}
-% Write the List of Figures page (Manual 3.7 p10).
+% Write the List of Figures page (Manual \S 3.7 p10).
 % Skip if you have no figures in your thesis.
 %
 % \begin{command}
@@ -438,19 +439,19 @@
 %   \item |\listoffigures|
 %   \item |abstract| environment
 % \end{itemize}
-% This will take care of everything from the title page (Manual 3.1),
-% up through the blank page before the text (Manual 3.9).
+% This will take care of everything from the title page (Manual \S 3.1),
+% up through the blank page before the text (Manual \S 3.9).
 %
 % \DescribeEnv{dedications}
 % Set the dedications text.
-% Highlights from the Manual 3.3 p9:
+% Highlights from the Manual \S 3.3 p9:
 % \begin{quote}
 %   The |Dedications| page is optional.
 % \end{quote}
 %
 % \DescribeEnv{acknowledgments}
 % Set the acknowledgments text.
-% Highlights from the Manual 3.4 p9:
+% Highlights from the Manual \S 3.4 p9:
 % \begin{quote}
 %   The |Acknowledgments| page is optional, but most theses do
 %   include a brief statement of thanks or recognition of any special
@@ -458,7 +459,7 @@
 % \end{quote}
 %
 % \DescribeEnv{abstract}
-% Set the thesis abstract text.  In the Thesis Manual, see section 3.8
+% Set the thesis abstract text.  In the Thesis Manual, see \S 3.8
 % Abstract (p10) for details, p20 for an example.
 %
 % Highlights from the Manual:
@@ -473,8 +474,8 @@
 % \end{itemize}
 %
 % \DescribeEnv{thesis}
-% Set the thesis text.  In the Thesis Manual, see section 3.10 Thesis
-% (p11) for details.
+% Set the thesis text.  In the Thesis Manual, see \S 3.10 Thesis (p11)
+% for details.
 %
 % Highlights from the Manual:
 % \begin{quote}
@@ -488,7 +489,7 @@
 % \end{quote}
 %
 % \DescribeEnv{vita}
-% Set the thesis vita text (Ph.D.\ only).  See the Manual 3.15 p12,
+% Set the thesis vita text (Ph.D.\ only).  See the Manual \S 3.15 p12,
 % ``Vita'', for details.
 %
 % Highlights from the Manual:
@@ -547,7 +548,7 @@
 %      \caption{Some caption text}
 %   \end{float}
 % \end{example}
-% For more useful float information, see the examples in Section
+% For more useful float information, see the examples in \S
 % \ref{sec:better-example-part} and the
 % \href{http://en.wikibooks.org/wiki/LaTeX/Floats,_Figures_and_Captions}
 %   {\LaTeX\ wikibook page}.
@@ -557,7 +558,7 @@
 %
 % I highly recommend using \BibTeX\ and
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/natbib/}{\pkg{natbib}}.
-% See Section \ref{sec:better-example} for a simple example.
+% See \S \ref{sec:better-example} for a simple example.
 %
 % Suggested options:\\
 % \begin{tabular}{r p{0.8\textwidth}}
@@ -646,7 +647,7 @@
 % Include
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/xkeyval/}{\pkg{xkeyval}}
 % for easier option parsing.  If the package is not installed on your system,
-% see Section \ref{sec:dependencies} for installation instructions.
+% see \S \ref{sec:dependencies} for installation instructions.
 %    \begin{macrocode}
 \RequirePackage{xkeyval}
 %    \end{macrocode}
@@ -838,7 +839,7 @@
 %
 %
 % Include some other packages we'll need.  If the package is not
-% installed on your system, see Section \ref{sec:dependencies} for
+% installed on your system, see \S \ref{sec:dependencies} for
 % installation instructions.
 %
 % For many packages, we want the same functionality for both
@@ -976,7 +977,7 @@
 %   throughout the document.
 %   \item All other margins (top, bottom, and right) must be at least 1''.
 % \end{itemize}
-% And from the Manual 1.5 p4, Print Version:
+% And from the Manual \S 1.5 p4, Print Version:
 % \begin{quote}
 %   The paper size must be 8 1/2'' x 11''.
 % \end{quote}
@@ -1001,11 +1002,11 @@
 % The \Lopt{subfigure} option sets up \pkg{tocloft} for
 % \pkg{subfig}/\pkg{subfigure} compatibility. See the
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/tocloft/tocloft.pdf}{%
-%   \pkg{tocloft} manual, Section 2.1}
+%   \pkg{tocloft} manual \S 2.1}
 % for details.
 %
-% The configuration of \pkg{tocloft} takes place in Sections
-% \ref{sec:implement-toc}, \ref{sec:implement-lof}, and
+% The configuration of \pkg{tocloft} takes place in \S
+% \ref{sec:implement-toc}, \S \ref{sec:implement-lof}, and \S
 % \ref{sec:implement-lot}.
 %
 %
@@ -1030,7 +1031,7 @@
 %
 % Enforce caption placement with
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/floatrow/}{\pkg{floatrow}}.
-% From the Manual 2.3 p6, ``Tables and Figures'', 
+% From the Manual \S 2.3 p6, ``Tables and Figures'', 
 % \begin{quote}
 %   \begin{itemize}
 %     \item Place figure captions below figures.
@@ -1052,7 +1053,7 @@
   \RequirePackage{fr-subfig}
 \fi
 %    \end{macrocode}
-% We set up the three-line surrounding spaces in Section
+% We set up the three-line surrounding spaces in \S
 % \ref{sec:implement-floats}.
 %
 % You can change these settings using |\floatsetup|, but you probably
@@ -1076,7 +1077,7 @@
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/}{\pkg{fancyhdr}}
 % for correct page numbering and fancy headers.
-% From the Manual 2.3 p5, ``Pagination''
+% From the Manual \S 2.3 p5, ``Pagination''
 % \begin{quote}
 %   Place page numbers in the upper right-hand corner of the page,
 %   3/4'' from the top.
@@ -1123,7 +1124,7 @@
 }
 %    \end{macrocode}
 %
-% Note that the Chapter / Section footer is not required.  You can
+% Note that the chapter/section footer is not required.  You can
 % remove the footer text and rule entirely with.
 % \begin{example}
 %   \renewcommand{\footrulewidth}{0pt}
@@ -1145,11 +1146,10 @@
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/}{\pkg{hyperref}}
 % for hyperlinks.  Not strictly necessary, but I can't imagine a
-% thesis without it.  We actually include this later
-% (Section~\ref{sec:hyperref-inclusion}), because \pkg{hyperref}
-% sticks its fingers into \emph{everything} and we want it to use our
-% versions of some macros (e.g. |\@sect|) but not others
-% (e.g. |thebibliography|).
+% thesis without it.  We actually include this later (\S
+% \ref{sec:hyperref-inclusion}), because \pkg{hyperref} sticks its
+% fingers into \emph{everything} and we want it to use our versions of
+% some macros (e.g. |\@sect|) but not others (e.g. |thebibliography|).
 %
 %
 % \subsubsection{\pkg{hypcap}}
@@ -1157,8 +1157,8 @@
 %
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/}{\pkg{hypcap}}
 % for placing caption hyperlink anchors.  Must be included after
-% \pkg{hypercap}, so the actual inclusion is in
-% Section~\ref{sec:hypcap-inclusion}).
+% \pkg{hypercap}, so the actual inclusion is in \S
+% \ref{sec:hypcap-inclusion}).
 %
 %
 % \subsection{\LaTeX\ overrides and extensions}
@@ -1243,7 +1243,7 @@
 %  \begin{macro}{\copyrighttext}
 %  \begin{macro}{\@copyrighttext}
 % |\copyrighttext| for use in |\makecopyright|.  There are a number of
-% blurbs predefined in Section \ref{sec:implement-copyright}.
+% blurbs predefined in \S \ref{sec:implement-copyright}.
 %    \begin{macrocode}
 \def\copyrighttext#1{\gdef\@copyrighttext{#1}}
 \def\@copyrighttext{All Rights Reserved.}
@@ -1583,9 +1583,8 @@
 % \subsection{\pkg{hyperref} inclusion}
 % \label{sec:hyperref-inclusion}
 %
-% This is the awkward \pkg{hyperref} inclusion.  See
-% Section~\ref{sec:hyperref} for an explanation of why we stash it
-% here.
+% This is the awkward \pkg{hyperref} inclusion.  See \S
+% \ref{sec:hyperref} for an explanation of why we stash it here.
 %    \begin{macrocode}
 \RequirePackage[final]{hyperref}
 %    \end{macrocode}
@@ -1633,9 +1632,9 @@
 %
 % |\intextsep| is the space between in-text floats and the text.  We
 % don't bother overriding this one, because we've handled it with
-% \pkg{floatrow} in Section \ref{sec:floatrow}.
+% \pkg{floatrow} in \S \ref{sec:floatrow}.
 %
-% From the Manual 2.3 p6, ``Tables and Figures''
+% From the Manual \S 2.3 p6, ``Tables and Figures''
 % \begin{quote}
 %   Insert at least 3 single-spaced lines of space above table
 %   captions and figures and below figure captions, tables, and other
@@ -1654,7 +1653,7 @@
 %
 % \begin{macro}{\maketitle}
 % Automate the creation of the title page.
-% From Manual 3.1 p8, ``Title Page'', and the example on p16.
+% From Manual \S 3.1 p8, ``Title Page'', and the example on p16.
 % \begin{itemize}
 %   \item This page is counted but not numbered (it counts as page i,
 %   but should not have a page number).  TODO: How is this implemented?
@@ -1734,7 +1733,7 @@
 % define a base macro that generates a proper copyright page
 % containing |\@copyrighttext|, which the user can set with
 % |\copyrighttext|.
-% From Manual 3.2 p9, ``Copyright Page''.
+% From Manual \S 3.2 p9, ``Copyright Page''.
 % \begin{itemize}
 %   \item Include a copyright page with the following information: a
 %   copyright notice, full legal name of author, and date of
@@ -2034,7 +2033,7 @@
 % \href{http://en.wikibooks.org/wiki/LaTeX/Labels_and_Cross-referencing#Sections}%
 %   {the \LaTeX\ Wikibook} and
 % \href{http://www.ctan.org/tex-archive/info/lshort/english/lshort.pdf}%
-%   {The Not So Short Introduction to \LaTeXe\ (section 2.8, p36)}):
+%   {The Not So Short Introduction to \LaTeXe\ (\S 2.8, p36)}):
 % \begin{example}
 %   \chapter{Bla bla}
 %   \label{x}
@@ -2088,7 +2087,7 @@
 % \begin{macro}{\@makechapterhead}
 % The |\@chapter| macro uses |\@makechapterhead|\meta{text} to format
 % the heading of the chapter.
-% From the Manual 3.11 p11.
+% From the Manual \S 3.11 p11.
 % \begin{quote}
 %   Chapter headings must be bold and centered.
 %   The chapter number and title must be on the same line, separated
@@ -2148,7 +2147,7 @@
     \fi
 %    \end{macrocode}
 % Put a little space before the chapter body.  We use four blank lines
-% to comply with the Manual 3.13 p12
+% to comply with the Manual \S 3.13 p12
 % \begin{quote}
 %   Begin the list of sources four spaces below the heading.
 % \end{quote}
@@ -2225,16 +2224,16 @@
   \@mainmatterfalse
   \pagenumbering{roman}
 %    \end{macrocode}
-% From Manual 3.1 p8, ``Title Page''.
+% From Manual \S 3.1 p8, ``Title Page''.
 %    \begin{macrocode}
   \maketitle
 %    \end{macrocode}
-% From Manual 3.2 p9, ``Copyright Page''.
+% From Manual \S 3.2 p9, ``Copyright Page''.
 %    \begin{macrocode}
   \makecopyright
 }{%
 %    \end{macrocode}
-% From the Manual 3.9, p11:
+% From the Manual \S 3.9, p11:
 % \begin{quote}
 %   Include a blank page (with no page number) before the first page
 %   of text.  The blank page is neither numbered nor counted.
@@ -2246,7 +2245,7 @@
 % \end{environment}
 %
 % \begin{environment}{dedications}
-% From the Manual 3.3 p9
+% From the Manual \S 3.3 p9
 % \begin{itemize}
 %   \item The heading |Dedications| must appear at the top of the
 %   page.  The heading must be bold, centered, and without
@@ -2269,7 +2268,7 @@
 % \end{environment}
 %
 % \begin{environment}{acknowledgments}
-% From the Manual 3.4 p9
+% From the Manual \S 3.4 p9
 % \begin{itemize}
 %   \item The heading |Acknowledgments| must appear at the top of the
 %   page.  The heading must be bold, centered, and without
@@ -2301,7 +2300,7 @@
 %    \begin{macrocode}
   \blanklines{-4}%
 %    \end{macrocode}
-% From the Manual 3.9 p10
+% From the Manual \S 3.9 p10
 % \begin{quote}
 %   \begin{itemize}
 %     \item The following heading must be centered at the top of the page
@@ -2342,7 +2341,7 @@
 % \end{environment}
 %
 % \begin{environment}{thesis}
-% From the Manual 3.10 p11
+% From the Manual \S 3.10 p11
 % \begin{itemize}
 %   \item The pages are counted and numbered in Arabic numerals.
 % \end{itemize}
@@ -2369,7 +2368,7 @@
 % \label{sec:implement-vita}
 % 
 % \begin{environment}{vita}
-% From the Manual 3.15 p13
+% From the Manual \S 3.15 p13
 % \begin{itemize}
 %   \item The heading |Vita| must appear at the top of the page.  The
 %   heading must be bold, centered, and without punctuation.
@@ -2462,7 +2461,7 @@
 % \subsubsection{Table of Contents}
 % \label{sec:implement-toc}
 %
-% From Manual 3.5 p9, ``Table of Contents'', and the example on p17.
+% From Manual \S 3.5 p9, ``Table of Contents'', and the example on p17.
 % \begin{quote}
 %   \begin{itemize}
 %     \item Do not list any sections that precede the
@@ -2620,7 +2619,7 @@
 % \subsubsection{List of figures}
 % \label{sec:implement-lof}
 %
-% From the Manual 3.7 p10
+% From the Manual \S 3.7 p10
 % \begin{quote}
 %   \begin{itemize}
 %     \item The heading |List of Figures| must appear at the top of
@@ -2671,7 +2670,7 @@
 % \subsubsection{List of tables}
 % \label{sec:implement-lot}
 %
-% From the Manual 3.6 p10
+% From the Manual \S 3.6 p10
 % \begin{quote}
 %   \begin{itemize}
 %     \item The heading |List of Tables| must appear at the top of the
@@ -2847,7 +2846,7 @@
 % those that are.
 %
 % \begin{macro}{\dedicationsname}
-% From the Manual 3.3 p9, ``The heading |Dedications| must appear at
+% From the Manual \S 3.3 p9, ``The heading |Dedications| must appear at
 % the top of the page.''
 %    \begin{macrocode}
 \newcommand\dedicationsname{Dedications}
@@ -2855,7 +2854,7 @@
 % \end{macro}
 %
 % \begin{macro}{\acknowledgmentsname}
-% From the Manual 3.4 p9, ``The heading |Acknowledgments| must appear
+% From the Manual \S 3.4 p9, ``The heading |Acknowledgments| must appear
 % at the top of the page.''
 %    \begin{macrocode}
 \newcommand\acknowledgmentsname{Acknowledgments}
@@ -2863,7 +2862,7 @@
 % \end{macro}
 %
 % \begin{macro}{\contentsname}
-% From the Manual 3.5 p9, ``The heading |Table of Contents| must
+% From the Manual \S 3.5 p9, ``The heading |Table of Contents| must
 % appear at the top of the page.''  (\file{classes.dtx}, L4331)
 %    \begin{macrocode}
 \renewcommand\contentsname{Table of Contents}
@@ -2871,7 +2870,7 @@
 % \end{macro}
 %
 % \begin{macro}{\listtablename}
-% From the Manual 3.6 p10, ``The heading |List of Tables| must appear
+% From the Manual \S 3.6 p10, ``The heading |List of Tables| must appear
 % at the top of the page.''  (\file{classes.dtx}, L4333)
 %    \begin{macrocode}
 \renewcommand\listtablename{List of Tables}
@@ -2879,7 +2878,7 @@
 % \end{macro}
 %
 % \begin{macro}{\listfigurename}
-% From the Manual 3.7 p10, ``The heading |List of Figures| must appear
+% From the Manual \S 3.7 p10, ``The heading |List of Figures| must appear
 % at the top of the page.''  (\file{classes.dtx}, L4332)
 %    \begin{macrocode}
 \renewcommand\listfigurename{List of Figures}
@@ -2887,7 +2886,7 @@
 % \end{macro}
 %
 % \begin{macro}{\abstractname}
-% From the Manual 3.8 p10, ``The following heading must be centered at
+% From the Manual \S 3.8 p10, ``The following heading must be centered at
 % the top of the first page: |Abstract|\ldots.''
 % (\file{classes.dtx}, L4367)
 %    \begin{macrocode}
@@ -2896,7 +2895,7 @@
 % \end{macro}
 %
 % \begin{macro}{\bibname}
-% From the Manual 3.13 p12, ``The heading |Bibliography| (or
+% From the Manual \S 3.13 p12, ``The heading |Bibliography| (or
 % |List of References|) must appear at the top of first page.''
 % (\file{classes.dtx}, L4344)
 %    \begin{macrocode}
@@ -2905,7 +2904,7 @@
 % \end{macro}
 %
 % \begin{macro}{\appendixname}
-% From the Manual 3.14 p12, ``Number the appendicies consecutively
+% From the Manual \S 3.14 p12, ``Number the appendicies consecutively
 % either alphabetically or numerically (|Appendix A|, |Appendix B|\ldots
 % or |Appendix 1|, |Appendix 2|\ldots).''
 % (\file{classes.dtx}, L4366)
@@ -2915,7 +2914,7 @@
 % \end{macro}
 %
 % \begin{macro}{\vitaname}
-% From the Manual 3.15 p13, ``The heading |Vita| must appear at the
+% From the Manual \S 3.15 p13, ``The heading |Vita| must appear at the
 % top of the page.''
 %    \begin{macrocode}
 \newcommand\vitaname{Vita}
@@ -2929,7 +2928,7 @@
 % \subsubsection{Terminal blank page}
 %
 % Add a terminal blank page (when |\if@final| is true)
-% From the Manual 3.16 p13
+% From the Manual \S 3.16 p13
 % \begin{quote}
 %   Include a blank page (with no page number) at the end of the
 %   thesis or dissertation.  The blank page is neither counted nor
@@ -3054,7 +3053,7 @@
 \usepackage[english]{babel} % English blindtext
 \usepackage{blindtext} % macros for producing dummy output
 %    \end{macrocode}
-% \pkg{babel} messes with some of our words (Section \ref{sec:words}), so
+% \pkg{babel} messes with some of our words (\S \ref{sec:words}), so
 % we have to reset them.  See the
 % \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=latexwords}{\TeX\ FAQ}
 % for details.
@@ -3306,7 +3305,7 @@ Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla}
 %       \fancyfoot[RE,LO]{\scshape\leftmark}
 %       \fancyfoot[LE,RO]{}
 %     \end{example}
-%     For more header or footer manipulation ideas, see Section \ref{sec:fancyhdr}.
+%     For more header or footer manipulation ideas, see \S \ref{sec:fancyhdr}.
 % \end{itemize}
 %
 %
