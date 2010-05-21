@@ -72,6 +72,13 @@
 \newcommand*{\Lcount}[1]{\textsl {\small#1}}
 \newcommand*{\pstyle}[1]{\textsl {#1}}
 %</driver>
+% Provide easy access to the @ character.  Note that this, like the
+% short-verbatim markers ||, does not work in |\changes| sections
+% because of the way they are cached to the glossary file.  If you
+% find a way to make them work there, let me know :).
+%<*driver>
+\newcommand*{\textat}{\makeatletter @ \makeatother}
+%</driver>
 %<*driver>
 \makeatletter
 \def\DescribeOption#1{\leavevmode\@bsphack
@@ -138,9 +145,9 @@
 % \changes{0.5}{2010/03/03}{W.~Trevor King use hypcap for better
 %   caption hyperlink anchor placement.}
 % \changes{0.6}{2010/03/11}{W.~Trevor King fixed
-%   $\backslash$if\@ final handling.  Previous versions used
-%   it more like a hypothetical $\backslash$if\@ finalspace.
-%   Also adjusted theindex to use a listed\@ schapter.}
+%   $\backslash$if$@$final handling.  Previous versions used
+%   it more like a hypothetical $\backslash$if$@$finalspace.
+%   Also adjusted theindex to use a listed$@$schapter.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -1287,7 +1294,7 @@
     \@latex@error{No \noexpand\advisor given}\@ehc%
   \else%
 %    \end{macrocode}
-% Start a group so the scratch counter \Lcount{count\@} is restored
+% Start a group so the scratch counter \Lcount{count\textat} is restored
 % afterwards\footnote{See the discussion in
 %   \href{http://www.ctan.org/tex-archive/macros/latex/contrib/localloc/}{%
 %     \pkg{localloc}}
@@ -1295,9 +1302,9 @@
 %    \begin{macrocode}
     \begingroup%
 %    \end{macrocode}
-% Because \Lcount{count\@} is a \TeX\ counter register not wrapped by
-% \LaTeX's counter sugar, we don't use \LaTeX's |\setcounter| to set
-% \Lcount{count\@} to one.
+% Because \Lcount{count\textat} is a \TeX\ counter register not
+% wrapped by \LaTeX's counter sugar, we don't use \LaTeX's
+% |\setcounter| to set \Lcount{count\textat} to one.
 %    \begin{macrocode}
       \count@\@ne
 %    \end{macrocode}
@@ -1311,8 +1318,8 @@
 %    \begin{macrocode}
       \loop\ifnum\count@<\c@advisors%
 %    \end{macrocode}
-% Advance \Lcount{count\@} using \TeX's |\advance| macro instead of
-% \LaTeX's |\stepcounter|.
+% Advance \Lcount{count\textat} using \TeX's |\advance| macro instead
+% of \LaTeX's |\stepcounter|.
 %    \begin{macrocode}
         \advance\count@\@ne
 %    \end{macrocode}
@@ -2043,7 +2050,7 @@
 %    \end{macrocode}
 % Inform the user that a new chapter is about to be typeset by writing
 % a message to the terminal.
-% \changes{0.9}{2010/05/21}{W.~Trevor King. disabled the label macro
+% \changes{0.9}{2010/05/21}{W.~Trevor King disabled the label macro
 % for typeout.}
 % Some users place |\label| in their chapter argument:
 % \begin{example}
