@@ -1,13 +1,13 @@
-% \def\fileversion{0.10}
-% \def\filedate{2010/05/21}
+% \def\fileversion{0.11}
+% \def\filedate{2010/06/04}
 % \iffalse meta-comment
 %<*driver>
 \ProvidesFile{drexel-thesis.dtx}
 \documentclass{ltxdoc}
 %</driver>
 %<*class|driver>
-\def\fileversion{0.10}
-\def\filedate{2010/05/21}
+\def\fileversion{0.11}
+\def\filedate{2010/06/04}
 %</class|driver>
 %
 % Copyright (C) 2010  C.Y. Ip
@@ -276,6 +276,10 @@
 % \Lopt{fleqn} typesets displayed formulae left-aligned instead of
 % centered.
 %
+% \DescribeOption{daring}
+% \Lopt{daring} breaks the official thesis rules in pursuit of a nicer
+% layout.
+%
 %
 % \subsection{Macros}
 %
@@ -460,6 +464,16 @@
 % Include \Lopt{final}- or \Lopt{draft}-specific code.
 % \begin{example}
 %   We're in \iffinal{final}{draft} mode!
+% \end{example}
+%
+% \begin{command}
+%   `\cs{ifdaring}\marg{daring-action}\marg{wimpy-action}'
+% \end{command}
+% \DescribeMacro{\ifdaring}
+% \DescribeMacro{\DUTifdaring}
+% Include \Lopt{daring}-specific code, with wimpy fallbacks.
+% \begin{example}
+%   \ifdaring{\singlespacing Muahahahaha!}{mumble mumble}.
 % \end{example}
 %
 %
@@ -726,6 +740,7 @@
 \newif\if@mydraftwatermark
 \newif\if@indentfirst
 \newif\if@final
+\newif\if@daring
 %    \end{macrocode}
 %
 % \begin{macro}{\iffinal}
@@ -734,6 +749,15 @@
 % \changes{0.7}{2010/03/14}{W.~Trevor King added macro.}
 %    \begin{macrocode}
 \newcommand\iffinal[2]{\if@final #1\else #2\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\ifdaring}
+% Setup a user-friendly means for including \Lopt{daring}-specific
+% code.
+% \changes{0.11}{2010/06/04}{W.~Trevor King added macro.}
+%    \begin{macrocode}
+\newcommand\ifdaring[2]{\if@daring #1\else #2\fi}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -873,6 +897,14 @@
   \setkeys{drexel-thesis.cls}{draftspace}
   \setkeys{drexel-thesis.cls}{dottedtoc}
   \setkeys{drexel-thesis.cls}{mydraftwatermark}
+}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{daring}
+%    \begin{macrocode}
+\DeclareOptionX{daring}{
+  \@daringtrue
 }
 %    \end{macrocode}
 % \end{option}
@@ -2447,6 +2479,18 @@
       \setstretch{\@ssp}%
       \@DUT@title\\
       \@DUT@author\\
+%    \end{macrocode}
+% If you're feeling daring, break the rules and add ``Advisor(s):'' to
+% set off your list of advisor names.
+% \changes{0.11}{2010/06/04}{W.~Trevor King added ``Advisor(s):'' for
+% daring users.}
+%    \begin{macrocode}
+      \ifdaring{%
+        \ifnum\c@@DUT@advisors=\@ne%
+        Advisor:
+        \else%
+        Advisors:
+        \fi}{}
       \@DUT@advisor\\
     \end{center}
   \blanklines{4}%
