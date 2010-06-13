@@ -44,16 +44,19 @@ CLASS_FILES = Makefile README drexel-thesis.dtx drexel-thesis.ins \
 EXAMPLE_FILES = template.tex example.tex example-draft.tex drexel-logo.pdf \
 	example-1.tex example-a.tex example-ref.bib \
 	example.pdf example-draft.pdf
+EXTRA_FILES = contrib
 USEFUL_PACKAGES = blindtext.sty draftmark.sty etextools.sty etoolbox.sty \
 	floatrow.sty forloop.sty fr-subfig.sty lastpage.sty ltxnew.sty \
 	pagerange.sty tocloft.sty xifthen.sty
 
-drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(USEFUL_PACKAGES)
+drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(EXTRA_FILES) \
+		$(USEFUL_PACKAGES)
 	rm -f $@
 	mkdir drexel-thesis
 	cp -p $(CLASS_FILES) drexel-thesis/
 	mkdir drexel-thesis/examples
 	cp -p $(EXAMPLE_FILES) drexel-thesis/examples/
+	cp -rp $(EXTRA_FILES) drexel-thesis/
 	mkdir drexel-thesis/packages
 	cp -p $(USEFUL_PACKAGES) drexel-thesis/packages/
 	tar -chozf $@ drexel-thesis
