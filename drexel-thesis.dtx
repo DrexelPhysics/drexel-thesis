@@ -1,13 +1,13 @@
-% \def\fileversion{0.11}
-% \def\filedate{2010/06/04}
+% \def\fileversion{0.12}
+% \def\filedate{2010/06/17}
 % \iffalse meta-comment
 %<*driver>
 \ProvidesFile{drexel-thesis.dtx}
 \documentclass{ltxdoc}
 %</driver>
 %<*class|driver>
-\def\fileversion{0.11}
-\def\filedate{2010/06/04}
+\def\fileversion{0.12}
+\def\filedate{2010/06/17}
 %</class|driver>
 %
 % Copyright (C) 2010  C.Y. Ip
@@ -1799,8 +1799,9 @@
 % bookmark is set at the \emph{part} level (-1) to hold all bookmarks
 % from the |preamble| environment, since those entries are all
 % chapters.
-% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Titlepage with
-%   Title Page for consistency with \LaTeX's book class.}
+% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Frontmatter with
+%   Front Matter and Titlepage with Title Page for consistency with
+%   \LaTeX's book class.}
 %    \begin{macrocode}
     \ifpdf
       \pdfbookmark[-1]{Front Matter}{Front Matter}
@@ -2396,6 +2397,9 @@
 %   punctuation.
 %   \item This page is counted and numbered in lowercase Roman numerals.
 % \end{itemize}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
+%   detach the single space $\backslash$setstretch from the from the
+%   final paragraph.}
 %    \begin{macrocode}
 \newenvironment{dedications}{%
   \@DUT@clearpage
@@ -2406,7 +2410,7 @@
   \chapter*{\DUTdedicationsname}
   \setstretch{\@dsp}%
 }{%
-  \setstretch{\@ssp}%
+  \par\setstretch{\@ssp}%
 }
 \let\DUTdedications\dedications
 \let\endDUTdedications\enddedications
@@ -2423,6 +2427,9 @@
 %   punctuation.
 %   \item This page is counted and numbered in lowercase Roman numerals.
 % \end{itemize}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
+%   detach the single space $\backslash$setstretch from the from the
+%   final paragraph.}
 %    \begin{macrocode}
 \newenvironment{acknowledgments}{%
   \@DUT@clearpage
@@ -2433,7 +2440,7 @@
   \chapter*{\acknowledgmentsname}
   \setstretch{\@dsp}%
 }{%
-  \setstretch{\@ssp}%
+  \par\setstretch{\@ssp}%
 }
 %    \end{macrocode}
 \let\DUTacknowledgments\acknowledgments
@@ -2474,6 +2481,9 @@
 %       is double spaced.
 %   \end{itemize}
 % \end{quote}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
+%   detach the single space $\backslash$setstretch from the from the
+%   final paragraph.}
 %    \begin{macrocode}
     \begin{center}
       \setstretch{\@ssp}%
@@ -2499,7 +2509,7 @@
   \@afterindentfalse
   \@afterheading
 }{%
-  \setstretch{\@ssp}%
+  \par\setstretch{\@ssp}%
 }
 \let\DUTabstract\abstract
 \let\endDUTabstract\endabstract
@@ -2513,6 +2523,8 @@
 % \begin{itemize}
 %   \item The pages are counted and numbered in Arabic numerals.
 % \end{itemize}
+% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Backmatter with
+%   Back Matter for consistency with \LaTeX's book class.}
 %    \begin{macrocode}
 \newenvironment{thesis}{%
   \mainmatter
@@ -2520,10 +2532,6 @@
 }{%
   \setstretch{\@ssp}%
   \@DUT@clearpage
-%    \end{macrocode}
-% \changes{0.8}{2010/05/20}{W.~Trevor King replaced Titlepage with
-%   Title Page for consistency with \LaTeX's book class.}
-%    \begin{macrocode}
   \ifpdf
     \phantomsection
     \pdfbookmark[-1]{Back Matter}{Back Matter}
@@ -2548,12 +2556,15 @@
 %   \item List the Vita separately in the Table of Contents.
 %   \item The page is counted and numbered in Arabic numerals.
 % \end{itemize}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
+%   detach the single space $\backslash$setstretch from the from the
+%   final paragraph.}
 %    \begin{macrocode}
 \newenvironment{vita}{%
   \listed@schapter{\vitaname}
   \setstretch{\@dsp}%
 }{%
-  \setstretch{\@ssp}%
+  \par\setstretch{\@ssp}%
 }
 \let\DUTvita\vita
 \let\endDUTvita\endvita
