@@ -245,6 +245,10 @@
 % \emph{do} want pretty, indented TOCs, like the \LaTeX\ defaults pass
 % \Lopt{indenttoc} to \cls{drexel-thesis}.
 %
+% \DescribeOption{blackref}
+% \Lopt{blackref} colors all \pkg{hyperref} links black, so they won't
+% stand out in your printed document.
+%
 % \DescribeOption{draftwatermark}
 % \Lopt{draftwatermark} adds ``DRAFT \meta{date}'' watermarks to each
 % page.  A useful way to remember that the version you're looking at
@@ -660,11 +664,24 @@
 % \subsubsection{Hyperlinks}
 %
 % \cls{drexel-thesis} loads
-% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/}{\pkg{hyperref}}.
+% \href{http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/}{%
+%   \pkg{hyperref}}.
 % with the options:\\
 % \begin{tabular}{r p{0.8\textwidth}}
 %   |colorlinks| & color the link letters instead of drawing colored boxes. \\
 % \end{tabular}
+%
+% The default \pkg{hyperref} colors can be a bit jarring.  Feel free
+% to use \Lopt{blackref} or override them yourself:
+% \begin{example}
+%   \usepackage{xcolor}
+%   \definecolor{dark-gray}{gray}{0.3}
+%   \hypersetup{citecolor=dark-gray}
+% \end{example}
+% See
+% \href{http://mirror.ctan.org/macros/latex/contrib/hyperref/doc/manual.pdf}{%
+%   the hyperref manual} (\S 3.4 Extension options)
+% for a list of |*color| options.
 %
 % If running with a pdftex-based driver, |\author|, |\title|, and
 % |\degree| automatically set |pdfauthor|, |pdftitle|, and
@@ -736,6 +753,7 @@
 \newif\if@boldpart
 \newif\if@dottedpart
 \newif\if@indenttoc
+\newif\if@blackref
 \newif\if@draftwatermark
 \newif\if@mydraftwatermark
 \newif\if@indentfirst
@@ -836,6 +854,14 @@
 % Set \Lopt{indenttoc} flag
 %    \begin{macrocode}
 \DeclareOptionX{indenttoc}{\@indenttoctrue}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{blackref}
+% Set \Lopt{blackref} flag
+% \changes{0.13}{2010/06/17}{W.~Trevor King added blackref option.}
+%    \begin{macrocode}
+\DeclareOptionX{blackref}{\@blackreftrue}
 %    \end{macrocode}
 % \end{option}
 %
@@ -1722,6 +1748,18 @@
 % Nobody likes the default colored boxes.  Color the text itself.
 %    \begin{macrocode}
 \hypersetup{colorlinks}
+%    \end{macrocode}
+% If \Lopt{blackref} is set, set all \pkg{hyperref} colors to black.
+%    \begin{macrocode}
+\if@blackref
+  \hypersetup{linkcolor=black}
+  \hypersetup{anchorcolor=black}
+  \hypersetup{citecolor=black}
+  \hypersetup{filecolor=black}
+  \hypersetup{menucolor=black}
+  \hypersetup{runcolor=black}
+  \hypersetup{urlcolor=black}
+\fi
 %    \end{macrocode}
 %
 % \subsubsection{\pkg{hypcap}}
@@ -3239,7 +3277,7 @@
 %    \begin{macrocode}
 %<*example|example-draft>
 %% See drexel-thesis.pdf for details.
-%<example>\documentclass[subfig]{drexel-thesis}
+%<example>\documentclass[subfig,blackref]{drexel-thesis}
 %<example-draft>\documentclass[draft,subfig]{drexel-thesis}
 
 %% Enter the appropriate information here
