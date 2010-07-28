@@ -1,13 +1,13 @@
-% \def\fileversion{0.12}
-% \def\filedate{2010/06/17}
+% \def\fileversion{0.13}
+% \def\filedate{2010/07/28}
 % \iffalse meta-comment
 %<*driver>
 \ProvidesFile{drexel-thesis.dtx}
 \documentclass{ltxdoc}
 %</driver>
 %<*class|driver>
-\def\fileversion{0.12}
-\def\filedate{2010/06/17}
+\def\fileversion{0.13}
+\def\filedate{2010/07/28}
 %</class|driver>
 %
 % Copyright (C) 2010  C.Y. Ip
@@ -157,6 +157,7 @@
 %   $\backslash$defmonth and $\backslash$defyear to
 %   $\backslash$DUTmonth and $\backslash$DUTyear for consistency with
 %   the new aliases.}
+% \changes{0.13}{2010/07/28}{W.~Trevor King cleaned up TOC/LOT/LOF code.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -790,7 +791,7 @@
 %    \begin{macrocode}
 \DeclareOptionX{finalspace}{
   \setlength\overfullrule{0pt}
-  \def\@cont@sep{1} % content page separation (# blanklines between entries)
+  \def\@DUT@toc@sep{1} % content page separation (# blanklines between entries)
   \def\@ssp{1} % single space
   \def\@dsp{2} % double space
   \def\@tsp{3} % triple space
@@ -801,7 +802,7 @@
 %    \begin{macrocode}
 \DeclareOptionX{draftspace}{
   \setlength\overfullrule{5pt}
-  \def\@cont@sep{0} % content page separation (# blanklines between entries)
+  \def\DUT@toc@sep{0} % content page separation (# blanklines between entries)
   \def\@ssp{1} % single space
   \def\@dsp{1} % double space
   \def\@tsp{2} % triple space
@@ -2741,18 +2742,36 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\l@cont@sep}
+% \begin{macro}{\l@DUT@toc@sep}
 % Define a length for TOC/LOF/LOT spacing.
+% \changes{0.13}{2010/07/28}{Renamed from $\backslash$l$@$cont$@$sep.}
 %    \begin{macrocode}
-\newlength\l@cont@sep
-\set@lines@length{\l@cont@sep}{\@cont@sep}
+\newlength\l@DUT@toc@sep
+\set@lines@length{\l@DUT@toc@sep}{\@DUT@toc@sep}
 %    \end{macrocode}
 % \end{macro}
 %
-% \begin{macro}{\@cont@font}
+% \begin{macro}{\DUT@toc@high@font}
 % Define a font for high level (part, chapter) entries.
+% \changes{0.13}{2010/07/28}{Renamed from $\backslash@$cont$@$font.}
 %    \begin{macrocode}
-\newcommand{\@cont@font}{\normalsize\scshape}
+\newcommand{\DUT@toc@high@font}{\normalsize\scshape}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\DUT@toc@low@font}
+% Define a font for low level (section, table, figure) entries.
+% \changes{0.13}{2010/07/28}{Macro added.}
+%    \begin{macrocode}
+\newcommand{\DUT@toc@low@font}{\normalfont}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\DUT@toc@page@font}
+% Define a font for page numbers.
+% \changes{0.13}{2010/07/28}{Macro added.}
+%    \begin{macrocode}
+\newcommand{\DUT@toc@page@font}{\normalfont}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2764,14 +2783,14 @@
 % Setup parts.  See the \pkg{tocloft} manual for a description of the
 % commands.
 %    \begin{macrocode}
-\setlength\cftbeforepartskip{\l@cont@sep}
+\setlength\cftbeforepartskip{\l@DUT@toc@sep}
 \cftsetindents{part}{0pt}{3em}
-\if@boldpart   \renewcommand{\cftpartfont}{\bfseries\@cont@font}
-\else          \renewcommand{\cftpartfont}{\@cont@font}
+\if@boldpart   \renewcommand{\cftpartfont}{\bfseries\DUT@toc@high@font}
+\else          \renewcommand{\cftpartfont}{\DUT@toc@high@font}
 \renewcommand{\cftpartleader}{\cftdotfill{\cftpartdotsep}}
 \if@dottedpart \renewcommand{\cftpartdotsep}{\cftdotsep}
 \else          \renewcommand{\cftpartdotsep}{\cftnodots} \fi
-\renewcommand{\cftpartpagefont}{\normalfont}
+\renewcommand{\cftpartpagefont}{\DUT@toc@page@font}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2789,15 +2808,15 @@
 % for appendicies in particular by |\appendix|
 % (Sec.~\ref{sec:implement-appendix}).
 %    \begin{macrocode}
-\setlength\cftbeforechapskip{\l@cont@sep}
+\setlength\cftbeforechapskip{\l@DUT@toc@sep}
 \cftsetindents{chapter}{0pt}{1.5em}
 \renewcommand{\cftchapaftersnum}{.}
-\if@boldchapter   \renewcommand{\cftchapfont}{\bfseries\@cont@font}
-\else             \renewcommand{\cftchapfont}{\@cont@font} \fi
+\if@boldchapter   \renewcommand{\cftchapfont}{\bfseries\DUT@toc@high@font}
+\else             \renewcommand{\cftchapfont}{\DUT@toc@high@font} \fi
 \renewcommand{\cftchapleader}{\cftdotfill{\cftchapdotsep}}
 \if@dottedchapter \renewcommand{\cftchapdotsep}{\cftdotsep}
 \else             \renewcommand{\cftchapdotsep}{\cftnodots} \fi
-\renewcommand{\cftchappagefont}{\normalfont}
+\renewcommand{\cftchappagefont}{\DUT@toc@page@font}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -2808,23 +2827,36 @@
 %
 % \begin{macro}{\cftbeforesecskip}
 % \begin{macro}{\cftsecfont}
+% \begin{macro}{\cftpagefont}
 % \begin{macro}{\cftbeforesubsecskip}
 % \begin{macro}{\cftsubsecfont}
+% \begin{macro}{\cftsubsecpagefont}
 % \begin{macro}{\cftbeforesubsubsecskip}
 % \begin{macro}{\cftsubsubsecfont}
+% \begin{macro}{\cftsubsubsecpagefont}
 % Setup sections, subsections, etc.
+
+% \changes{0.13}{2010/07/28}{Added $\backslash$cft*pagefont
+%   definitions and switch $\backslash$cft*font from hardcoded
+%   $\backslash$normalsize to $\backslash$DUT$@$toc$@$low$@$font.}
 %    \begin{macrocode}
 %\cftsetindents{chap}{0pt}{1.5em}
-\setlength\cftbeforesecskip{\l@cont@sep}
+\setlength\cftbeforesecskip{\l@DUT@toc@sep}
 \cftsetindents{section}{0pt}{3em}
-\renewcommand{\cftsecfont}{\normalsize}
-\setlength\cftbeforesubsecskip{\l@cont@sep}
+\renewcommand{\cftsecfont}{\DUT@toc@low@font}
+\renewcommand{\cftsecpagefont}{\DUT@toc@page@font}
+\setlength\cftbeforesubsecskip{\l@DUT@toc@sep}
 \cftsetindents{subsection}{0pt}{4.5em}
-\renewcommand{\cftsubsecfont}{\cftsecfont}
-\setlength\cftbeforesubsubsecskip{\l@cont@sep}
+\renewcommand{\cftsubsecfont}{\DUT@toc@low@font}
+\renewcommand{\cftsubsecpagefont}{\DUT@toc@page@font}
+\setlength\cftbeforesubsubsecskip{\l@DUT@toc@sep}
 \cftsetindents{subsubsection}{0pt}{6em}
-\renewcommand{\cftsubsubsecfont}{\cftsecfont}
+\renewcommand{\cftsubsubsecfont}{\DUT@toc@low@font}
+\renewcommand{\cftsubsubsecpagefont}{\DUT@toc@page@font}
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
@@ -2886,12 +2918,22 @@
 % \begin{macro}{\cftbeforefigskip}
 % \begin{macro}{\cftfigindent}
 % \begin{macro}{\cftfigfont}
+% \begin{macro}{\cftfigpagefont}
 % Setup figure entries.
+
+% \changes{0.13}{2010/07/28}{Added $\backslash$cftfigpagefont
+%   definition and switch $\backslash$cftfigfont from hardcoded
+%   $\backslash$normalsize$\backslash$singlespace to
+%   $\backslash$DUT$@$toc$@$low$@$font.  The $\backslash$singlespace
+%   portion appears to be unnecessary, and it was causing post-number
+%   linebreak issues with latex (pdflatex always worked).}
 %    \begin{macrocode}
-\setlength{\cftbeforefigskip}{\l@cont@sep}
+\setlength{\cftbeforefigskip}{\l@DUT@toc@sep}
 \setlength{\cftfigindent}{0pt}
-\renewcommand{\cftfigfont}{\normalsize\singlespace}
+\renewcommand{\cftfigfont}{\DUT@toc@low@font}
+\renewcommand{\cftfigpagefont}{\DUT@toc@page@font}
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
@@ -2938,12 +2980,21 @@
 % \begin{macro}{\cftbeforetabskip}
 % \begin{macro}{\cfttabindent}
 % \begin{macro}{\cfttabfont}
+% \begin{macro}{\cfttabpagefont}
 % Setup table entries.
+% \changes{0.13}{2010/07/28}{Added $\backslash$cfttabpagefont
+%   definition switch $\backslash$cfttabfont from hardcoded
+%   $\backslash$normalsize$\backslash$singlespace to
+%   $\backslash$DUT$@$toc$@$low$@$font.  The $\backslash$singlespace
+%   portion appears to be unnecessary, and it was causing post-number
+%   linebreak issues with latex (pdflatex always worked).}
 %    \begin{macrocode}
 \setlength{\cfttabindent}{0pt}
-\setlength{\cftbeforetabskip}{\l@cont@sep}
-\renewcommand{\cfttabfont}{\normalsize\singlespace}
+\setlength{\cftbeforetabskip}{\l@DUT@toc@sep}
+\renewcommand{\cfttabfont}{\DUT@toc@low@font}
+\renewcommand{\cfttabpagefont}{\DUT@toc@page@font}
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 % \end{macro}
