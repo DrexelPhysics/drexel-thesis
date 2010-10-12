@@ -15,4 +15,7 @@ directory).  Running
   make temp-clean
 will get rid of the intermediate files.
 
+We also package the LyX template `drexel-thesis.layout` to assist
+those using the drexel-thesis template with LyX.
+
 Happy TeXing!
