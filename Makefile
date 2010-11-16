@@ -35,7 +35,7 @@ semi-clean : temp-clean
 
 clean : semi-clean
 	rm -f drexel-thesis.pdf example.pdf example-draft.pdf \
-		drexel-thesis.cls drexel-thesis.tar.gz
+		drexel-thesis.cls drexel-thesis.tar.gz $(USEFUL_PACKAGES)
 
 dist : drexel-thesis.tar.gz
 
@@ -58,6 +58,9 @@ drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(EXTRA_FILES) \
 	cp -p $(EXAMPLE_FILES) drexel-thesis/examples/
 	cp -rp $(EXTRA_FILES) drexel-thesis/
 	mkdir drexel-thesis/packages
-	cp -p $(USEFUL_PACKAGES) drexel-thesis/packages/
+	cp $(USEFUL_PACKAGES) drexel-thesis/packages/
 	tar -chozf $@ drexel-thesis
 	rm -rf drexel-thesis
+
+$(USEFUL_PACKAGES) : % :
+	cp $(shell kpsewhich $@) $@
