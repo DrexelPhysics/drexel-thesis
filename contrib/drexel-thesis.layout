@@ -4,7 +4,7 @@
 # Read the definitions from book.layout
 Input book.layout
 
-# Put environments in the listed order on the menu.
+# This puts these in the listed order on the menu.
 
 Style Abstract
 End
@@ -18,78 +18,78 @@ End
 Style Vita
 End
 
-# Define various elements.  Those not explicitly defined here are
-# taken from Book.
+# The actual definitions for the various elements.
+# Those not explicitly defined here are taken from Book.
 
 Style Abstract
-   LeftMargin  "MMM"
-   RightMargin "MMM"
-   ParIndent   "MM"
-   Category    FrontMatter
-   LatexType   Environment
-   LatexName   abstract
-   Align       Block
-   LabelType   Centered_Top_Environment
-   LabelString "Abstract"
+   LeftMargin     "MMM"
+   RightMargin    "MMM"
+   ParIndent      "MM"
+   Category       FrontMatter
+   LatexType      Environment
+   LatexName      thesisabstract
+   Align          Block
+   LabelType      Centered_Top_Environment
+   LabelString    "Abstract"
    Font
-     Size      Normal
+     Size         Normal
    EndFont
    LabelFont
-     Series    Bold
-     Size      Normal
+     Series       Bold
+     Size         Normal
    EndFont
 End
 
 Style Acknowledgements
-   LeftMargin  "MMM"
-   RightMargin "MMM"
-   ParIndent   "MM"
-   Category    FrontMatter
-   LatexType   Environment
-   LatexName   acknowledgments
-   Align       Block
-   LabelType   Centered_Top_Environment
-   LabelString "Acknowledgements"
+   LeftMargin     "MMM"
+   RightMargin    "MMM"
+   ParIndent      "MM"
+   Category       FrontMatter
+   LatexType      Environment
+   LatexName      acknowledgments
+   Align          Block
+   LabelType      Centered_Top_Environment
+   LabelString    "Acknowledgements"
    Font
-     Size      Normal
+     Size         Normal
    EndFont
    LabelFont
-     Series    Bold
-     Size      Normal
+     Series       Bold
+     Size         Normal
    EndFont
 End
 
 Style Dedication
-   Category    FrontMatter
-   LatexType   Environment
-   LatexName   dedications
-   LabelType   Centered_Top_Environment
-   Align       Center
-   LabelString "Dedication"
+   Category       FrontMatter
+   LatexType      Environment
+   LatexName      dedications
+   LabelType      Centered_Top_Environment
+   Align          Center
+   LabelString    "Dedication"
    Font
-     Size      Normal
+     Size         Normal
    EndFont
    LabelFont
-     Series    Bold
-     Size      Normal
+     Series       Bold
+     Size         Normal
    EndFont
 End
 
 Style Vita
-   LeftMargin  "MMM"
-   RightMargin "MMM"
-   ParIndent   "MM"
-   Category    BackMatter
-   LatexType   Environment
-   LatexName   vita
-   Align       Block
-   LabelType   Centered_Top_Environment
-   LabelString "Vita"
+   LeftMargin     "MMM"
+   RightMargin    "MMM"
+   ParIndent      "MM"
+   Category       BackMatter
+   LatexType      Environment
+   LatexName      vita
+   Align          Block
+   LabelType      Centered_Top_Environment
+   LabelString    "Vita"
    Font
-     Size      Normal
+     Size         Normal
    EndFont
    LabelFont
-     Series    Bold
-     Size      Normal
+     Series       Bold
+     Size         Normal
    EndFont
 End
