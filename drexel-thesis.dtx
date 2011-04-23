@@ -159,6 +159,13 @@
 % \changes{0.14}{2010/09/21}{Evan Sultanik added the
 %   \texttt{approvalform} option for including a \LaTeX\ version of
 %   the T-1 thesis form.}
+% \changes{0.15}{2011/04/22}{W.~Trevor King added the
+%   \texttt{nodraftwatermark} option for clearing previous watermark
+%   options.}
+% \changes{0.15}{2011/04/23}{W.~Trevor King added the
+%   \texttt{pagebreak} and \texttt{nopagebreak} options for
+%   controlling page breaking independently of \texttt{final} and
+%   \texttt{draft}.}
 %
 % \MakeShortVerb{\|}
 % \newcommand{\pkg}[1]{\textsf{#1}}
@@ -213,6 +220,7 @@
 %     side of the page (not double-sided).'' \\
 %   \Lopt{finalspace} & Assorted single, double, and triple spacing
 %   directives. \\
+%   \Lopt{pagebreak} & Conform to thesis pagebreak rules. \\
 %   \Lopt{dottedtoc} & From the example on p17. \\
 %   \Lopt{nodraftwatermark} & Clear any earlier watermark options.
 % \end{tabular}
@@ -221,6 +229,7 @@
 % \begin{tabular}{r p{0.8\textwidth}}
 %   \Lopt{twoside} & Save space. \\
 %   \Lopt{draftspace} & Save space. \\
+%   \Lopt{nopagebreak} & Save space. \\
 %   \Lopt{dottedtoc} & Might as well be consistent with \Lopt{final}. \\
 %   \Lopt{xdraftwatermark} & It's good to have a timestamp.
 % \end{tabular}
@@ -239,6 +248,12 @@
 %
 % \DescribeOption{draftspace}
 % Tighten spacing.
+%
+% \DescribeOption{pagebreak}
+% Break pages between chapters and chapter-like blocks.
+%
+% \DescribeOption{nopagebreak}
+% Don't break pages between chapters and chapter-like blocks (saves paper).
 %
 % \DescribeOptions{dottedtoc,boldtoc,
 %                  dottedpart,boldpart,
@@ -824,6 +839,7 @@
 %    \begin{macrocode}
 \newif\if@mainmatter \@mainmattertrue
 \newif\if@DUT@subfigopt
+\newif\if@DUT@pagebreak
 \newif\if@dottedchapter 
 \newif\if@boldchapter
 \newif\if@boldpart
@@ -1380,6 +1396,25 @@
   \def\@ssp{1} % single space
   \def\@dsp{1} % double space
   \def\@tsp{2} % triple space
+}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{pagebreak}
+%    \begin{macrocode}
+\DeclareOptionX{pagebreak}{
+  \@DUT@pagebreaktrue
+%    \end{macrocode}
+%  Force chapters onto right-hand pages.
+%    \begin{macrocode}
+  \PassOptionsToClass{openright}{book}
+}
+%    \end{macrocode}
+% \end{option}
+% \begin{option}{nopagebreak}
+%    \begin{macrocode}
+\DeclareOptionX{nopagebreak}{
+  \@DUT@pagebreakfalse
 %    \end{macrocode}
 %  Don't force chapters onto right-hand pages.
 %    \begin{macrocode}
@@ -1497,6 +1532,7 @@
   \@finaltrue
   \setkeys{drexel-thesis.cls}{oneside}
   \setkeys{drexel-thesis.cls}{finalspace}
+  \setkeys{drexel-thesis.cls}{pagebreak}
   \setkeys{drexel-thesis.cls}{dottedtoc}
 }
 %    \end{macrocode}
@@ -1508,6 +1544,7 @@
   \@finalfalse
   \setkeys{drexel-thesis.cls}{twoside}
   \setkeys{drexel-thesis.cls}{draftspace}
+  \setkeys{drexel-thesis.cls}{nopagebreak}
   \setkeys{drexel-thesis.cls}{dottedtoc}
   \setkeys{drexel-thesis.cls}{xdraftwatermark}
 }
@@ -2294,26 +2331,35 @@
 %
 % \begin{macro}{\@DUT@clearpage}
 % \begin{macro}{\@DUT@cleardoublepage}
-% Versions of |\clear*page| that only work when |\if@final| is true
-% (\file{ltoutput.dtx}, L877 and L904).
+% \begin{macro}{\@DUT@newpage}
+% Versions of |\clear*page| and |\newpage| that only work in
+% \Lopt{pagebreak} mode (\file{ltoutput.dtx}, L877 and L904).
+% Otherwise they add four blank lines.
+% \changes{0.15}{2011/04/23}{W.~Trevor King added
+%   $\backslash$\@DUT\@newpage macro.}
 %    \begin{macrocode}
-\newcommand\@DUT@clearpage{\if@final \clearpage \fi}
-\newcommand\@DUT@cleardoublepage{\if@final \cleardoublepage \fi}
+\newcommand\@DUT@clearpage{%
+  \if@DUT@pagebreak \clearpage \else \blanklinesp{4} \fi}
+\newcommand\@DUT@cleardoublepage{%
+  \if@DUT@pagebreak \cleardoublepage \else \blanklinesp{4} \fi}
+\newcommand\@DUT@newpage{%
+  \if@DUT@pagebreak \newpage \else \blanklinesp{4} \fi}
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\@DUT@blankpage}
 % Add a useful extension to insert a blank page without numbering.
-% In draft mode, this macro is a no-op.
+% If we're not in \Lopt{pagebreak} mode, this macro is a no-op.
 %    \begin{macrocode}
 \newcommand\@DUT@blankpage{%
-  \if@final
+  \if@DUT@pagebreak
     \@DUT@clearpage
     \thispagestyle{empty}
     \hphantom{0}
     \@DUT@clearpage
-  \else\fi
+  \fi
 }
 %    \end{macrocode}
 % \end{macro}
@@ -2462,10 +2508,10 @@
       \pdfbookmark[0]{Title Page}{Title Page}
     \fi
 %    \end{macrocode}
-% Add some stretchy space to center the title vertically if we're not
-% in draft mode.
+% Add some stretchy space to center the title vertically if we're in
+% \Lopt{pagebreak} mode.
 %    \begin{macrocode}
-    \if@final \vspace*{\fill} \fi
+    \if@DUT@pagebreak \vspace*{\fill} \fi
 %    \end{macrocode}
 % Here is the title text itself.
 %    \begin{macrocode}
@@ -2493,10 +2539,10 @@
 % Some more stretchy space for the bottom if we're not in draft mode.
 %    \begin{macrocode}
 %    \end{macrocode}
-% Add some stretchy space to center the title vertically if we're not
-% in draft mode.
+% Add some stretchy space to center the title vertically if we're in
+% \Lopt{pagebreak} mode.
 %    \begin{macrocode}
-    \if@final \vspace*{\fill} \fi
+    \if@DUT@pagebreak \vspace*{\fill} \fi
   \end{@DUT@titlepage}%
 %    \end{macrocode}
 % And that's it.  We reset the footnote counter for the rest of the
@@ -2535,12 +2581,12 @@
 % If we're using pdf\LaTeX, add a bookmark.
 %    \begin{macrocode}
   \ifpdf \pdfbookmark[0]{Copyright Page}{Copyright Page} \fi
-  \if@final \vspace*{\fill} \fi
+  \if@DUT@pagebreak \vspace*{\fill} \fi
   \begin{center}
     \copyright~Copyright \@DUT@year\\
     \@DUT@author.  \@DUT@copyrighttext
   \end{center}
-  \if@final \vspace*{\fill} \else \blanklinesp{2} \fi
+  \if@DUT@pagebreak \vspace*{\fill} \fi
 %    \end{macrocode}
 % Turn off page numbering for this page.
 %    \begin{macrocode}
@@ -2660,9 +2706,10 @@
   \thispagestyle{plain}%
   \@tempswafalse
 %    \end{macrocode}
-% Add some stretchy space for vertical centering if we're in final mode.
+% Add some stretchy space for vertical centering if we're in
+% \Lopt{pagebreak} mode.
 %    \begin{macrocode}
-  \if@final \null\vfil \fi
+  \if@DUT@pagebreak \null\vfil \fi
 %    \end{macrocode}
 % Here we use |\secdef| to indicate which commands to use to make
 % the actual heading.
@@ -2732,16 +2779,16 @@
 % \begin{macro}{\@endpart}
 % This macro finishes the part page, for both |\@part| and |\@spart|.
 % We drop \cls{book}'s twoside handling.
-% If |\if@final| is true, we fill the current page.
+% If we're in \Lopt{pagebreak} mode, we fill the current page.
 % (\file{classes.dtx}, L2435)
 %    \begin{macrocode}
 \def\@endpart{
-  \if@final \vfil\newpage \fi
+  \if@DUT@pagebreak \vfil\newpage \fi
 %    \end{macrocode}
 % Then, when we are in twosided mode and the chapters are supposed to
 % be on the right hand sides, we produce a completely blank page.  We
-% don't need to check |\if@final| here, because \Lopt{draftspace} set
-% |\@openrighttrue|.
+% don't need to check \Lopt{pagebreak}-mode here, because the
+% pagebreak options set the \cls{book} opening options.
 %    \begin{macrocode}
   \if@twoside
     \if@openright
@@ -3243,9 +3290,8 @@
 % (\file{classes.dtx}, L3111)
 %    \begin{macrocode}
 \renewenvironment{titlepage}%
-  {\thispagestyle{empty}%
-    \setcounter{page}\z@}%
-  {\if@final \newpage \else \blanklinesp{2} \par \fi}
+  {\thispagestyle{empty}\setcounter{page}\z@}%
+  {\@DUT@newpage}
 \let\@DUT@titlepage\titlepage
 \let\end@DUT@titlepage\endtitlepage
 %    \end{macrocode}
@@ -3850,7 +3896,7 @@
 %
 % \subsubsection{Terminal blank page}
 %
-% Add a terminal blank page (when |\if@final| is true)
+% Add a terminal blank page (in \Lopt{pagebreak} mode)
 % From the Manual \S 3.16 p13
 % \begin{quote}
 %   Include a blank page (with no page number) at the end of the
