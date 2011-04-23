@@ -213,7 +213,8 @@
 %     side of the page (not double-sided).'' \\
 %   \Lopt{finalspace} & Assorted single, double, and triple spacing
 %   directives. \\
-%   \Lopt{dottedtoc} & From the example on p17.
+%   \Lopt{dottedtoc} & From the example on p17. \\
+%   \Lopt{nodraftwatermark} & Clear any earlier watermark options.
 % \end{tabular}
 %
 % \Lopt{draft} mode corresponds to \\
@@ -221,7 +222,7 @@
 %   \Lopt{twoside} & Save space. \\
 %   \Lopt{draftspace} & Save space. \\
 %   \Lopt{dottedtoc} & Might as well be consistent with \Lopt{final}. \\
-%   \Lopt{mydraftwatermark} & It's good to have a timestamp. \\
+%   \Lopt{xdraftwatermark} & It's good to have a timestamp.
 % \end{tabular}
 %
 % \DescribeOption{subfig}
@@ -261,12 +262,28 @@
 % \Lopt{draftwatermark} adds ``DRAFT \meta{date}'' watermarks to each
 % page.  A useful way to remember that the version you're looking at
 % is not final.  Also helps reviewers tell you what version they're
-% correcting.  Requires the \pkg{draftmark} package.
+% correcting.  Requires the \pkg{draftmark} package, which allows you
+% to override the default watermark style if it is not to your liking
+% (\S~\ref{sec:draftmark}).
 %
-% \DescribeOption{mydraftwatermark}
-% \Lopt{mydraftwatermark} is similar to \Lopt{draftwatermark} but
-% depends on the possibly more common \pkg{xcolor}, \pkg{eso-pic},
-% and \pkg{graphicx}.
+% \DescribeOption{xdraftwatermark}
+% \Lopt{xdraftwatermark} is also similar to \Lopt{draftwatermark} but
+% depends on the possibly more common \pkg{xcolor}, \pkg{eso-pic}, and
+% \pkg{graphicx}.
+%
+% \DescribeOption{nodraftwatermark}
+% \Lopt{nodraftwatermark} clears any earlier watermark options.  For
+% example
+% \begin{example}
+%   \documentclass[draft,nodraftwatermark]{drexel-thesis}
+% \end{example}
+% will format your thesis in \Lopt{draft} mode but without a watermark.
+% On the other hand,
+% \begin{example}
+%   \documentclass[draftmark,final]{drexel-thesis}
+% \end{example}
+% will also format your thesis without a watermark, because
+% \Lopt{final} sets \Lopt{nodraftwatermark} internally.
 %
 % \DescribeOption{indentfirst}
 % \Lopt{indentfirst} indents the first paragraph after sections etc.
@@ -486,6 +503,17 @@
 % Include \Lopt{final}- or \Lopt{draft}-specific code.
 % \begin{example}
 %   We're in \iffinal{final}{draft} mode!
+% \end{example}
+%
+% \begin{command}
+%   `\cs{ifdraftwatermark}\marg{draftwatermark-mode-action}\marg{other-action}'
+% \end{command}
+% \DescribeMacro{\ifdraftwatermark}
+% \DescribeMacro{\DUTifdraftwatermark}
+% Include \Lopt{draftwatermark}-specific code (e.g. |\draftmarksetup|,
+% \S~\ref{sec:draftmark})..
+% \begin{example}
+%   We \ifdraftwatermark{are}{aren't} in draftwatermark mode!
 % \end{example}
 %
 % \begin{command}
@@ -803,7 +831,7 @@
 \newif\if@indenttoc
 \newif\if@blackref
 \newif\if@draftwatermark
-\newif\if@mydraftwatermark
+\newif\if@xdraftwatermark
 \newif\if@indentfirst
 \newif\if@final
 \newif\if@daring
@@ -811,21 +839,43 @@
 %    \end{macrocode}
 %
 % \begin{macro}{\iffinal}
+% \begin{macro}{\DUTiffinal}
 % Setup a user-friendly means for including \Lopt{final}- or
 % \Lopt{draft}-specific code.
-% \changes{0.7}{2010/03/14}{W.~Trevor King added macro.}
+% \changes{0.7}{2010/03/14}{W.~Trevor King added iffinal macro.}
+% \changes{0.15}{2011/04/22}{W.~Trevor King added DUTiffinal macro.}
 %    \begin{macrocode}
 \newcommand\iffinal[2]{\if@final #1\else #2\fi}
+\let\DUTiffinal\iffinal
 %    \end{macrocode}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\ifdraftwatermark}
+% \begin{macro}{\DUTifdraftwatermark}
+% Setup a user-friendly means for including
+% \Lopt{draftwatermark}-specific code (e.g. |\draftmarksetup|,
+% \S~\ref{sec:draftmark}).
+% \changes{0.15}{2011/04/22}{W.~Trevor King added ifdraftwatermark macro.}
+% \changes{0.15}{2011/04/22}{W.~Trevor King added DUTifdraftwatermark macro.}
+%    \begin{macrocode}
+\newcommand\ifdraftwatermark[2]{\if@draftwatermark #1\else #2\fi}
+\let\DUTifdraftwatermark\ifdraftwatermark
+%    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\ifdaring}
+% \begin{macro}{\DUTifdaring}
 % Setup a user-friendly means for including \Lopt{daring}-specific
 % code.
-% \changes{0.11}{2010/06/04}{W.~Trevor King added macro.}
+% \changes{0.11}{2010/06/04}{W.~Trevor King added ifdaring macro.}
+% \changes{0.15}{2011/04/22}{W.~Trevor King added DUTifdaring macro.}
 %    \begin{macrocode}
 \newcommand\ifdaring[2]{\if@daring #1\else #2\fi}
+\let\DUTifdaring\ifdaring
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\DUT@makeapprovalform}
@@ -1395,16 +1445,28 @@
 %    \begin{macrocode}
 \DeclareOptionX{draftwatermark}{%
   \@draftwatermarktrue
-  \@mydraftwatermarkfalse}
+  \@xdraftwatermarkfalse}
 %    \end{macrocode}
 % \end{option}
 %
-% \begin{option}{mydraftwatermark}
-% Set \Lopt{mydraftwatermark} flag
+% \begin{option}{xdraftwatermark}
+% Set \Lopt{xdraftwatermark} flag
+% \changes{0.15}{2011/04/22}{W.~Trevor King renamed mydraftwatermark
+%   to xdraftwatermark.}
 %    \begin{macrocode}
-\DeclareOptionX{mydraftwatermark}{%
-  \@mydraftwatermarktrue
-  \@draftwatermarkfalse}
+\DeclareOptionX{xdraftwatermark}{% 
+  \@draftwatermarkfalse
+  \@xdraftwatermarktrue}
+%    \end{macrocode}
+% \end{option}
+%
+% \begin{option}{nodraftwatermark}
+% Clear \Lopt{draftwatermark} and \Lopt{xdraftwatermark} flags
+% \changes{0.15}{2011/04/22}{W.~Trevor King added nodraftwatermark option.}
+%    \begin{macrocode}
+ \DeclareOptionX{nodraftwatermark}{% 
+  \@draftwatermarkfalse
+  \@xdraftwatermarkfalse}
 %    \end{macrocode}
 % \end{option}
 %
@@ -1447,7 +1509,7 @@
   \setkeys{drexel-thesis.cls}{twoside}
   \setkeys{drexel-thesis.cls}{draftspace}
   \setkeys{drexel-thesis.cls}{dottedtoc}
-  \setkeys{drexel-thesis.cls}{mydraftwatermark}
+  \setkeys{drexel-thesis.cls}{xdraftwatermark}
 }
 %    \end{macrocode}
 % \end{option}
@@ -1542,6 +1604,7 @@
 %
 %
 % \subsubsection{\pkg{draftmark}}
+% \label{sec:draftmark}
 %
 % The Comp.~Sci.\ class used
 % \href{http://www.ctan.org/tex-archive/macros/latex/contrib/draftcopy/}{\pkg{draftcopy}}
@@ -1567,10 +1630,19 @@
 \fi
 %    \end{macrocode}
 %
-% Here is Evan's alternative implementation This will not look right
+% Travis Hoppe went for a more discrete watermark in the lower right
+% corner with something along the lines of:
+% \begin{example}
+%   \ifdraftwatermark{
+%     \draftmarksetup{angle=0,fontsize=24pt,color=red!45!blue!25,
+%                     xcoord=80,ycoord=-129,mark={DRAFT\\[12pt] \today}}
+%   }{}
+% \end{example}
+%
+% Here is Evan's alternative implementation.  This will not look right
 % as a DVI, but it'll look fine once rendered to either a PS or PDF.
 %    \begin{macrocode}
-\if@mydraftwatermark
+\if@xdraftwatermark
 %    \end{macrocode}
 % Use \pkg{eso-pic} for |\AddToShipoutPicture|.
 %    \begin{macrocode}
