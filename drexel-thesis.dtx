@@ -142,21 +142,19 @@
 %   the base/*.dtx files.}
 % \changes{0.4}{2010/02/23}{W.~Trevor King repositioned hyperref
 %   inclusion for proper hyperref overriding.  The previous
-%   implementation couldn't handle $\backslash$label for
-%   $\backslash$paragraph and some other section levels.  The page
-%   number for the reference was correct, but the link went to the
-%   label's parent chapter.}
+%   implementation couldn't handle \cs{label} for \cs{paragraph} and
+%   some other section levels.  The page number for the reference was
+%   correct, but the link went to the label's parent chapter.}
 % \changes{0.5}{2010/03/03}{W.~Trevor King use hypcap for better
 %   caption hyperlink anchor placement.}
-% \changes{0.6}{2010/03/11}{W.~Trevor King fixed
-%   $\backslash$if$@$final handling.  Previous versions used
-%   it more like a hypothetical $\backslash$if$@$finalspace.
-%   Also adjusted theindex to use a listed$@$schapter.}
-% \changes{0.10}{2010/05/21}{W.~Trevor King added $\backslash$DUT\*
+% \changes{0.6}{2010/03/11}{W.~Trevor King fixed \cs{if@final}
+%   handling.  Previous versions used it more like a hypothetical
+%   \cs{if@finalspace}.  Also adjusted theindex to use a
+%   \cs{listed@schapter}.}
+% \changes{0.10}{2010/05/21}{W.~Trevor King added \cs{DUT*}
 %   aliases for all public macros and environments and renamed
-%   $\backslash$defmonth and $\backslash$defyear to
-%   $\backslash$DUTmonth and $\backslash$DUTyear for consistency with
-%   the new aliases.}
+%   \cs{defmonth} and \cs{defyear} to \cs{DUTmonth} and \cs{DUTyear}
+%   for consistency with the new aliases.}
 % \changes{0.13}{2010/07/28}{W.~Trevor King cleaned up TOC/LOT/LOF code.}
 % \changes{0.14}{2010/09/21}{Evan Sultanik added the
 %   \texttt{approvalform} option for including a \LaTeX\ version of
@@ -2037,11 +2035,10 @@
 % \begin{macro}{\@DUT@baselineskip}
 % Since we'll be messing with the spacing, save the single-spaced
 % baseline.
-%   \changes{0.3}{2010/01/13}{Use $\backslash$setlength to store the
-%     value at the default font.  The previous version used
-%     $\backslash$let, which made $\backslash$DUT\@baselineskip a
-%     synonym for $\backslash$baselineskip that changed with font
-%     size.}
+%   \changes{0.3}{2010/01/13}{Use \cs{setlength} to store the value at
+%     the default font.  The previous version used \cs{let}, which
+%     made \cs{DUT@baselineskip} a synonym for \cs{baselineskip} that
+%     changed with font size.}
 %    \begin{macrocode}
 \newlength\@DUT@baselineskip
 \setlength\@DUT@baselineskip\baselineskip
@@ -2484,8 +2481,8 @@
 % \begin{macro}{\DUTcopyrighttextCCBYSA}
 % The Creative Commons Attribution-ShareAlike License.
 % \changes{0.4}{2010/02/23}{W.~Trevor King renamed from
-% $\backslash$copyrighttextCC, and made specific to Creative Commons
-% Attribution-ShareAlike Version 3.0.}
+%   \cs{copyrighttextCC}, and made specific to Creative Commons
+%   Attribution-ShareAlike Version 3.0.}
 %    \begin{macrocode}
 \newcommand\copyrighttextCCBYSA{
   \begin{quote}
@@ -2988,9 +2985,9 @@
 %   punctuation.
 %   \item This page is counted and numbered in lowercase Roman numerals.
 % \end{itemize}
-% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
-%   detach the single space $\backslash$setstretch from the from the
-%   final paragraph.}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added \cs{par} to detach
+%   the single space \cs{setstretch} from the from the final
+%   paragraph.}
 %    \begin{macrocode}
 \newenvironment{dedications}{%
   \@DUT@clearpage
@@ -3018,9 +3015,9 @@
 %   punctuation.
 %   \item This page is counted and numbered in lowercase Roman numerals.
 % \end{itemize}
-% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
-%   detach the single space $\backslash$setstretch from the from the
-%   final paragraph.}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added \cs{par} to detach
+%   the single space \cs{setstretch} from the from the final
+%   paragraph.}
 %    \begin{macrocode}
 \newenvironment{acknowledgments}{%
   \@DUT@clearpage
@@ -3072,9 +3069,9 @@
 %       is double spaced.
 %   \end{itemize}
 % \end{quote}
-% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
-%   detach the single space $\backslash$setstretch from the from the
-%   final paragraph.}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added \cs{par} to detach
+%   the single space \cs{setstretch} from the from the final
+%   paragraph.}
 %    \begin{macrocode}
     \begin{center}
       \setstretch{\@ssp}%
@@ -3084,7 +3081,7 @@
 % If you're feeling daring, break the rules and add ``Advisor(s):'' to
 % set off your list of advisor names.
 % \changes{0.11}{2010/06/04}{W.~Trevor King added ``Advisor(s):'' for
-% daring users.}
+%   daring users.}
 %    \begin{macrocode}
       \ifdaring{%
         \ifnum\c@@DUT@advisors=\@ne%
@@ -3147,9 +3144,9 @@
 %   \item List the Vita separately in the Table of Contents.
 %   \item The page is counted and numbered in Arabic numerals.
 % \end{itemize}
-% \changes{0.12}{2010/06/17}{W.~Trevor King added $\backslash$par to
-%   detach the single space $\backslash$setstretch from the from the
-%   final paragraph.}
+% \changes{0.12}{2010/06/17}{W.~Trevor King added \cs{par} to detach
+%   the single space \cs{setstretch} from the from the final
+%   paragraph.}
 %    \begin{macrocode}
 \newenvironment{vita}{%
   \listed@schapter{\vitaname}
@@ -3296,7 +3293,7 @@
 %
 % \begin{macro}{\l@DUT@toc@sep}
 % Define a length for TOC/LOF/LOT spacing.
-% \changes{0.13}{2010/07/28}{Renamed from $\backslash$l$@$cont$@$sep.}
+% \changes{0.13}{2010/07/28}{Renamed from \cs{l@cont@sep}.}
 %    \begin{macrocode}
 \newlength\l@DUT@toc@sep
 \set@lines@length{\l@DUT@toc@sep}{\@DUT@toc@sep}
@@ -3305,7 +3302,7 @@
 %
 % \begin{macro}{\DUT@toc@high@font}
 % Define a font for high level (part, chapter) entries.
-% \changes{0.13}{2010/07/28}{Renamed from $\backslash@$cont$@$font.}
+% \changes{0.13}{2010/07/28}{Renamed from \cs{@cont@font}.}
 %    \begin{macrocode}
 \newcommand{\DUT@toc@high@font}{\normalsize\scshape}
 %    \end{macrocode}
@@ -3387,10 +3384,9 @@
 % \begin{macro}{\cftsubsubsecfont}
 % \begin{macro}{\cftsubsubsecpagefont}
 % Setup sections, subsections, etc.
-
-% \changes{0.13}{2010/07/28}{Added $\backslash$cft*pagefont
-%   definitions and switch $\backslash$cft*font from hardcoded
-%   $\backslash$normalsize to $\backslash$DUT$@$toc$@$low$@$font.}
+% \changes{0.13}{2010/07/28}{Added \cs{cft*pagefont} definitions and
+%   switch \cs{cft*font} from hardcoded \cs{normalsize} to
+%   \cs{DUT@toc@low@font}.}
 %    \begin{macrocode}
 %\cftsetindents{chap}{0pt}{1.5em}
 \setlength\cftbeforesecskip{\l@DUT@toc@sep}
@@ -3472,11 +3468,9 @@
 % \begin{macro}{\cftfigfont}
 % \begin{macro}{\cftfigpagefont}
 % Setup figure entries.
-
-% \changes{0.13}{2010/07/28}{Added $\backslash$cftfigpagefont
-%   definition and switch $\backslash$cftfigfont from hardcoded
-%   $\backslash$normalsize$\backslash$singlespace to
-%   $\backslash$DUT$@$toc$@$low$@$font.  The $\backslash$singlespace
+% \changes{0.13}{2010/07/28}{Added \cs{cftfigpagefont} definition and
+%   switch \cs{cftfigfont} from hardcoded \cs{normalsize}
+%   \cs{singlespace} to \cs{DUT@toc@low@font}.  The \cs{singlespace}
 %   portion appears to be unnecessary, and it was causing post-number
 %   linebreak issues with latex (pdflatex always worked).}
 %    \begin{macrocode}
@@ -3534,10 +3528,9 @@
 % \begin{macro}{\cfttabfont}
 % \begin{macro}{\cfttabpagefont}
 % Setup table entries.
-% \changes{0.13}{2010/07/28}{Added $\backslash$cfttabpagefont
-%   definition switch $\backslash$cfttabfont from hardcoded
-%   $\backslash$normalsize$\backslash$singlespace to
-%   $\backslash$DUT$@$toc$@$low$@$font.  The $\backslash$singlespace
+% \changes{0.13}{2010/07/28}{Added \cs{cfttabpagefont} definition and
+%   switch \cs{cftfabfont} from hardcoded \cs{normalsize}
+%   \cs{singlespace} to \cs{DUT@toc@low@font}.  The \cs{singlespace}
 %   portion appears to be unnecessary, and it was causing post-number
 %   linebreak issues with latex (pdflatex always worked).}
 %    \begin{macrocode}
