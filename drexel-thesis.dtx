@@ -754,6 +754,27 @@
 % \StopEventually{\pagebreak\PrintChanges}
 %
 %
+% \subsubsection{Passing options to packages used by \textsf{drexel-thesis}}
+%
+%
+% \cls{drexel-thesis} uses a number of \LaTeX\ packages internally to
+% format your thesis.  Sometimes you also want to use these packages
+% directly, but \cls{drexel-thesis} is not passing them the option(s)
+% you need.  The way to deal with these issues is
+% \href{http://www.tex.ac.uk/cgi-bin/texfaq2html?label=optionclash}{%
+%  \cs{PassOptionsToPackage}}.
+% \begin{command}
+%   `\cs{PassOptionsToPackage}\marg{option,...}\marg{package}'
+% \end{command}
+% For example, if you need to pass \Lopt{table} to \pkg{xcolor}, use:
+% \begin{example}
+% \PassOptionToPackage{table}{xcolor}
+% \documentclass{drexel-thesis}
+% \end{example}
+% Note that you need to call \cs{PassOptionsToPackage} before the
+% target package is imported via \cs{documentclass}.
+%
+%
 % \section{Implementation}
 %    \begin{macrocode}
 %<*class>
