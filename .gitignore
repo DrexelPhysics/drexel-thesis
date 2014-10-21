@@ -1,10 +1,3 @@
-*.cls
-*.sty
-*.tex
-*.bib
-*.pdf
-*.tar.gz
-
 # LaTeX temp files
 *.aux
 *.bbl
