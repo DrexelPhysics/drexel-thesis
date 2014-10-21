@@ -39,7 +39,7 @@ clean : semi-clean
 
 dist : drexel-thesis.tar.gz
 
-CLASS_FILES = Makefile README drexel-thesis.dtx drexel-thesis.ins \
+CLASS_FILES = Makefile README.rst drexel-thesis.dtx drexel-thesis.ins \
 	drexel-thesis.cls drexel-thesis.pdf
 EXAMPLE_FILES = template.tex example.tex example-draft.tex drexel-logo.pdf \
 	example-1.tex example-a.tex example-ref.bib \
