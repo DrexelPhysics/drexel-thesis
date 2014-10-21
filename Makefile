@@ -49,6 +49,8 @@ USEFUL_PACKAGES = blindtext.sty draftmark.sty etextools.sty etoolbox.sty \
 	floatrow.sty forloop.sty fr-subfig.sty lastpage.sty ltxnew.sty \
 	pagerange.sty tocloft.sty xifthen.sty
 
+.PRECIOUS: %.sty %.tex
+
 drexel-thesis.tar.gz : $(CLASS_FILES) $(EXAMPLE_FILES) $(EXTRA_FILES) \
 		$(USEFUL_PACKAGES)
 	rm -f $@
