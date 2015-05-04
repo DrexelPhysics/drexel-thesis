@@ -23,4 +23,9 @@ __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=privinst
 We also package the LyX template ``drexel-thesis.layout`` to assist
 those using the drexel-thesis template with LyX.
 
+For more elaborate examples, see the samples in the `DissertationDocs
+repository`__.
+
+__ https://github.com/DrexelPhysics/DissertationDocs
+
 Happy TeXing!
