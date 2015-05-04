@@ -1,4 +1,6 @@
-The LaTeX class drexel-thesis is distributed in the docstrip file ``drexel-thesis.dtx`` with the install file ``drexel-thesis.ins``.  For more information on the docstrip format, look here__ and here__.
+The LaTeX class drexel-thesis is distributed in the docstrip file
+``drexel-thesis.dtx`` with the install file ``drexel-thesis.ins``.
+For more information on the docstrip format, look here__ and here__.
 
 __ http://www.ctan.org/tex-archive/info/dtxtut/
 __ http://www.ctan.org/tex-archive/macros/latex/base/
