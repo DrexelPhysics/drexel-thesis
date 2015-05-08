@@ -2539,10 +2539,15 @@
 % Some more stretchy space for the bottom if we're not in draft mode.
 %    \begin{macrocode}
 %    \end{macrocode}
-% Add some stretchy space to center the title vertically if we're in
-% \Lopt{pagebreak} mode.
+% Add some stretchy space to center the title vertically and add a
+% Drexel logo to the bottom of the page if we're in
+% \Lopt{pagebreak} mode.  If the title is more than three lines it
+% will overlap the logo.
 %    \begin{macrocode}
-    \if@DUT@pagebreak \vspace*{\fill} \fi
+    \if@DUT@pagebreak \vspace*{\fill}
+    \centering
+    \mbox{\smash{\includegraphics[width=4cm]{drexel-logo}}}
+    \fi
   \end{@DUT@titlepage}%
 %    \end{macrocode}
 % And that's it.  We reset the footnote counter for the rest of the
